@@ -49,15 +49,15 @@ body { background: var(--azul); min-height:100vh; display:flex; flex-direction:c
 #gate button.submit:hover { filter:brightness(1.06); }
 #gate .error { color:#FFB3B3; font-size:13px; margin-top:12px; min-height:18px; }
 #page { display:none; min-height:100vh; flex:1; flex-direction:column; }
-header { padding: 60px 6vw 20px; text-align:center; }
-header .kicker { color: var(--amar); font-size:11px; font-weight:bold; letter-spacing:4px; text-transform:uppercase; margin-bottom:12px; border:1px solid var(--amar); display:inline-block; padding:4px 14px; }
-header h1 { color:#fff; font-size:clamp(26px,4.2vw,40px); margin:0 0 6px; font-family:Georgia,'Times New Roman',serif; letter-spacing:.5px; }
-header .author { color: var(--amar); font-size:14px; font-weight:bold; margin:0 0 12px; }
-header p { color: var(--humo); font-size:14px; margin:0; }
-main { flex:1; max-width:1000px; width:100%; margin:0 auto; padding:40px 6vw 60px; display:grid; grid-template-columns:repeat(3,1fr); gap:22px; align-content:start; }
+header { padding: 22px 6vw 6px; text-align:center; }
+header .kicker { color: var(--amar); font-size:11px; font-weight:bold; letter-spacing:4px; text-transform:uppercase; margin-bottom:8px; border:1px solid var(--amar); display:inline-block; padding:4px 14px; }
+header h1 { color:#fff; font-size:clamp(24px,3.6vw,36px); margin:0 0 5px; font-family:Georgia,'Times New Roman',serif; letter-spacing:.5px; }
+header .author { color: var(--amar); font-size:13px; font-weight:bold; margin:0 0 6px; }
+header p { color: var(--humo); font-size:13px; margin:0; }
+main { flex:1; max-width:1000px; width:100%; margin:0 auto; padding:12px 6vw 24px; display:grid; grid-template-columns:repeat(3,1fr); gap:14px; align-content:start; }
 main .tema-btn:first-child { grid-column:1 / -1; justify-self:center; width:100%; max-width:320px; }
 @media (max-width:760px) { main { grid-template-columns:1fr; } main .tema-btn:first-child { max-width:100%; } }
-.tema-btn { display:flex; flex-direction:column; align-items:flex-start; gap:8px; background:var(--claro); border:1.5px dashed var(--humo); border-radius:2px; padding:26px 24px 24px; text-decoration:none; box-shadow:5px 5px 0 rgba(0,0,0,.22); transition:transform .16s ease, box-shadow .16s ease, rotate .16s ease; rotate:-0.4deg; }
+.tema-btn { display:flex; flex-direction:column; align-items:flex-start; gap:6px; background:var(--claro); border:1.5px dashed var(--humo); border-radius:2px; padding:18px 22px 16px; text-decoration:none; box-shadow:5px 5px 0 rgba(0,0,0,.22); transition:transform .16s ease, box-shadow .16s ease, rotate .16s ease; rotate:-0.4deg; }
 .tema-btn:nth-child(even) { rotate:0.5deg; }
 .tema-btn:hover { transform:translateY(-4px); rotate:0deg; box-shadow:7px 9px 0 rgba(0,0,0,.26); }
 .tema-num { font-size:11px; font-weight:bold; color:var(--claro); background:var(--amar); padding:5px 13px; letter-spacing:2px; text-transform:uppercase; clip-path:polygon(0 0,100% 0,92% 50%,100% 100%,0 100%); }
@@ -68,9 +68,7 @@ main .tema-btn:first-child { grid-column:1 / -1; justify-self:center; width:100%
 .tema-btn .teacher-hint { position:absolute; top:12px; right:14px; font-size:10px; font-weight:bold; padding:2px 8px; border-radius:10px; }
 .tema-btn .teacher-hint.on { background:#DFF3E0; color:var(--verde); }
 .tema-btn .teacher-hint.off { background:#FBEAEC; color:var(--rojo); }
-footer { text-align:center; padding:20px 6vw 34px; font-size:11px; color:var(--humo); font-style:italic; }
-.teacher-link { display:block; margin:0 auto 18px; background:none; border:none; color:var(--humo); font-size:12px; cursor:pointer; font-family:Arial,Helvetica,sans-serif; text-decoration:underline; }
-.teacher-link:hover { color:#fff; }
+footer { text-align:center; padding:8px 6vw 16px; font-size:11px; color:var(--humo); font-style:italic; }
 .teacher-wrap { max-width:1000px; width:100%; margin:0 auto; padding:0 6vw; }
 .teacher-banner { background:var(--azul-d); color:#fff; border-radius:12px; padding:18px 22px; margin:0 0 10px; }
 .teacher-banner strong { color: var(--amar); }
@@ -1478,7 +1476,6 @@ function buildIndexHtml(temas) {
 <main>
   ${buttons}
 </main>
-<button class="teacher-link" id="teacher-toggle-link">⚙ Modo profesora</button>
 <footer>
   ${copyrightFooter()}
 </footer>
@@ -1642,15 +1639,6 @@ function buildIndexHtml(temas) {
 
   document.getElementById("enter").addEventListener("click", tryUnlock);
   document.getElementById("pw").addEventListener("keydown", function(e) { if (e.key === "Enter") tryUnlock(); });
-
-  document.getElementById("teacher-toggle-link").addEventListener("click", function() {
-    var val = prompt("Contraseña de profesora:");
-    if (val === null) return;
-    sha256Hex(val).then(function(hex) {
-      if (hex === TEACHER_HASH) reveal(true);
-      else alert("Contraseña incorrecta.");
-    });
-  });
 
   try {
     var saved = sessionStorage.getItem(SESSION_KEY);
