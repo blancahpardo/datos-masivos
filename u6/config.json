@@ -1,0 +1,9 @@
+{
+  "video_historia": true,
+  "manual": true,
+  "video_teoria": true,
+  "recurso": true,
+  "principal": true,
+  "practica": true,
+  "mp5": true
+}

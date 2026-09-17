@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Datos Masivos</title>
+<style>
+
+:root {
+  --azul: #1E1812;
+  --azul-d: #120E09;
+  --amar: #D2652F;
+  --gris: #3A322A;
+  --claro: #F1E7D6;
+  --humo: #B5A88F;
+  --verde: #4F7A57;
+  --rojo: #A23B2E;
+  --papel-linea: #E4D6BC;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: Arial, Helvetica, sans-serif; color: var(--gris); background:#fff; }
+a { color: inherit; }
+
+body { background: var(--azul); min-height:100vh; display:flex; flex-direction:column; }
+#gate { position:fixed; inset:0; background:var(--azul); display:flex; align-items:center; justify-content:center; padding:24px; z-index:999; }
+#gate .box { max-width:380px; width:100%; text-align:center; }
+#gate .kicker { color:var(--amar); font-size:12px; font-weight:bold; letter-spacing:2.5px; text-transform:uppercase; margin-bottom:10px; }
+#gate h1 { color:#fff; font-size:26px; margin:0 0 10px; }
+#gate p { color:var(--humo); font-size:14px; margin:0 0 26px; }
+#gate input { width:100%; padding:13px 16px; border-radius:8px; border:none; font-size:15px; font-family:Arial,Helvetica,sans-serif; margin-bottom:14px; outline:2px solid transparent; }
+#gate input:focus { outline:2px solid var(--amar); }
+#gate button.submit { width:100%; padding:13px 16px; border-radius:8px; border:none; background:var(--amar); color:var(--azul-d); font-size:15px; font-weight:bold; font-family:Arial,Helvetica,sans-serif; cursor:pointer; }
+#gate button.submit:hover { filter:brightness(1.06); }
+#gate .error { color:#FFB3B3; font-size:13px; margin-top:12px; min-height:18px; }
+#page { display:none; min-height:100vh; flex:1; flex-direction:column; }
+header { padding: 60px 6vw 20px; text-align:center; }
+header .kicker { color: var(--amar); font-size:11px; font-weight:bold; letter-spacing:4px; text-transform:uppercase; margin-bottom:12px; border:1px solid var(--amar); display:inline-block; padding:4px 14px; }
+header h1 { color:#fff; font-size:clamp(26px,4.2vw,40px); margin:0 0 6px; font-family:Georgia,'Times New Roman',serif; letter-spacing:.5px; }
+header .author { color: var(--amar); font-size:14px; font-weight:bold; margin:0 0 12px; }
+header p { color: var(--humo); font-size:14px; margin:0; }
+main { flex:1; max-width:1000px; width:100%; margin:0 auto; padding:40px 6vw 60px; display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:22px; align-content:start; }
+.tema-btn { display:flex; flex-direction:column; align-items:flex-start; gap:8px; background:var(--claro); border:1.5px dashed var(--humo); border-radius:2px; padding:26px 24px 24px; text-decoration:none; box-shadow:5px 5px 0 rgba(0,0,0,.22); transition:transform .16s ease, box-shadow .16s ease, rotate .16s ease; rotate:-0.4deg; }
+.tema-btn:nth-child(even) { rotate:0.5deg; }
+.tema-btn:hover { transform:translateY(-4px); rotate:0deg; box-shadow:7px 9px 0 rgba(0,0,0,.26); }
+.tema-num { font-size:11px; font-weight:bold; color:var(--claro); background:var(--amar); padding:5px 13px; letter-spacing:2px; text-transform:uppercase; clip-path:polygon(0 0,100% 0,92% 50%,100% 100%,0 100%); }
+.tema-title { font-size:19px; font-weight:bold; color:var(--azul); margin-top:6px; font-family:Georgia,'Times New Roman',serif; }
+.tema-case { font-size:11.5px; color:var(--gris); font-style:italic; opacity:.85; }
+.tema-btn { position:relative; }
+.tema-btn::before { content:""; position:absolute; top:0; left:18px; width:34px; height:10px; background:var(--humo); opacity:.55; border-radius:0 0 3px 3px; }
+.tema-btn .teacher-hint { position:absolute; top:12px; right:14px; font-size:10px; font-weight:bold; padding:2px 8px; border-radius:10px; }
+.tema-btn .teacher-hint.on { background:#DFF3E0; color:var(--verde); }
+.tema-btn .teacher-hint.off { background:#FBEAEC; color:var(--rojo); }
+footer { text-align:center; padding:20px 6vw 34px; font-size:11px; color:var(--humo); font-style:italic; }
+.teacher-link { display:block; margin:0 auto 18px; background:none; border:none; color:var(--humo); font-size:12px; cursor:pointer; font-family:Arial,Helvetica,sans-serif; text-decoration:underline; }
+.teacher-link:hover { color:#fff; }
+.teacher-wrap { max-width:1000px; width:100%; margin:0 auto; padding:0 6vw; }
+.teacher-banner { background:var(--azul-d); color:#fff; border-radius:12px; padding:18px 22px; margin:0 0 10px; }
+.teacher-banner strong { color: var(--amar); }
+.teacher-banner p { font-size:13px; margin:6px 0 0; color:var(--humo); }
+.teacher-token-row { display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; }
+.teacher-token-row input { flex:1; min-width:220px; padding:9px 12px; border-radius:8px; border:none; font-size:13px; font-family:Arial,Helvetica,sans-serif; }
+.teacher-token-row button { background:var(--amar); color:var(--azul-d); border:none; border-radius:8px; padding:9px 16px; font-size:13px; font-weight:bold; cursor:pointer; font-family:Arial,Helvetica,sans-serif; }
+.teacher-status { font-size:12px; margin-top:10px; min-height:16px; }
+.teacher-toggle-list { list-style:none; padding:0; margin:16px 0 0; display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; }
+.teacher-toggle-list li { background:rgba(255,255,255,.08); border-radius:8px; padding:10px 14px; display:flex; align-items:center; gap:10px; font-size:13px; }
+.teacher-toggle-list input { width:18px; height:18px; }
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="box">
+    <div class="kicker">Datos Masivos</div>
+    <h1>Expediente cerrado</h1>
+    <p>Contenido protegido. Introduce la contraseña facilitada en clase.</p>
+    <input type="password" id="pw" placeholder="Contraseña" autofocus>
+    <button class="submit" id="enter">Acceder</button>
+    <div class="error" id="err"></div>
+  </div>
+</div>
+
+<div id="page">
+<header>
+  <div class="kicker">Datos Masivos · Grado en Tecnologías del Lenguaje</div>
+  <h1>Archivo de la asignatura</h1>
+  <p class="author">Dra. Blanca Hernández Pardo</p>
+  <p>Siete expedientes, siete unidades. Elige uno para abrir su carpeta.</p>
+</header>
+<div class="teacher-wrap">
+  <div id="teacher-panel-index" class="teacher-banner" hidden>
+    <strong>⚙ Modo profesora</strong>
+    <p>Pega aquí tu token de GitHub (solo para esta sesión de navegador; se pierde al cerrar la pestaña) y marca qué temas ve el alumnado. Los cambios se publican en 1-2 minutos.</p>
+    <div class="teacher-token-row">
+      <input type="password" id="gh-token" placeholder="Token de GitHub (ghp_... o github_pat_...)">
+      <button id="gh-token-save">Guardar token de esta sesión</button>
+    </div>
+    <div class="teacher-status" id="teacher-status"></div>
+    <ul class="teacher-toggle-list">
+      <li><input type="checkbox" id="chk-tema-u0" data-tema="u0"><label for="chk-tema-u0">UNIDAD 0 · Presentación</label></li>
+      <li><input type="checkbox" id="chk-tema-u1" data-tema="u1"><label for="chk-tema-u1">UNIDAD 1 · Introducción</label></li>
+      <li><input type="checkbox" id="chk-tema-u2" data-tema="u2"><label for="chk-tema-u2">UNIDAD 2 · Preparación y limpieza</label></li>
+      <li><input type="checkbox" id="chk-tema-u3" data-tema="u3"><label for="chk-tema-u3">UNIDAD 3 · Exploración visual</label></li>
+      <li><input type="checkbox" id="chk-tema-u4" data-tema="u4"><label for="chk-tema-u4">UNIDAD 4 · Corpus documentales</label></li>
+      <li><input type="checkbox" id="chk-tema-u5" data-tema="u5"><label for="chk-tema-u5">UNIDAD 5 · Bases de datos</label></li>
+      <li><input type="checkbox" id="chk-tema-u6" data-tema="u6"><label for="chk-tema-u6">UNIDAD 6 · Automatización</label></li>
+    </ul>
+  </div>
+</div>
+<main>
+  <a class="tema-btn" data-tema="u0" href="u0/index.html" style="display:none">
+    <span class="teacher-hint" data-hint="u0"></span>
+    <span class="tema-num">UNIDAD 0</span>
+    <span class="tema-title">Presentación</span>
+    
+  </a>
+  <a class="tema-btn" data-tema="u1" href="u1/index.html" style="display:none">
+    <span class="teacher-hint" data-hint="u1"></span>
+    <span class="tema-num">UNIDAD 1</span>
+    <span class="tema-title">Introducción</span>
+    <span class="tema-case">Caso: Vector Lingüístico / Ágora FM</span>
+  </a>
+  <a class="tema-btn" data-tema="u2" href="u2/index.html" style="display:none">
+    <span class="teacher-hint" data-hint="u2"></span>
+    <span class="tema-num">UNIDAD 2</span>
+    <span class="tema-title">Preparación y limpieza</span>
+    <span class="tema-case">Caso: LexiData Observatorio</span>
+  </a>
+  <a class="tema-btn" data-tema="u3" href="u3/index.html" style="display:none">
+    <span class="teacher-hint" data-hint="u3"></span>
+    <span class="tema-num">UNIDAD 3</span>
+    <span class="tema-title">Exploración visual</span>
+    <span class="tema-case">Caso: Mirador DataLab</span>
+  </a>
+  <a class="tema-btn" data-tema="u4" href="u4/index.html" style="display:none">
+    <span class="teacher-hint" data-hint="u4"></span>
+    <span class="tema-num">UNIDAD 4</span>
+    <span class="tema-title">Corpus documentales</span>
+    <span class="tema-case">Caso: Corpus &amp; Contexto / Fundación Orellana</span>
+  </a>
+  <a class="tema-btn" data-tema="u5" href="u5/index.html" style="display:none">
+    <span class="teacher-hint" data-hint="u5"></span>
+    <span class="tema-num">UNIDAD 5</span>
+    <span class="tema-title">Bases de datos</span>
+    <span class="tema-case">Caso: Términos &amp; Trama</span>
+  </a>
+  <a class="tema-btn" data-tema="u6" href="u6/index.html" style="display:none">
+    <span class="teacher-hint" data-hint="u6"></span>
+    <span class="tema-num">UNIDAD 6</span>
+    <span class="tema-title">Automatización</span>
+    <span class="tema-case">Caso: Bitácora de Datos</span>
+  </a>
+</main>
+<button class="teacher-link" id="teacher-toggle-link">⚙ Modo profesora</button>
+<footer>
+  © Dra. Blanca Hernández Pardo · Datos Masivos<br>Queda prohibida la difusión, distribución o reproducción total o parcial de este material sin autorización expresa de la autora.
+</footer>
+</div>
+
+<script>
+(function() {
+  var HASH = "858a20ecc01eed785df83b9ffa3daa214c2c665b19d6b261220187f05391f944";
+  var TEACHER_HASH = "db7114f579fccfcad0ceed10ba55cfdf1af010a6658b999d738314219b861441";
+  var SESSION_KEY = "pln_unlocked";
+  var REPO = "blancahpardo/datos-masivos";
+  var LOCAL_CONFIG = "config.json";
+  var GH_CONFIG_PATH = "config.json";
+  var configSha = null;
+  var isTeacher = false;
+
+  function sha256Hex(text) {
+    var enc = new TextEncoder().encode(text);
+    return crypto.subtle.digest("SHA-256", enc).then(function(buf) {
+      return Array.prototype.map.call(new Uint8Array(buf), function(b) {
+        return b.toString(16).padStart(2, "0");
+      }).join("");
+    });
+  }
+
+  function fetchConfig() {
+    return fetch(LOCAL_CONFIG + "?t=" + Date.now()).then(function(r) { return r.json(); });
+  }
+
+  function ghHeaders(token) {
+    return { "Authorization": "Bearer " + token, "Accept": "application/vnd.github+json" };
+  }
+
+  function ghGetFile(token) {
+    return fetch("https://api.github.com/repos/" + REPO + "/contents/" + GH_CONFIG_PATH, { headers: ghHeaders(token) })
+      .then(function(r) {
+        if (!r.ok) throw new Error("No se pudo leer el fichero (" + r.status + ")");
+        return r.json();
+      })
+      .then(function(data) {
+        configSha = data.sha;
+        return JSON.parse(decodeURIComponent(escape(atob(data.content.replace(/\n/g, "")))));
+      });
+  }
+
+  function ghSaveFile(token, configObj) {
+    var content = btoa(unescape(encodeURIComponent(JSON.stringify(configObj, null, 2) + "\n")));
+    return fetch("https://api.github.com/repos/" + REPO + "/contents/" + GH_CONFIG_PATH, {
+      method: "PUT",
+      headers: Object.assign({ "Content-Type": "application/json" }, ghHeaders(token)),
+      body: JSON.stringify({
+        message: "Modo profesora: actualizar visibilidad de temas (" + GH_CONFIG_PATH + ")",
+        content: content,
+        sha: configSha
+      })
+    }).then(function(r) {
+      if (!r.ok) return r.text().then(function(t) { throw new Error("Error al guardar (" + r.status + "): " + t); });
+      return r.json();
+    }).then(function(data) {
+      configSha = data.content.sha;
+    });
+  }
+
+  function getToken() {
+    try { return sessionStorage.getItem("gh_pat") || ""; } catch (e) { return ""; }
+  }
+  function setToken(t) {
+    try { sessionStorage.setItem("gh_pat", t); } catch (e) {}
+  }
+
+  function setStatus(msg, isError) {
+    var el = document.getElementById("teacher-status");
+    if (!el) return;
+    el.textContent = msg;
+    el.style.color = isError ? "#FFB3B3" : "#9FE6A0";
+  }
+
+  function applyVisibility(config) {
+    document.querySelectorAll(".tema-btn[data-tema]").forEach(function(btn) {
+      if (isTeacher) { btn.style.display = ""; return; }
+      var k = btn.dataset.tema;
+      btn.style.display = (config[k] === false) ? "none" : "";
+    });
+  }
+
+  function applyTeacherHints(config) {
+    document.querySelectorAll(".teacher-hint[data-hint]").forEach(function(span) {
+      var k = span.dataset.hint;
+      var on = config[k] !== false;
+      span.textContent = on ? "visible" : "oculto";
+      span.className = "teacher-hint " + (on ? "on" : "off");
+    });
+    document.querySelectorAll("#teacher-panel-index input[type=checkbox][data-tema]").forEach(function(chk) {
+      chk.checked = config[chk.dataset.tema] !== false;
+    });
+  }
+
+  function initTeacherPanel() {
+    document.getElementById("teacher-panel-index").hidden = false;
+    applyVisibility({});
+    var tokenInput = document.getElementById("gh-token");
+    tokenInput.value = getToken();
+
+    document.getElementById("gh-token-save").addEventListener("click", function() {
+      setToken(tokenInput.value.trim());
+      setStatus(tokenInput.value.trim() ? "Token guardado para esta sesión." : "Token borrado.");
+      refreshFromGithub();
+    });
+
+    document.querySelectorAll("#teacher-panel-index input[type=checkbox][data-tema]").forEach(function(chk) {
+      chk.addEventListener("change", function() {
+        var token = getToken();
+        if (!token) { setStatus("Pega primero tu token de GitHub.", true); chk.checked = !chk.checked; return; }
+        setStatus("Guardando...");
+        ghGetFile(token).then(function(current) {
+          current[chk.dataset.tema] = chk.checked;
+          return ghSaveFile(token, current).then(function() { return current; });
+        }).then(function(current) {
+          applyTeacherHints(current);
+          setStatus("Guardado ✓ — el alumnado lo verá en 1-2 minutos.");
+        }).catch(function(err) {
+          chk.checked = !chk.checked;
+          setStatus(err.message, true);
+        });
+      });
+    });
+
+    refreshFromGithub();
+
+    function refreshFromGithub() {
+      var token = getToken();
+      if (!token) { fetchConfig().then(applyTeacherHints); return; }
+      setStatus("Cargando estado actual...");
+      ghGetFile(token).then(function(current) {
+        applyTeacherHints(current);
+        setStatus("Conectado. Puedes marcar/desmarcar temas.");
+      }).catch(function(err) { setStatus(err.message, true); fetchConfig().then(applyTeacherHints); });
+    }
+  }
+
+  function reveal(teacherMode) {
+    isTeacher = teacherMode;
+    document.getElementById("gate").style.display = "none";
+    document.getElementById("page").style.display = "flex";
+    if (teacherMode) {
+      initTeacherPanel();
+    } else {
+      fetchConfig().then(applyVisibility).catch(function() {});
+    }
+    try { sessionStorage.setItem(SESSION_KEY, teacherMode ? "teacher" : "1"); } catch (e) {}
+  }
+
+  function tryUnlock() {
+    var val = document.getElementById("pw").value;
+    sha256Hex(val).then(function(hex) {
+      if (hex === TEACHER_HASH) { reveal(true); return; }
+      if (hex === HASH) { reveal(false); return; }
+      document.getElementById("err").textContent = "Contraseña incorrecta.";
+    });
+  }
+
+  document.getElementById("enter").addEventListener("click", tryUnlock);
+  document.getElementById("pw").addEventListener("keydown", function(e) { if (e.key === "Enter") tryUnlock(); });
+
+  document.getElementById("teacher-toggle-link").addEventListener("click", function() {
+    var val = prompt("Contraseña de profesora:");
+    if (val === null) return;
+    sha256Hex(val).then(function(hex) {
+      if (hex === TEACHER_HASH) reveal(true);
+      else alert("Contraseña incorrecta.");
+    });
+  });
+
+  try {
+    var saved = sessionStorage.getItem(SESSION_KEY);
+    if (saved === "teacher") reveal(true);
+    else if (saved === "1") reveal(false);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>
