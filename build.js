@@ -4,7 +4,7 @@ const crypto = require('crypto');
 
 const ROOT = __dirname;
 const REPO = 'blancahpardo/datos-masivos';
-const TEACHER_PASSWORD = 'prof_27';
+const TEACHER_PASSWORD = 'profe_27';
 const STUDENT_PASSWORD = 'carroza';
 
 function sha256(text) {
@@ -99,7 +99,9 @@ main { max-width:1200px; margin:0 auto; padding:48px 4vw 60px; }
 .view.wide { max-width:none; }
 .kicker { color:var(--amar); font-size:12px; font-weight:bold; letter-spacing:2.5px; text-transform:uppercase; margin-bottom:8px; }
 .view > h1 { color:var(--azul); font-size:32px; margin:0 0 34px; font-family:Georgia,'Times New Roman',serif; }
-.hub-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px; margin-bottom:30px; }
+.hub-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-bottom:30px; }
+.hub-grid > *:nth-last-child(1):nth-child(3n+1) { grid-column:2; }
+@media (max-width:700px) { .hub-grid { grid-template-columns:1fr; } .hub-grid > *:nth-last-child(1):nth-child(3n+1) { grid-column:1; } }
 .hub-btn { display:flex; flex-direction:column; align-items:flex-start; gap:6px; background:var(--claro); border:none; border-left:4px solid var(--amar); border-radius:2px; padding:24px 22px; cursor:pointer; text-align:left; box-shadow:3px 3px 0 rgba(30,24,18,.1); font-family:Arial,Helvetica,sans-serif; position:relative; transition:border-color .15s ease, transform .15s ease; }
 .hub-btn:hover { background:#E9DCC4; border-left-color:var(--verde); transform:translateX(2px); }
 .hub-icon { font-size:28px; margin-bottom:4px; }
@@ -1770,7 +1772,7 @@ const TEMAS = [
         desc: 'Cuestionario breve de repaso, para consultar o descargar', file: '5mp.pdf' },
     } },
   { dir: 'u4', numLabel: 'UNIDAD 4', titleShort: 'Corpus documentales', titleFull: 'Unidad 4 · Corpus y colecciones documentales extensas', kicker: 'Unidad 4 · Corpus y colecciones documentales extensas',
-    caseLabel: 'Caso: Corpus & Contexto / Fundación Orellana',
+    caseLabel: 'Caso: Corpus y Contexto / Fundación Orellana',
     viewOrder: ["video_historia", "manual", "video_teoria", "principal", "practica", "mp5"],
     views: {
       manual: { exists: true, file: 'manual.pdf' },
@@ -1785,7 +1787,7 @@ const TEMAS = [
         desc: 'Cuestionario breve de repaso, para consultar o descargar', file: '5mp.pdf' },
     } },
   { dir: 'u5', numLabel: 'UNIDAD 5', titleShort: 'Bases de datos', titleFull: 'Unidad 5 · Almacenamiento y acceso a datos a gran escala', kicker: 'Unidad 5 · Almacenamiento y acceso a datos a gran escala',
-    caseLabel: 'Caso: Términos & Trama',
+    caseLabel: 'Caso: Términos y Trama',
     viewOrder: ["video_historia", "manual", "video_teoria", "recurso", "principal", "practica", "mp5"],
     views: {
       manual: { exists: true, file: 'manual.pdf' },
