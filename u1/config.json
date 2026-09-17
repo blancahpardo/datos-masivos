@@ -1,6 +1,6 @@
 {
   "video_historia": true,
-  "manual": true,
+  "manual_interactivo": true,
   "video_teoria": true,
   "principal": true,
   "practica": true,

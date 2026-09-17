@@ -38,7 +38,9 @@ header .kicker { color: var(--amar); font-size:11px; font-weight:bold; letter-sp
 header h1 { color:#fff; font-size:clamp(26px,4.2vw,40px); margin:0 0 6px; font-family:Georgia,'Times New Roman',serif; letter-spacing:.5px; }
 header .author { color: var(--amar); font-size:14px; font-weight:bold; margin:0 0 12px; }
 header p { color: var(--humo); font-size:14px; margin:0; }
-main { flex:1; max-width:1000px; width:100%; margin:0 auto; padding:40px 6vw 60px; display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:22px; align-content:start; }
+main { flex:1; max-width:1000px; width:100%; margin:0 auto; padding:40px 6vw 60px; display:grid; grid-template-columns:repeat(3,1fr); gap:22px; align-content:start; }
+main .tema-btn:first-child { grid-column:1 / -1; justify-self:center; width:100%; max-width:320px; }
+@media (max-width:760px) { main { grid-template-columns:1fr; } main .tema-btn:first-child { max-width:100%; } }
 .tema-btn { display:flex; flex-direction:column; align-items:flex-start; gap:8px; background:var(--claro); border:1.5px dashed var(--humo); border-radius:2px; padding:26px 24px 24px; text-decoration:none; box-shadow:5px 5px 0 rgba(0,0,0,.22); transition:transform .16s ease, box-shadow .16s ease, rotate .16s ease; rotate:-0.4deg; }
 .tema-btn:nth-child(even) { rotate:0.5deg; }
 .tema-btn:hover { transform:translateY(-4px); rotate:0deg; box-shadow:7px 9px 0 rgba(0,0,0,.26); }

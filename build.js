@@ -54,7 +54,9 @@ header .kicker { color: var(--amar); font-size:11px; font-weight:bold; letter-sp
 header h1 { color:#fff; font-size:clamp(26px,4.2vw,40px); margin:0 0 6px; font-family:Georgia,'Times New Roman',serif; letter-spacing:.5px; }
 header .author { color: var(--amar); font-size:14px; font-weight:bold; margin:0 0 12px; }
 header p { color: var(--humo); font-size:14px; margin:0; }
-main { flex:1; max-width:1000px; width:100%; margin:0 auto; padding:40px 6vw 60px; display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:22px; align-content:start; }
+main { flex:1; max-width:1000px; width:100%; margin:0 auto; padding:40px 6vw 60px; display:grid; grid-template-columns:repeat(3,1fr); gap:22px; align-content:start; }
+main .tema-btn:first-child { grid-column:1 / -1; justify-self:center; width:100%; max-width:320px; }
+@media (max-width:760px) { main { grid-template-columns:1fr; } main .tema-btn:first-child { max-width:100%; } }
 .tema-btn { display:flex; flex-direction:column; align-items:flex-start; gap:8px; background:var(--claro); border:1.5px dashed var(--humo); border-radius:2px; padding:26px 24px 24px; text-decoration:none; box-shadow:5px 5px 0 rgba(0,0,0,.22); transition:transform .16s ease, box-shadow .16s ease, rotate .16s ease; rotate:-0.4deg; }
 .tema-btn:nth-child(even) { rotate:0.5deg; }
 .tema-btn:hover { transform:translateY(-4px); rotate:0deg; box-shadow:7px 9px 0 rgba(0,0,0,.26); }
@@ -95,7 +97,8 @@ ${CSS_BASE}
 #gate button.submit:hover { filter:brightness(1.06); }
 #gate .error { color:#FFB3B3; font-size:13px; margin-top:12px; min-height:18px; }
 #page { display:none; }
-main { max-width:980px; margin:0 auto; padding:48px 6vw 60px; }
+main { max-width:1200px; margin:0 auto; padding:48px 4vw 60px; }
+.view.wide { max-width:none; }
 .kicker { color:var(--amar); font-size:12px; font-weight:bold; letter-spacing:2.5px; text-transform:uppercase; margin-bottom:8px; }
 .view > h1 { color:var(--azul); font-size:32px; margin:0 0 34px; font-family:Georgia,'Times New Roman',serif; }
 .hub-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px; margin-bottom:30px; }
@@ -111,9 +114,14 @@ main { max-width:980px; margin:0 auto; padding:48px 6vw 60px; }
 .back-btn { background:none; border:1.5px solid var(--azul); color:var(--azul); font-size:13px; font-weight:bold; padding:6px 14px; border-radius:20px; cursor:pointer; font-family:Arial,Helvetica,sans-serif; }
 .back-btn:hover { background:var(--azul); color:#fff; }
 .dl-big { display:inline-block; background:var(--amar); color:var(--azul-d); font-weight:bold; font-size:14px; text-decoration:none; padding:10px 20px; border-radius:20px; margin-bottom:18px; }
-.pdf-frame { width:100%; height:78vh; border:none; border-radius:8px; box-shadow:0 2px 10px rgba(159,177,186,.28); }
+.pdf-frame { width:100%; height:92vh; border:none; border-radius:8px; box-shadow:0 2px 10px rgba(159,177,186,.28); }
 .video-frame { width:100%; max-height:78vh; border:none; border-radius:8px; box-shadow:0 2px 10px rgba(159,177,186,.28); background:#000; margin-top:14px; }
 .html-frame { width:100%; height:80vh; border:1.5px dashed var(--humo); border-radius:6px; background:#fff; }
+.view.fullbleed { max-width:none; margin:0 -4vw; padding:0; }
+.view.fullbleed .fb-bar { display:flex; align-items:center; justify-content:space-between; gap:14px; padding:12px 4vw; background:var(--claro); border-bottom:1.5px solid var(--humo); flex-wrap:wrap; }
+.view.fullbleed .fb-bar h2 { margin:0; font-size:18px; }
+.view.fullbleed .html-frame { width:100%; height:calc(100vh - 58px); border:none; border-radius:0; display:block; }
+@media (max-width:600px) { .view.fullbleed .html-frame { height:calc(100vh - 92px); } }
 .img-frame { display:block; width:100%; height:auto; border-radius:8px; box-shadow:0 2px 10px rgba(159,177,186,.28); }
 .img-caption { font-size:11px; color:var(--humo); text-align:center; margin-top:10px; font-style:italic; }
 .img-caption em { font-style:italic; }
@@ -264,6 +272,64 @@ code.im-inline { background:#F2F4F5; padding:1px 6px; border-radius:4px; font-fa
 .hub-btn .teacher-hint.on { background:#DFF3E0; color:var(--verde); }
 .hub-btn .teacher-hint.off { background:#FBEAEC; color:var(--rojo); }
 footer { text-align:center; padding:26px 6vw 40px; font-size:11px; color:var(--humo); font-style:italic; }
+
+/* ---- 5-minute-paper interactive engine ---- */
+.view.fmp-view { max-width:none; margin:0 -4vw; padding:0; }
+.fmp-stage { min-height:100vh; display:flex; flex-direction:column; background:var(--azul); color:#fff; }
+.fmp-topbar { display:flex; align-items:center; justify-content:space-between; padding:14px 4vw; gap:14px; flex-wrap:wrap; }
+.fmp-topbar .back-btn { border-color:var(--amar); color:var(--amar); }
+.fmp-topbar .back-btn:hover { background:var(--amar); color:var(--azul-d); }
+.fmp-progress { flex:1; max-width:420px; height:6px; background:rgba(255,255,255,.16); border-radius:6px; overflow:hidden; margin:0 18px; }
+.fmp-progress-bar { height:100%; background:var(--amar); width:0%; transition:width .35s ease; }
+.fmp-step-label { font-size:12px; color:var(--humo); font-family:Arial,Helvetica,sans-serif; white-space:nowrap; }
+.fmp-body { flex:1; display:flex; align-items:center; justify-content:center; padding:20px 6vw 60px; }
+.fmp-card { max-width:760px; width:100%; }
+.fmp-cover { text-align:center; }
+.fmp-cover .kicker { color:var(--amar); font-size:12px; font-weight:bold; letter-spacing:3px; text-transform:uppercase; margin-bottom:14px; }
+.fmp-cover h1 { font-family:Georgia,'Times New Roman',serif; font-size:clamp(28px,4.5vw,44px); margin:0 0 14px; }
+.fmp-cover p.fmp-subtitle { color:var(--amar); font-weight:bold; margin:0 0 22px; }
+.fmp-cover p.fmp-intro { color:var(--humo); font-size:15px; line-height:1.7; max-width:560px; margin:0 auto 34px; }
+.fmp-start-btn { background:var(--amar); color:var(--azul-d); border:none; border-radius:30px; padding:16px 40px; font-size:16px; font-weight:bold; cursor:pointer; font-family:Arial,Helvetica,sans-serif; box-shadow:0 8px 20px rgba(0,0,0,.25); transition:transform .15s ease; }
+.fmp-start-btn:hover { transform:translateY(-2px) scale(1.02); }
+.fmp-qkicker { color:var(--amar); font-size:11px; font-weight:bold; letter-spacing:2.5px; text-transform:uppercase; margin-bottom:10px; }
+.fmp-prompt { font-family:Georgia,'Times New Roman',serif; font-size:clamp(20px,3vw,28px); margin:0 0 30px; line-height:1.4; }
+.fmp-options { display:grid; gap:12px; }
+.fmp-opt { text-align:left; background:rgba(255,255,255,.07); border:1.5px solid rgba(255,255,255,.18); color:#fff; border-radius:10px; padding:16px 20px; font-size:15px; cursor:pointer; font-family:Arial,Helvetica,sans-serif; transition:background .15s ease, border-color .15s ease, transform .1s ease; }
+.fmp-opt:hover:not(.locked) { background:rgba(255,255,255,.14); border-color:var(--amar); transform:translateX(3px); }
+.fmp-opt.correct { background:rgba(79,122,87,.35); border-color:#6FA678; }
+.fmp-opt.wrong { background:rgba(162,59,46,.35); border-color:#C4685A; }
+.fmp-opt.locked { cursor:default; }
+.fmp-match-wrap { display:flex; gap:6vw; justify-content:center; flex-wrap:wrap; }
+.fmp-match-col { display:flex; flex-direction:column; gap:12px; min-width:260px; flex:1; max-width:340px; }
+.fmp-match-item { background:rgba(255,255,255,.07); border:1.5px solid rgba(255,255,255,.18); color:#fff; border-radius:10px; padding:14px 16px; font-size:13.5px; cursor:pointer; text-align:left; font-family:Arial,Helvetica,sans-serif; transition:background .15s ease,border-color .15s ease; position:relative; }
+.fmp-match-item:hover { border-color:var(--amar); }
+.fmp-match-item.selected { border-color:var(--amar); background:rgba(210,101,47,.28); }
+.fmp-match-item.paired { border-color:#8AA9C4; }
+.fmp-match-item.correct { border-color:#6FA678; background:rgba(79,122,87,.35); }
+.fmp-match-item.wrong { border-color:#C4685A; background:rgba(162,59,46,.35); }
+.fmp-match-badge { display:inline-block; min-width:20px; height:20px; line-height:20px; text-align:center; border-radius:50%; background:var(--amar); color:var(--azul-d); font-size:11px; font-weight:bold; margin-right:8px; }
+.fmp-order-list { display:flex; flex-direction:column; gap:10px; }
+.fmp-order-item { display:flex; align-items:center; gap:12px; background:rgba(255,255,255,.07); border:1.5px solid rgba(255,255,255,.18); color:#fff; border-radius:10px; padding:14px 18px; font-size:14.5px; cursor:grab; font-family:Arial,Helvetica,sans-serif; transition:background .15s ease,border-color .15s ease, opacity .15s ease; }
+.fmp-order-item.dragging { opacity:.35; }
+.fmp-order-item.drag-over { border-color:var(--amar); }
+.fmp-order-item .fmp-handle { color:var(--humo); font-size:16px; }
+.fmp-order-item.correct { border-color:#6FA678; background:rgba(79,122,87,.28); }
+.fmp-order-item.wrong { border-color:#C4685A; background:rgba(162,59,46,.28); }
+.fmp-actions { display:flex; gap:14px; margin-top:28px; flex-wrap:wrap; }
+.fmp-btn { background:var(--amar); color:var(--azul-d); border:none; border-radius:24px; padding:12px 26px; font-size:14px; font-weight:bold; cursor:pointer; font-family:Arial,Helvetica,sans-serif; }
+.fmp-btn:disabled { opacity:.4; cursor:not-allowed; }
+.fmp-btn.ghost { background:transparent; border:1.5px solid var(--amar); color:var(--amar); }
+.fmp-feedback { margin-top:22px; padding:16px 20px; border-radius:10px; font-size:13.5px; line-height:1.6; font-family:Arial,Helvetica,sans-serif; }
+.fmp-feedback.ok { background:rgba(79,122,87,.22); border:1px solid #6FA678; }
+.fmp-feedback.ko { background:rgba(162,59,46,.22); border:1px solid #C4685A; }
+.fmp-feedback strong { display:block; margin-bottom:4px; font-size:14px; }
+.fmp-results h1 { font-family:Georgia,'Times New Roman',serif; margin:0 0 6px; }
+.fmp-score-ring { width:160px; height:160px; margin:0 auto 24px; }
+.fmp-results-list { text-align:left; max-width:480px; margin:0 auto 26px; display:flex; flex-direction:column; gap:8px; }
+.fmp-results-row { display:flex; align-items:center; gap:10px; font-size:13.5px; font-family:Arial,Helvetica,sans-serif; color:var(--humo); }
+.fmp-results-row .dot { width:10px; height:10px; border-radius:50%; flex:none; }
+.fmp-foot { text-align:center; padding:14px 6vw 30px; font-size:10.5px; color:var(--humo); font-style:italic; background:var(--azul); }
+@media (max-width:640px) { .fmp-match-wrap { gap:20px; } .fmp-body { padding:16px 6vw 40px; } }
 `;
 
 const ICONS = { manual: '📘', principal: '📓', evaluable: '📝', practica: '🧪', quiz: '❓' };
@@ -445,11 +511,21 @@ function buildInteractiveResourceView(viewKey, tema) {
   const cfg = tema.views[viewKey];
   if (!cfg || !cfg.exists) return '';
   const label = viewLabel(viewKey, tema);
-  return `<div id="view-${viewKey}" class="view sub-view" hidden>
-  <button class="back-btn" data-back="hub">← Volver</button>
-  <h2>${esc(label)} · ${esc(tema.titleShort)}</h2>
-  <p class="section-note">${cfg.note || 'Estación de repaso interactiva, en el navegador. No necesita descarga ni conexión.'}</p>
+  return `<div id="view-${viewKey}" class="view sub-view fullbleed" hidden>
+  <div class="fb-bar">
+    <button class="back-btn" data-back="hub">← Volver</button>
+    <h2>${esc(label)} · ${esc(tema.titleShort)}</h2>
+  </div>
   <iframe class="html-frame" src="${cfg.file}" title="${esc(label)}"></iframe>
+</div>`;
+}
+
+function buildInteractive5mpView(viewKey, tema) {
+  const cfg = tema.views[viewKey];
+  if (!cfg || !cfg.exists) return '';
+  return `<div id="view-${viewKey}" class="view sub-view fmp-view" hidden>
+  <div id="fmp-root-${viewKey}" class="fmp-root"></div>
+  <div class="fmp-foot">${copyrightFooter(tema.titleShort)}</div>
 </div>`;
 }
 
@@ -491,6 +567,7 @@ function buildTopicHtml(tema) {
     if (cfg.kind === 'interactive_manual') return buildInteractiveManualView(v, tema);
     if (cfg.kind === 'video') return buildVideoView(v, tema);
     if (cfg.kind === 'interactive_resource') return buildInteractiveResourceView(v, tema);
+    if (cfg.kind === 'interactive_5mp') return buildInteractive5mpView(v, tema);
     return buildDownloadView(v, tema);
   });
 
@@ -523,6 +600,16 @@ function buildTopicHtml(tema) {
     imData[v] = JSON.parse(fs.readFileSync(path.join(ROOT, tema.dir, file), 'utf8'));
   });
   const imDataJson = JSON.stringify(imData);
+
+  // Interactive 5-minute-paper data: one JSON payload per view key using kind
+  // 'interactive_5mp', e.g. tX/5mp.json — same inline-at-build-time pattern as imData above.
+  const fmpViewKeys = tema.viewOrder.filter(v => tema.views[v] && tema.views[v].exists && tema.views[v].kind === 'interactive_5mp');
+  const fmpData = {};
+  fmpViewKeys.forEach(v => {
+    const file = tema.views[v].dataFile || (v + '.json');
+    fmpData[v] = JSON.parse(fs.readFileSync(path.join(ROOT, tema.dir, file), 'utf8'));
+  });
+  const fmpDataJson = JSON.stringify(fmpData);
 
   return `<!DOCTYPE html>
 <html lang="es">
@@ -561,6 +648,8 @@ function buildTopicHtml(tema) {
   var QUIZ_CUADERNO = ${quizCuaderno};
   var IM_DATA = ${imDataJson};
   var imRendered = {};
+  var FMP_DATA = ${fmpDataJson};
+  var fmpRendered = {};
   var SESSION_KEY = "pln_unlocked";
   var REPO = "${REPO}";
   var LOCAL_CONFIG = "config.json";
@@ -669,9 +758,12 @@ function buildTopicHtml(tema) {
   function imEsc(s) {
     return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   }
+  function imFormatBold(s) {
+    return s.replace(/\\*\\*([^*]+)\\*\\*/g, "<strong>$1</strong>").replace(/(^|[^*])\\*([^*]+)\\*(?!\\*)/g, "$1<em>$2</em>");
+  }
   function imFormatBackticks(s) {
     var parts = s.split("\`"), out = "";
-    for (var i = 0; i < parts.length; i++) out += (i % 2 === 1) ? '<code class="im-inline">' + imEsc(parts[i]) + "</code>" : imEsc(parts[i]);
+    for (var i = 0; i < parts.length; i++) out += (i % 2 === 1) ? '<code class="im-inline">' + imEsc(parts[i]) + "</code>" : imFormatBold(imEsc(parts[i]));
     return out;
   }
   function imFormatInline(raw) {
@@ -914,12 +1006,254 @@ function buildTopicHtml(tema) {
     imShowIndex(root, data);
   }
 
+  // ---- 5-minute-paper interactive engine ----
+  function fmpEsc(s) { return imEsc(String(s)); }
+  function fmpShuffleIdx(n) {
+    var a = []; for (var i = 0; i < n; i++) a.push(i);
+    for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+    return a;
+  }
+  function fmpTopbar(data, state) {
+    var total = data.questions.length;
+    var stepLabel = state.idx < 0 ? "Portada" : (state.idx >= total ? "Resultado" : "Pregunta " + (state.idx + 1) + " de " + total);
+    var pct = state.idx < 0 ? 0 : Math.round((Math.min(state.idx, total) / total) * 100);
+    return '<div class="fmp-topbar"><button class="back-btn" data-back="hub">← Volver</button>' +
+      '<div class="fmp-progress"><div class="fmp-progress-bar" style="width:' + pct + '%"></div></div>' +
+      '<div class="fmp-step-label">' + fmpEsc(stepLabel) + '</div></div>';
+  }
+  function fmpWireBack(root) {
+    root.querySelectorAll("[data-back]").forEach(function(btn) {
+      btn.addEventListener("click", function() { showView(btn.dataset.back); });
+    });
+  }
+  function fmpShowCover(root, data, state) {
+    state.idx = -1;
+    root.innerHTML = '<div class="fmp-stage">' + fmpTopbar(data, state) +
+      '<div class="fmp-body"><div class="fmp-card fmp-cover">' +
+      '<div class="kicker">' + fmpEsc(data.header.kicker) + '</div>' +
+      '<h1>' + fmpEsc(data.header.title) + '</h1>' +
+      '<p class="fmp-subtitle">' + fmpEsc(data.header.subtitle) + '</p>' +
+      '<p class="fmp-intro">' + fmpEsc(data.intro) + '</p>' +
+      '<button class="fmp-start-btn" id="fmp-start">Empezar ▶</button>' +
+      '</div></div></div>';
+    fmpWireBack(root);
+    root.querySelector("#fmp-start").addEventListener("click", function() { fmpShowQuestion(root, data, state, 0); });
+  }
+  function fmpMcBody(q) {
+    return '<div class="fmp-options">' + q.options.map(function(opt, i) {
+      return '<button class="fmp-opt" data-i="' + i + '">' + fmpEsc(opt) + '</button>';
+    }).join('') + '</div>';
+  }
+  function fmpWireMc(root, data, state, idx, q, onDone) {
+    var locked = false;
+    root.querySelectorAll(".fmp-opt").forEach(function(btn) {
+      btn.addEventListener("click", function() {
+        if (locked) return;
+        locked = true;
+        var chosen = parseInt(btn.dataset.i, 10);
+        var ok = chosen === q.correct;
+        root.querySelectorAll(".fmp-opt").forEach(function(b) {
+          b.classList.add("locked");
+          var i = parseInt(b.dataset.i, 10);
+          if (i === q.correct) b.classList.add("correct");
+          else if (i === chosen) b.classList.add("wrong");
+        });
+        onDone(ok);
+      });
+    });
+  }
+  function fmpMatchBody(q, state) {
+    var rightOrder = fmpShuffleIdx(q.right.length);
+    state._rightOrder = rightOrder;
+    state._pairs = {};
+    var leftHtml = q.left.map(function(t, i) {
+      return '<button class="fmp-match-item" data-side="l" data-i="' + i + '"><span class="fmp-match-badge">' + (i + 1) + '</span>' + fmpEsc(t) + '</button>';
+    }).join('');
+    var rightHtml = rightOrder.map(function(ri, pos) {
+      return '<button class="fmp-match-item" data-side="r" data-i="' + ri + '" data-pos="' + pos + '">' + fmpEsc(q.right[ri]) + '</button>';
+    }).join('');
+    return '<div class="fmp-match-wrap"><div class="fmp-match-col">' + leftHtml + '</div><div class="fmp-match-col">' + rightHtml + '</div></div>' +
+      '<div class="fmp-actions"><button class="fmp-btn" id="fmp-check" disabled>Comprobar</button></div>';
+  }
+  function fmpWireMatch(root, data, state, idx, q, onDone) {
+    var activeLeft = null;
+    var checked = false;
+    function refreshCheckBtn() {
+      var n = Object.keys(state._pairs).length;
+      root.querySelector("#fmp-check").disabled = n < q.left.length;
+    }
+    root.querySelectorAll('.fmp-match-item[data-side="l"]').forEach(function(btn) {
+      btn.addEventListener("click", function() {
+        if (checked) return;
+        root.querySelectorAll('.fmp-match-item[data-side="l"]').forEach(function(b) { b.classList.remove("selected"); });
+        activeLeft = parseInt(btn.dataset.i, 10);
+        btn.classList.add("selected");
+      });
+    });
+    root.querySelectorAll('.fmp-match-item[data-side="r"]').forEach(function(btn) {
+      btn.addEventListener("click", function() {
+        if (checked || activeLeft === null) return;
+        var ri = parseInt(btn.dataset.i, 10);
+        Object.keys(state._pairs).forEach(function(li) { if (state._pairs[li] === ri) delete state._pairs[li]; });
+        state._pairs[activeLeft] = ri;
+        root.querySelectorAll('.fmp-match-item').forEach(function(b) { b.classList.remove("paired"); });
+        Object.keys(state._pairs).forEach(function(li) {
+          root.querySelector('.fmp-match-item[data-side="l"][data-i="' + li + '"]').classList.add("paired");
+          root.querySelector('.fmp-match-item[data-side="r"][data-i="' + state._pairs[li] + '"]').classList.add("paired");
+        });
+        root.querySelector('.fmp-match-item[data-side="l"][data-i="' + activeLeft + '"]').classList.remove("selected");
+        activeLeft = null;
+        refreshCheckBtn();
+      });
+    });
+    root.querySelector("#fmp-check").addEventListener("click", function() {
+      checked = true;
+      var ok = true;
+      q.left.forEach(function(_, li) {
+        var got = state._pairs[li];
+        var want = q.correctPairs[li];
+        var lEl = root.querySelector('.fmp-match-item[data-side="l"][data-i="' + li + '"]');
+        var rEl = root.querySelector('.fmp-match-item[data-side="r"][data-i="' + got + '"]');
+        if (got === want) { lEl.classList.add("correct"); rEl.classList.add("correct"); }
+        else { lEl.classList.add("wrong"); rEl.classList.add("wrong"); ok = false; }
+      });
+      root.querySelectorAll(".fmp-match-item").forEach(function(b) { b.style.cursor = "default"; });
+      onDone(ok);
+    });
+  }
+  function fmpOrderBody(q, state) {
+    state._order = fmpShuffleIdx(q.items.length);
+    return '<div class="fmp-order-list" id="fmp-order-list"></div>' +
+      '<div class="fmp-actions"><button class="fmp-btn" id="fmp-check">Comprobar</button></div>';
+  }
+  function fmpRenderOrderList(root, q, state, checked) {
+    var list = root.querySelector("#fmp-order-list");
+    list.innerHTML = state._order.map(function(origIdx, pos) {
+      var cls = "fmp-order-item";
+      if (checked) cls += (state._order[pos] === q.correctOrder[pos]) ? " correct" : " wrong";
+      return '<div class="' + cls + '" draggable="' + (!checked) + '" data-pos="' + pos + '">' +
+        '<span class="fmp-handle">⠿</span><span>' + fmpEsc(q.items[origIdx]) + '</span>' +
+        (checked ? '' : '<span style="margin-left:auto;display:flex;gap:6px;"><button class="fmp-btn ghost" data-up="' + pos + '" style="padding:4px 10px;">▲</button><button class="fmp-btn ghost" data-down="' + pos + '" style="padding:4px 10px;">▼</button></span>') +
+        '</div>';
+    }).join('');
+  }
+  function fmpWireOrder(root, data, state, idx, q, onDone) {
+    var checked = false;
+    var dragFrom = null;
+    fmpRenderOrderList(root, q, state, false);
+    function wireItems() {
+      root.querySelectorAll(".fmp-order-item").forEach(function(el) {
+        el.addEventListener("dragstart", function() { dragFrom = parseInt(el.dataset.pos, 10); el.classList.add("dragging"); });
+        el.addEventListener("dragend", function() { el.classList.remove("dragging"); root.querySelectorAll(".fmp-order-item").forEach(function(x) { x.classList.remove("drag-over"); }); });
+        el.addEventListener("dragover", function(e) { e.preventDefault(); el.classList.add("drag-over"); });
+        el.addEventListener("dragleave", function() { el.classList.remove("drag-over"); });
+        el.addEventListener("drop", function(e) {
+          e.preventDefault();
+          var to = parseInt(el.dataset.pos, 10);
+          if (dragFrom === null || dragFrom === to) return;
+          var moved = state._order.splice(dragFrom, 1)[0];
+          state._order.splice(to, 0, moved);
+          fmpRenderOrderList(root, q, state, false);
+          wireItems();
+        });
+      });
+      root.querySelectorAll("[data-up]").forEach(function(btn) {
+        btn.addEventListener("click", function() {
+          var p = parseInt(btn.dataset.up, 10);
+          if (p === 0) return;
+          var tmp = state._order[p - 1]; state._order[p - 1] = state._order[p]; state._order[p] = tmp;
+          fmpRenderOrderList(root, q, state, false); wireItems();
+        });
+      });
+      root.querySelectorAll("[data-down]").forEach(function(btn) {
+        btn.addEventListener("click", function() {
+          var p = parseInt(btn.dataset.down, 10);
+          if (p === state._order.length - 1) return;
+          var tmp = state._order[p + 1]; state._order[p + 1] = state._order[p]; state._order[p] = tmp;
+          fmpRenderOrderList(root, q, state, false); wireItems();
+        });
+      });
+    }
+    wireItems();
+    root.querySelector("#fmp-check").addEventListener("click", function() {
+      checked = true;
+      var ok = state._order.every(function(v, i) { return v === q.correctOrder[i]; });
+      fmpRenderOrderList(root, q, state, true);
+      onDone(ok);
+    });
+  }
+  function fmpShowQuestion(root, data, state, idx) {
+    if (idx >= data.questions.length) { fmpShowResults(root, data, state); return; }
+    state.idx = idx;
+    var q = data.questions[idx];
+    var typeLabel = { mc: "Elige la respuesta correcta", match: "Relaciona los elementos", order: "Ordena arrastrando" }[q.type] || "";
+    var body = q.type === "mc" ? fmpMcBody(q) : q.type === "match" ? fmpMatchBody(q, state) : fmpOrderBody(q, state);
+    root.innerHTML = '<div class="fmp-stage">' + fmpTopbar(data, state) +
+      '<div class="fmp-body"><div class="fmp-card">' +
+      '<div class="fmp-qkicker">' + fmpEsc(typeLabel) + '</div>' +
+      '<div class="fmp-prompt">' + q.prompt + '</div>' +
+      body +
+      '<div id="fmp-feedback-slot"></div>' +
+      '</div></div></div>';
+    fmpWireBack(root);
+    function onDone(ok) {
+      state.results.push({ q: idx, ok: ok });
+      var slot = root.querySelector("#fmp-feedback-slot");
+      slot.innerHTML = '<div class="fmp-feedback ' + (ok ? "ok" : "ko") + '"><strong>' + (ok ? "✅ Correcto" : "❌ No del todo") + '</strong>' + q.explain + '</div>' +
+        '<div class="fmp-actions"><button class="fmp-btn" id="fmp-next">' + (idx + 1 < data.questions.length ? "Siguiente pregunta →" : "Ver resultados →") + '</button></div>';
+      slot.querySelector("#fmp-next").addEventListener("click", function() { fmpShowQuestion(root, data, state, idx + 1); });
+    }
+    if (q.type === "mc") fmpWireMc(root, data, state, idx, q, onDone);
+    else if (q.type === "match") fmpWireMatch(root, data, state, idx, q, onDone);
+    else fmpWireOrder(root, data, state, idx, q, onDone);
+  }
+  function fmpShowResults(root, data, state) {
+    state.idx = data.questions.length;
+    var total = data.questions.length;
+    var okCount = state.results.filter(function(r) { return r.ok; }).length;
+    var pct = Math.round((okCount / total) * 100);
+    var circumference = 2 * Math.PI * 68;
+    var dash = circumference * (pct / 100);
+    var ring = '<svg class="fmp-score-ring" viewBox="0 0 160 160">' +
+      '<circle cx="80" cy="80" r="68" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="14"/>' +
+      '<circle cx="80" cy="80" r="68" fill="none" stroke="var(--amar)" stroke-width="14" stroke-linecap="round" ' +
+      'stroke-dasharray="' + dash.toFixed(1) + ' ' + circumference.toFixed(1) + '" transform="rotate(-90 80 80)"/>' +
+      '<text x="80" y="90" text-anchor="middle" font-size="34" font-weight="bold" fill="#fff" font-family="Arial,Helvetica,sans-serif">' + okCount + '/' + total + '</text></svg>';
+    var rows = state.results.map(function(r, i) {
+      return '<div class="fmp-results-row"><span class="dot" style="background:' + (r.ok ? "#6FA678" : "#C4685A") + '"></span>Pregunta ' + (i + 1) + ' — ' + (r.ok ? "correcta" : "revisar") + '</div>';
+    }).join('');
+    root.innerHTML = '<div class="fmp-stage">' + fmpTopbar(data, state) +
+      '<div class="fmp-body"><div class="fmp-card fmp-results">' +
+      ring +
+      '<h1>' + (pct === 100 ? "¡Diagnóstico completo!" : "Repaso terminado") + '</h1>' +
+      '<p class="fmp-intro">Has acertado ' + okCount + ' de ' + total + ' preguntas. Puedes repetirlo cuantas veces quieras: no cuenta para la nota.</p>' +
+      '<div class="fmp-results-list">' + rows + '</div>' +
+      '<div class="fmp-actions" style="justify-content:center"><button class="fmp-btn" id="fmp-restart">↺ Repetir</button></div>' +
+      '</div></div></div>';
+    fmpWireBack(root);
+    root.querySelector("#fmp-restart").addEventListener("click", function() {
+      state.results = [];
+      fmpShowCover(root, data, state);
+    });
+  }
+  function renderFmp(viewKey) {
+    if (fmpRendered[viewKey]) return;
+    fmpRendered[viewKey] = true;
+    var data = FMP_DATA[viewKey];
+    if (!data) return;
+    var root = document.getElementById("fmp-root-" + viewKey);
+    if (!root) return;
+    var state = { idx: -1, results: [] };
+    fmpShowCover(root, data, state);
+  }
+
   function wireNav() {
     document.querySelectorAll(".hub-btn").forEach(function(btn) {
       btn.addEventListener("click", function() {
         showView(btn.dataset.view);
         if (btn.dataset.view === "quiz") renderQuizStart();
         if (IM_DATA[btn.dataset.view]) renderInteractiveManual(btn.dataset.view);
+        if (FMP_DATA[btn.dataset.view]) renderFmp(btn.dataset.view);
       });
     });
     document.querySelectorAll("[data-back]").forEach(function(btn) {
@@ -1346,18 +1680,21 @@ const TEMAS = [
     } },
   { dir: 'u1', numLabel: 'UNIDAD 1', titleShort: 'Introducción', titleFull: 'Unidad 1 · Introducción al análisis de datos masivos', kicker: 'Unidad 1 · Introducción al análisis de datos masivos',
     caseLabel: 'Caso: Vector Lingüístico / Ágora FM',
-    viewOrder: ["video_historia", "manual", "video_teoria", "principal", "practica", "mp5"],
+    viewOrder: ["video_historia", "manual_interactivo", "video_teoria", "principal", "practica", "mp5"],
     views: {
       manual: { exists: true, file: 'manual.pdf' },
+      manual_interactivo: { exists: true, kind: 'interactive_manual', label: 'Manual teórico', icon: '✨',
+        desc: 'Manual interactivo, navegable por paneles', dataFile: 'manual_interactivo.json' },
       video_historia: { exists: true, kind: 'video', label: 'Vídeo: el caso', icon: '🎞️',
         desc: 'El caso profesional de la unidad, contado en vídeo', file: 'video_historia.mp4' },
       video_teoria: { exists: true, kind: 'video', label: 'Vídeo: marco teórico', icon: '🎬',
         desc: 'Resumen narrado del marco teórico de la unidad', file: 'video_teoria.mp4' },
       principal: { exists: true, file: 'cuaderno_principal.ipynb' },
       evaluable: { exists: false },
-      practica: { exists: true, items: [{ id: 'unica', label: 'Práctica', file: 'practica.pdf' }] },
-      mp5: { exists: true, kind: 'viewerdownload', label: '5-minute-paper', icon: '📝',
-        desc: 'Cuestionario breve de repaso, para consultar o descargar', file: '5mp.pdf' },
+      practica: { exists: true, items: [{ id: 'unica', label: 'Práctica', file: 'practica.pdf' }],
+        extraDownload: { file: 'materiales_practica.zip', label: 'Descargar los materiales de la práctica (2 catálogos CSV)' } },
+      mp5: { exists: true, kind: 'interactive_5mp', label: '5-minute-paper', icon: '📝',
+        desc: 'Cuestionario interactivo de repaso, a pantalla completa', dataFile: '5mp.json' },
     } },
   { dir: 'u2', numLabel: 'UNIDAD 2', titleShort: 'Preparación y limpieza', titleFull: 'Unidad 2 · Preparación, limpieza y transformación de datos', kicker: 'Unidad 2 · Preparación, limpieza y transformación de datos',
     caseLabel: 'Caso: LexiData Observatorio',

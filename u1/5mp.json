@@ -1,0 +1,56 @@
+{
+  "header": {
+    "kicker": "Datos Masivos · Unidad 1",
+    "title": "5-minute-paper",
+    "subtitle": "Diagnóstico exprés: el caso de Ágora FM"
+  },
+  "intro": "Vector Lingüístico necesita que confirmes, en cinco minutos, que el diagnóstico de esta unidad ha quedado claro antes de pasar a la Unidad 2. Cinco preguntas, cada una con una mecánica distinta. Puedes repetirlo las veces que quieras: no cuenta para la nota.",
+  "questions": [
+    {
+      "id": 1,
+      "type": "mc",
+      "prompt": "¿Cuál de las siguientes <strong>no</strong> es una de las tres dimensiones originales propuestas por Laney (2001)?",
+      "options": ["Volumen", "Variedad", "Velocidad", "Veracidad"],
+      "correct": 3,
+      "explain": "Laney (2001) propuso volumen, variedad y velocidad. La veracidad se añadió después, en formulaciones posteriores del modelo — no formaba parte de la propuesta original de 2001."
+    },
+    {
+      "id": 2,
+      "type": "mc",
+      "prompt": "Verdadero o falso: «un archivo con muchos datos es siempre, por definición, un problema de datos masivos».",
+      "options": ["Verdadero", "Falso"],
+      "correct": 1,
+      "explain": "Hay que mirar las tres uves juntas, no solo el volumen, antes de decidir si un caso es un problema de datos masivos. Un archivo puede tener mucho volumen y aun así no plantear ningún reto especial si su variedad y su velocidad son bajas."
+    },
+    {
+      "id": 3,
+      "type": "match",
+      "prompt": "Relaciona cada fase de CRISP-DM con su descripción.",
+      "left": ["Comprensión del negocio o del encargo", "Comprensión de los datos", "Preparación de los datos"],
+      "right": ["Explorar de forma inicial qué datos existen, de dónde vienen y qué calidad tienen.", "Limpiar, transformar y estructurar los datos para que puedan analizarse.", "Entender qué problema se quiere resolver, antes de mirar ningún dato."],
+      "correctPairs": [2, 0, 1],
+      "explain": "El orden de CRISP-DM empieza siempre por entender el encargo, antes de mirar ningún dato; solo después se explora lo que hay disponible, y más tarde se prepara para poder analizarlo."
+    },
+    {
+      "id": 4,
+      "type": "order",
+      "prompt": "Ordena estas fases de un proyecto de datos según el modelo CRISP-DM.",
+      "items": ["Preparación de los datos", "Comprensión del negocio o del encargo", "Modelado", "Comprensión de los datos", "Evaluación"],
+      "correctOrder": [1, 3, 0, 2, 4],
+      "explain": "Comprensión del negocio → comprensión de los datos → preparación → modelado → evaluación. El encargo de Ágora FM está todavía en las dos primeras fases."
+    },
+    {
+      "id": 5,
+      "type": "mc",
+      "prompt": "Vector Lingüístico tiene que entregar su primer diagnóstico sobre el caso de Ágora FM. ¿Qué acción pertenece a esta unidad (U1)?",
+      "options": [
+        "Caracterizar el volumen, la variedad y la velocidad del archivo, y situar el encargo dentro del flujo CRISP-DM.",
+        "Clasificar el contenido de las transcripciones por tema.",
+        "Tokenizar y lematizar los mensajes de audiencia.",
+        "Calcular métricas de evaluación de una traducción automática."
+      ],
+      "correct": 0,
+      "explain": "Las opciones B, C y D corresponden a tareas de unidades posteriores (clasificación, preprocesamiento textual, evaluación de traducción). U1 se queda en el diagnóstico metodológico, sin analizar el contenido."
+    }
+  ]
+}

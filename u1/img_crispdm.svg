@@ -1,0 +1,78 @@
+<svg viewBox="0 0 900 700" xmlns="http://www.w3.org/2000/svg" font-family="Georgia, 'Times New Roman', serif">
+  <rect width="900" height="700" fill="#F1E7D6"/>
+  <rect x="18" y="18" width="864" height="664" fill="none" stroke="#B5A88F" stroke-width="1.5" stroke-dasharray="4 5"/>
+  <text x="450" y="58" text-anchor="middle" font-size="13" letter-spacing="3" fill="#A23B2E" font-family="Arial, Helvetica, sans-serif" font-weight="bold">CRISP-DM · CHAPMAN ET AL. (2000)</text>
+  <text x="450" y="90" text-anchor="middle" font-size="24" fill="#1E1812" font-weight="bold">Las seis fases de un proyecto de datos</text>
+  <text x="450" y="114" text-anchor="middle" font-size="12.5" fill="#3A322A" font-family="Arial, Helvetica, sans-serif">El caso de Ágora FM está hoy en las dos primeras — comprensión del encargo y de los datos</text>
+
+  <!-- 6 stage boxes, 2 rows of 3 -->
+  <!-- row 1: 1,2,3 -->
+  <g>
+    <rect x="60" y="160" width="230" height="150" rx="6" fill="#D2652F" fill-opacity="0.9" stroke="#A23B2E" stroke-width="2"/>
+    <text x="175" y="195" text-anchor="middle" font-size="30" font-weight="bold" fill="#F1E7D6" font-family="Arial, Helvetica, sans-serif">1</text>
+    <text x="175" y="228" text-anchor="middle" font-size="15" font-weight="bold" fill="#F1E7D6" font-family="Arial, Helvetica, sans-serif">Comprensión</text>
+    <text x="175" y="246" text-anchor="middle" font-size="15" font-weight="bold" fill="#F1E7D6" font-family="Arial, Helvetica, sans-serif">del negocio</text>
+    <text x="175" y="272" text-anchor="middle" font-size="11" fill="#F6E4D6" font-family="Arial, Helvetica, sans-serif">Entender el problema y el</text>
+    <text x="175" y="288" text-anchor="middle" font-size="11" fill="#F6E4D6" font-family="Arial, Helvetica, sans-serif">criterio de éxito</text>
+  </g>
+
+  <text x="335" y="245" text-anchor="middle" font-size="26" fill="#7A6F5C">→</text>
+
+  <g>
+    <rect x="335" y="160" width="230" height="150" rx="6" fill="#4F7A57" fill-opacity="0.9" stroke="#3E6146" stroke-width="2"/>
+    <text x="450" y="195" text-anchor="middle" font-size="30" font-weight="bold" fill="#F1E7D6" font-family="Arial, Helvetica, sans-serif">2</text>
+    <text x="450" y="228" text-anchor="middle" font-size="15" font-weight="bold" fill="#F1E7D6" font-family="Arial, Helvetica, sans-serif">Comprensión</text>
+    <text x="450" y="246" text-anchor="middle" font-size="15" font-weight="bold" fill="#F1E7D6" font-family="Arial, Helvetica, sans-serif">de los datos</text>
+    <text x="450" y="272" text-anchor="middle" font-size="11" fill="#E4EEE1" font-family="Arial, Helvetica, sans-serif">Explorar qué hay, de dónde</text>
+    <text x="450" y="288" text-anchor="middle" font-size="11" fill="#E4EEE1" font-family="Arial, Helvetica, sans-serif">viene y su calidad</text>
+  </g>
+
+  <text x="610" y="245" text-anchor="middle" font-size="26" fill="#7A6F5C">→</text>
+
+  <g>
+    <rect x="610" y="160" width="230" height="150" rx="6" fill="#3A322A" fill-opacity="0.92" stroke="#1E1812" stroke-width="2"/>
+    <text x="725" y="195" text-anchor="middle" font-size="30" font-weight="bold" fill="#F1E7D6" font-family="Arial, Helvetica, sans-serif">3</text>
+    <text x="725" y="228" text-anchor="middle" font-size="15" font-weight="bold" fill="#F1E7D6" font-family="Arial, Helvetica, sans-serif">Preparación</text>
+    <text x="725" y="246" text-anchor="middle" font-size="15" font-weight="bold" fill="#F1E7D6" font-family="Arial, Helvetica, sans-serif">de los datos</text>
+    <text x="725" y="272" text-anchor="middle" font-size="11" fill="#D9CBB0" font-family="Arial, Helvetica, sans-serif">Limpiar, transformar,</text>
+    <text x="725" y="288" text-anchor="middle" font-size="11" fill="#D9CBB0" font-family="Arial, Helvetica, sans-serif">estructurar (→ Unidad 2)</text>
+  </g>
+
+  <!-- connector row1->row2 -->
+  <text x="725" y="350" text-anchor="middle" font-size="26" fill="#7A6F5C">↓</text>
+
+  <!-- row 2: 6,5,4 (right to left, so arrows continue the loop visually) -->
+  <g>
+    <rect x="610" y="380" width="230" height="150" rx="6" fill="#B5A88F" fill-opacity="0.55" stroke="#7A6F5C" stroke-width="2"/>
+    <text x="725" y="415" text-anchor="middle" font-size="30" font-weight="bold" fill="#1E1812" font-family="Arial, Helvetica, sans-serif">4</text>
+    <text x="725" y="448" text-anchor="middle" font-size="15" font-weight="bold" fill="#1E1812" font-family="Arial, Helvetica, sans-serif">Modelado</text>
+    <text x="725" y="474" text-anchor="middle" font-size="11" fill="#3A322A" font-family="Arial, Helvetica, sans-serif">Aplicar técnicas de análisis</text>
+    <text x="725" y="490" text-anchor="middle" font-size="11" fill="#3A322A" font-family="Arial, Helvetica, sans-serif">sobre los datos ya listos</text>
+  </g>
+
+  <text x="610" y="465" text-anchor="middle" font-size="26" fill="#7A6F5C">←</text>
+
+  <g>
+    <rect x="335" y="380" width="230" height="150" rx="6" fill="#B5A88F" fill-opacity="0.55" stroke="#7A6F5C" stroke-width="2"/>
+    <text x="450" y="415" text-anchor="middle" font-size="30" font-weight="bold" fill="#1E1812" font-family="Arial, Helvetica, sans-serif">5</text>
+    <text x="450" y="448" text-anchor="middle" font-size="15" font-weight="bold" fill="#1E1812" font-family="Arial, Helvetica, sans-serif">Evaluación</text>
+    <text x="450" y="474" text-anchor="middle" font-size="11" fill="#3A322A" font-family="Arial, Helvetica, sans-serif">¿Los resultados responden</text>
+    <text x="450" y="490" text-anchor="middle" font-size="11" fill="#3A322A" font-family="Arial, Helvetica, sans-serif">al problema de la fase 1?</text>
+  </g>
+
+  <text x="335" y="465" text-anchor="middle" font-size="26" fill="#7A6F5C">←</text>
+
+  <g>
+    <rect x="60" y="380" width="230" height="150" rx="6" fill="#B5A88F" fill-opacity="0.55" stroke="#7A6F5C" stroke-width="2"/>
+    <text x="175" y="415" text-anchor="middle" font-size="30" font-weight="bold" fill="#1E1812" font-family="Arial, Helvetica, sans-serif">6</text>
+    <text x="175" y="448" text-anchor="middle" font-size="15" font-weight="bold" fill="#1E1812" font-family="Arial, Helvetica, sans-serif">Despliegue</text>
+    <text x="175" y="474" text-anchor="middle" font-size="11" fill="#3A322A" font-family="Arial, Helvetica, sans-serif">Poner los resultados a</text>
+    <text x="175" y="490" text-anchor="middle" font-size="11" fill="#3A322A" font-family="Arial, Helvetica, sans-serif">disposición de quien los usa</text>
+  </g>
+
+  <rect x="60" y="560" width="780" height="86" rx="4" fill="#1E1812"/>
+  <text x="450" y="590" text-anchor="middle" font-size="13" fill="#F1E7D6" font-weight="bold" font-family="Arial, Helvetica, sans-serif">Ágora FM está en las fases 1 y 2: encargo y datos, todavía no se prepara ni se analiza nada.</text>
+  <text x="450" y="612" text-anchor="middle" font-size="11.5" fill="#D9CBB0" font-family="Arial, Helvetica, sans-serif">Las fases no son estrictamente lineales: es habitual volver atrás según lo que se descubre.</text>
+
+  <text x="450" y="672" text-anchor="middle" font-size="10.5" fill="#7A6F5C" font-style="italic" font-family="Arial, Helvetica, sans-serif">© Dra. Blanca Hernández Pardo · Datos Masivos · Unidad 1 — elaboración propia a partir de Chapman et al. (2000)</text>
+</svg>
