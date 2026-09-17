@@ -1,10 +1,10 @@
 {
   "header": {
     "kicker": "Datos Masivos · Unidad 1",
-    "title": "5-minute-paper",
+    "title": "Reto relámpago",
     "subtitle": "Diagnóstico exprés: el caso de Ágora FM"
   },
-  "intro": "Vector Lingüístico necesita que confirmes, en cinco minutos, que el diagnóstico de esta unidad ha quedado claro antes de pasar a la Unidad 2. Cinco preguntas, cada una con una mecánica distinta. Puedes repetirlo las veces que quieras: no cuenta para la nota.",
+  "intro": "Vector Lingüístico necesita que confirmes que el diagnóstico de esta unidad ha quedado claro antes de pasar a la Unidad 2. Cinco preguntas, cada una con una mecánica distinta. Tienes dos intentos por pregunta antes de ver la solución. Puedes repetirlo las veces que quieras: no cuenta para la nota.",
   "questions": [
     {
       "id": 1,

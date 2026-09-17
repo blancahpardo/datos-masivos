@@ -119,7 +119,8 @@ main { max-width:1200px; margin:0 auto; padding:48px 4vw 60px; }
 .view.fullbleed .fb-bar { display:flex; align-items:center; justify-content:space-between; gap:14px; padding:12px 4vw; background:var(--claro); border-bottom:1.5px solid var(--humo); flex-wrap:wrap; }
 .view.fullbleed .fb-bar h2 { margin:0; font-size:18px; }
 .view.fullbleed .html-frame { width:100%; height:calc(100vh - 58px); border:none; border-radius:0; display:block; }
-@media (max-width:600px) { .view.fullbleed .html-frame { height:calc(100vh - 92px); } }
+.view.fullbleed .video-frame { width:100%; max-height:none; height:calc(100vh - 58px); border-radius:0; margin-top:0; display:block; }
+@media (max-width:600px) { .view.fullbleed .html-frame { height:calc(100vh - 92px); } .view.fullbleed .video-frame { height:calc(100vh - 92px); } }
 .img-frame { display:block; width:100%; height:auto; border-radius:8px; box-shadow:0 2px 10px rgba(159,177,186,.28); }
 .img-caption { font-size:11px; color:var(--humo); text-align:center; margin-top:10px; font-style:italic; }
 .img-caption em { font-style:italic; }
@@ -320,6 +321,7 @@ footer { text-align:center; padding:26px 6vw 40px; font-size:11px; color:var(--h
 .fmp-feedback { margin-top:22px; padding:16px 20px; border-radius:10px; font-size:13.5px; line-height:1.6; font-family:Arial,Helvetica,sans-serif; }
 .fmp-feedback.ok { background:rgba(79,122,87,.22); border:1px solid #6FA678; }
 .fmp-feedback.ko { background:rgba(162,59,46,.22); border:1px solid #C4685A; }
+.fmp-feedback.retry { background:rgba(210,101,47,.18); border:1px solid var(--amar); }
 .fmp-feedback strong { display:block; margin-bottom:4px; font-size:14px; }
 .fmp-results h1 { font-family:Georgia,'Times New Roman',serif; margin:0 0 6px; }
 .fmp-score-ring { width:160px; height:160px; margin:0 auto 24px; }
@@ -496,12 +498,12 @@ function buildVideoView(viewKey, tema) {
   const cfg = tema.views[viewKey];
   if (!cfg || !cfg.exists) return '';
   const label = viewLabel(viewKey, tema);
-  return `<div id="view-${viewKey}" class="view sub-view" hidden>
-  <button class="back-btn" data-back="hub">← Volver</button>
-  <h2>${esc(label)} · ${esc(tema.titleShort)}</h2>
-  <p class="section-note">${cfg.note || 'Puedes verlo aquí o descargarlo.'}</p>
-  <a class="dl-big" href="${cfg.file}" download>⬇ Descargar vídeo</a>
-  <video class="video-frame" src="${cfg.file}" controls preload="metadata"></video>
+  return `<div id="view-${viewKey}" class="view sub-view fullbleed" hidden>
+  <div class="fb-bar">
+    <button class="back-btn" data-back="hub">← Volver</button>
+    <h2>${esc(label)} · ${esc(tema.titleShort)}</h2>
+  </div>
+  <video class="video-frame" src="${cfg.file}" controls controlsList="nodownload noremoteplayback" disablePictureInPicture oncontextmenu="return false" preload="metadata"></video>
 </div>`;
 }
 
@@ -1042,21 +1044,28 @@ function buildTopicHtml(tema) {
       return '<button class="fmp-opt" data-i="' + i + '">' + fmpEsc(opt) + '</button>';
     }).join('') + '</div>';
   }
-  function fmpWireMc(root, data, state, idx, q, onDone) {
-    var locked = false;
+  function fmpWireMc(root, data, state, idx, q, onDone, onRetry) {
+    var finished = false;
+    var attempts = 0;
     root.querySelectorAll(".fmp-opt").forEach(function(btn) {
       btn.addEventListener("click", function() {
-        if (locked) return;
-        locked = true;
+        if (finished || btn.classList.contains("locked")) return;
+        attempts++;
         var chosen = parseInt(btn.dataset.i, 10);
         var ok = chosen === q.correct;
-        root.querySelectorAll(".fmp-opt").forEach(function(b) {
-          b.classList.add("locked");
-          var i = parseInt(b.dataset.i, 10);
-          if (i === q.correct) b.classList.add("correct");
-          else if (i === chosen) b.classList.add("wrong");
-        });
-        onDone(ok);
+        if (ok || attempts >= 2) {
+          finished = true;
+          root.querySelectorAll(".fmp-opt").forEach(function(b) {
+            b.classList.add("locked");
+            var i = parseInt(b.dataset.i, 10);
+            if (i === q.correct) b.classList.add("correct");
+            else if (i === chosen && !ok) b.classList.add("wrong");
+          });
+          onDone(ok);
+        } else {
+          btn.classList.add("locked", "wrong");
+          onRetry(attempts);
+        }
       });
     });
   }
@@ -1073,50 +1082,83 @@ function buildTopicHtml(tema) {
     return '<div class="fmp-match-wrap"><div class="fmp-match-col">' + leftHtml + '</div><div class="fmp-match-col">' + rightHtml + '</div></div>' +
       '<div class="fmp-actions"><button class="fmp-btn" id="fmp-check" disabled>Comprobar</button></div>';
   }
-  function fmpWireMatch(root, data, state, idx, q, onDone) {
+  function fmpWireMatch(root, data, state, idx, q, onDone, onRetry) {
     var activeLeft = null;
-    var checked = false;
+    var finished = false;
+    var attempts = 0;
+    var lockedLeft = {};
+    function leftEl(li) { return root.querySelector('.fmp-match-item[data-side="l"][data-i="' + li + '"]'); }
+    function rightEl(ri) { return root.querySelector('.fmp-match-item[data-side="r"][data-i="' + ri + '"]'); }
     function refreshCheckBtn() {
-      var n = Object.keys(state._pairs).length;
-      root.querySelector("#fmp-check").disabled = n < q.left.length;
+      var pending = q.left.map(function(_, li) { return li; }).filter(function(li) { return !lockedLeft[li]; });
+      var allPaired = pending.every(function(li) { return state._pairs[li] !== undefined; });
+      root.querySelector("#fmp-check").disabled = !allPaired;
     }
     root.querySelectorAll('.fmp-match-item[data-side="l"]').forEach(function(btn) {
       btn.addEventListener("click", function() {
-        if (checked) return;
-        root.querySelectorAll('.fmp-match-item[data-side="l"]').forEach(function(b) { b.classList.remove("selected"); });
-        activeLeft = parseInt(btn.dataset.i, 10);
+        if (finished || btn.classList.contains("locked")) return;
+        var li = parseInt(btn.dataset.i, 10);
+        root.querySelectorAll('.fmp-match-item[data-side="l"]').forEach(function(b) { if (!b.classList.contains("locked")) b.classList.remove("selected"); });
+        activeLeft = li;
         btn.classList.add("selected");
       });
     });
     root.querySelectorAll('.fmp-match-item[data-side="r"]').forEach(function(btn) {
       btn.addEventListener("click", function() {
-        if (checked || activeLeft === null) return;
+        if (finished || activeLeft === null || btn.classList.contains("locked")) return;
         var ri = parseInt(btn.dataset.i, 10);
-        Object.keys(state._pairs).forEach(function(li) { if (state._pairs[li] === ri) delete state._pairs[li]; });
+        Object.keys(state._pairs).forEach(function(li) { if (!lockedLeft[li] && state._pairs[li] === ri) delete state._pairs[li]; });
         state._pairs[activeLeft] = ri;
-        root.querySelectorAll('.fmp-match-item').forEach(function(b) { b.classList.remove("paired"); });
+        root.querySelectorAll('.fmp-match-item').forEach(function(b) { if (!b.classList.contains("locked")) b.classList.remove("paired"); });
         Object.keys(state._pairs).forEach(function(li) {
-          root.querySelector('.fmp-match-item[data-side="l"][data-i="' + li + '"]').classList.add("paired");
-          root.querySelector('.fmp-match-item[data-side="r"][data-i="' + state._pairs[li] + '"]').classList.add("paired");
+          if (lockedLeft[li]) return;
+          leftEl(li).classList.add("paired");
+          rightEl(state._pairs[li]).classList.add("paired");
         });
-        root.querySelector('.fmp-match-item[data-side="l"][data-i="' + activeLeft + '"]').classList.remove("selected");
+        leftEl(activeLeft).classList.remove("selected");
         activeLeft = null;
         refreshCheckBtn();
       });
     });
     root.querySelector("#fmp-check").addEventListener("click", function() {
-      checked = true;
-      var ok = true;
+      attempts++;
+      var allOk = true;
       q.left.forEach(function(_, li) {
+        if (lockedLeft[li]) return;
         var got = state._pairs[li];
         var want = q.correctPairs[li];
-        var lEl = root.querySelector('.fmp-match-item[data-side="l"][data-i="' + li + '"]');
-        var rEl = root.querySelector('.fmp-match-item[data-side="r"][data-i="' + got + '"]');
-        if (got === want) { lEl.classList.add("correct"); rEl.classList.add("correct"); }
-        else { lEl.classList.add("wrong"); rEl.classList.add("wrong"); ok = false; }
+        if (got === want) {
+          lockedLeft[li] = true;
+          leftEl(li).classList.add("correct", "locked");
+          rightEl(got).classList.add("correct", "locked");
+        } else {
+          allOk = false;
+        }
       });
-      root.querySelectorAll(".fmp-match-item").forEach(function(b) { b.style.cursor = "default"; });
-      onDone(ok);
+      if (allOk) {
+        finished = true;
+        root.querySelectorAll(".fmp-match-item").forEach(function(b) { b.style.cursor = "default"; });
+        onDone(true);
+        return;
+      }
+      if (attempts >= 2) {
+        finished = true;
+        q.left.forEach(function(_, li) {
+          if (lockedLeft[li]) return;
+          var want = q.correctPairs[li];
+          var got = state._pairs[li];
+          leftEl(li).classList.add(got === want ? "correct" : "wrong");
+          rightEl(want).classList.add("correct");
+          if (got !== undefined && got !== want) rightEl(got).classList.add("wrong");
+        });
+        root.querySelectorAll(".fmp-match-item").forEach(function(b) { b.style.cursor = "default"; });
+        onDone(false);
+        return;
+      }
+      q.left.forEach(function(_, li) { if (!lockedLeft[li]) delete state._pairs[li]; });
+      root.querySelectorAll('.fmp-match-item').forEach(function(b) { if (!b.classList.contains("locked")) b.classList.remove("paired", "selected"); });
+      refreshCheckBtn();
+      onRetry(attempts);
     });
   }
   function fmpOrderBody(q, state) {
@@ -1135,8 +1177,9 @@ function buildTopicHtml(tema) {
         '</div>';
     }).join('');
   }
-  function fmpWireOrder(root, data, state, idx, q, onDone) {
-    var checked = false;
+  function fmpWireOrder(root, data, state, idx, q, onDone, onRetry) {
+    var finished = false;
+    var attempts = 0;
     var dragFrom = null;
     fmpRenderOrderList(root, q, state, false);
     function wireItems() {
@@ -1174,10 +1217,16 @@ function buildTopicHtml(tema) {
     }
     wireItems();
     root.querySelector("#fmp-check").addEventListener("click", function() {
-      checked = true;
+      if (finished) return;
+      attempts++;
       var ok = state._order.every(function(v, i) { return v === q.correctOrder[i]; });
-      fmpRenderOrderList(root, q, state, true);
-      onDone(ok);
+      if (ok || attempts >= 2) {
+        finished = true;
+        fmpRenderOrderList(root, q, state, true);
+        onDone(ok);
+      } else {
+        onRetry(attempts);
+      }
     });
   }
   function fmpShowQuestion(root, data, state, idx) {
@@ -1201,9 +1250,13 @@ function buildTopicHtml(tema) {
         '<div class="fmp-actions"><button class="fmp-btn" id="fmp-next">' + (idx + 1 < data.questions.length ? "Siguiente pregunta →" : "Ver resultados →") + '</button></div>';
       slot.querySelector("#fmp-next").addEventListener("click", function() { fmpShowQuestion(root, data, state, idx + 1); });
     }
-    if (q.type === "mc") fmpWireMc(root, data, state, idx, q, onDone);
-    else if (q.type === "match") fmpWireMatch(root, data, state, idx, q, onDone);
-    else fmpWireOrder(root, data, state, idx, q, onDone);
+    function onRetry(attempts) {
+      var slot = root.querySelector("#fmp-feedback-slot");
+      slot.innerHTML = '<div class="fmp-feedback retry"><strong>Casi…</strong>No es correcto del todo. Te queda un intento antes de ver la solución.</div>';
+    }
+    if (q.type === "mc") fmpWireMc(root, data, state, idx, q, onDone, onRetry);
+    else if (q.type === "match") fmpWireMatch(root, data, state, idx, q, onDone, onRetry);
+    else fmpWireOrder(root, data, state, idx, q, onDone, onRetry);
   }
   function fmpShowResults(root, data, state) {
     state.idx = data.questions.length;
@@ -1663,7 +1716,7 @@ const TEMAS = [
         desc: 'Documento guiado de la sesión (Word), no es un cuaderno de código', file: 'cuaderno_principal.pdf' },
       evaluable: { exists: false },
       practica: { exists: true, items: [{ id: 'unica', label: 'Práctica (no evaluable)', file: 'practica.pdf' }] },
-      mp5: { exists: true, kind: 'viewerdownload', label: '5-minute-paper', icon: '📝',
+      mp5: { exists: true, kind: 'viewerdownload', label: 'Reto relámpago', icon: '⚡',
         desc: 'Cuestionario breve de repaso, para consultar o descargar', file: '5mp.pdf' },
     } },
   { dir: 'u1', numLabel: 'UNIDAD 1', titleShort: 'Introducción', titleFull: 'Unidad 1 · Introducción al análisis de datos masivos', kicker: 'Unidad 1 · Introducción al análisis de datos masivos',
@@ -1681,7 +1734,7 @@ const TEMAS = [
       evaluable: { exists: false },
       practica: { exists: true, items: [{ id: 'unica', label: 'Práctica', file: 'practica.pdf' }],
         extraDownload: { file: 'materiales_practica.zip', label: 'Descargar los materiales de la práctica (2 catálogos CSV)' } },
-      mp5: { exists: true, kind: 'interactive_5mp', label: '5-minute-paper', icon: '📝',
+      mp5: { exists: true, kind: 'interactive_5mp', label: 'Reto relámpago', icon: '⚡',
         desc: 'Cuestionario interactivo de repaso, a pantalla completa', dataFile: '5mp.json' },
     } },
   { dir: 'u2', numLabel: 'UNIDAD 2', titleShort: 'Preparación y limpieza', titleFull: 'Unidad 2 · Preparación, limpieza y transformación de datos', kicker: 'Unidad 2 · Preparación, limpieza y transformación de datos',
@@ -1696,7 +1749,7 @@ const TEMAS = [
       principal: { exists: true, file: 'cuaderno_principal.ipynb' },
       evaluable: { exists: false },
       practica: { exists: true, items: [{ id: 'unica', label: 'Práctica', file: 'practica.pdf' }] },
-      mp5: { exists: true, kind: 'viewerdownload', label: '5-minute-paper', icon: '📝',
+      mp5: { exists: true, kind: 'viewerdownload', label: 'Reto relámpago', icon: '⚡',
         desc: 'Cuestionario breve de repaso, para consultar o descargar', file: '5mp.pdf' },
     } },
   { dir: 'u3', numLabel: 'UNIDAD 3', titleShort: 'Exploración visual', titleFull: 'Unidad 3 · Exploración y visualización de datos masivos', kicker: 'Unidad 3 · Exploración y visualización de datos masivos',
@@ -1713,7 +1766,7 @@ const TEMAS = [
       principal: { exists: true, file: 'cuaderno_principal.ipynb' },
       evaluable: { exists: false },
       practica: { exists: true, items: [{ id: 'unica', label: 'Práctica', file: 'practica.pdf' }] },
-      mp5: { exists: true, kind: 'viewerdownload', label: '5-minute-paper', icon: '📝',
+      mp5: { exists: true, kind: 'viewerdownload', label: 'Reto relámpago', icon: '⚡',
         desc: 'Cuestionario breve de repaso, para consultar o descargar', file: '5mp.pdf' },
     } },
   { dir: 'u4', numLabel: 'UNIDAD 4', titleShort: 'Corpus documentales', titleFull: 'Unidad 4 · Corpus y colecciones documentales extensas', kicker: 'Unidad 4 · Corpus y colecciones documentales extensas',
@@ -1728,7 +1781,7 @@ const TEMAS = [
       principal: { exists: true, file: 'cuaderno_principal.ipynb' },
       evaluable: { exists: false },
       practica: { exists: true, items: [{ id: 'unica', label: 'Práctica', file: 'practica.pdf' }] },
-      mp5: { exists: true, kind: 'viewerdownload', label: '5-minute-paper', icon: '📝',
+      mp5: { exists: true, kind: 'viewerdownload', label: 'Reto relámpago', icon: '⚡',
         desc: 'Cuestionario breve de repaso, para consultar o descargar', file: '5mp.pdf' },
     } },
   { dir: 'u5', numLabel: 'UNIDAD 5', titleShort: 'Bases de datos', titleFull: 'Unidad 5 · Almacenamiento y acceso a datos a gran escala', kicker: 'Unidad 5 · Almacenamiento y acceso a datos a gran escala',
@@ -1745,7 +1798,7 @@ const TEMAS = [
       principal: { exists: true, file: 'cuaderno_principal.ipynb' },
       evaluable: { exists: false },
       practica: { exists: true, items: [{ id: 'unica', label: 'Práctica', file: 'practica.pdf' }] },
-      mp5: { exists: true, kind: 'viewerdownload', label: '5-minute-paper', icon: '📝',
+      mp5: { exists: true, kind: 'viewerdownload', label: 'Reto relámpago', icon: '⚡',
         desc: 'Cuestionario breve de repaso, para consultar o descargar', file: '5mp.pdf' },
     } },
   { dir: 'u6', numLabel: 'UNIDAD 6', titleShort: 'Automatización', titleFull: 'Unidad 6 · Automatización y comunicación de resultados', kicker: 'Unidad 6 · Automatización y comunicación de resultados',
@@ -1762,7 +1815,7 @@ const TEMAS = [
       principal: { exists: true, file: 'cuaderno_principal.ipynb' },
       evaluable: { exists: false },
       practica: { exists: true, items: [{ id: 'unica', label: 'Práctica', file: 'practica.pdf' }] },
-      mp5: { exists: true, kind: 'viewerdownload', label: '5-minute-paper', icon: '📝',
+      mp5: { exists: true, kind: 'viewerdownload', label: 'Reto relámpago', icon: '⚡',
         desc: 'Cuestionario breve de repaso, para consultar o descargar', file: '5mp.pdf' },
     } },
 ];
