@@ -93,12 +93,18 @@
               "text": "Python es un lenguaje de programación de propósito general que se ha convertido en el más usado en ciencia de datos y en procesamiento del lenguaje natural, entre otras razones porque cuenta con librerías especializadas muy maduras para trabajar con datos tabulares, texto, bases de datos o visualización."
             },
             {
-              "type": "p",
-              "text": "Jupyter Notebook es un entorno de trabajo que combina, en un mismo documento, código ejecutable, resultados y explicaciones en texto. Un cuaderno de Jupyter (un archivo `.ipynb`) se organiza en celdas: unas contienen código Python que se ejecuta y muestra su resultado justo debajo; otras contienen texto explicativo. Esta combinación es la razón por la que Jupyter se usa tanto en la enseñanza como en el trabajo profesional de análisis de datos: permite documentar, en el mismo lugar, qué se hizo, con qué código y por qué."
-            },
-            {
-              "type": "p",
-              "text": "A partir de la Unidad 1, la mayoría de las unidades de esta asignatura tienen un cuaderno de Jupyter como material principal."
+              "type": "reveal_group",
+              "label": "Seguir leyendo ↓",
+              "blocks": [
+                {
+                  "type": "p",
+                  "text": "Jupyter Notebook es un entorno de trabajo que combina, en un mismo documento, código ejecutable, resultados y explicaciones en texto. Un cuaderno de Jupyter (un archivo `.ipynb`) se organiza en celdas: unas contienen código Python que se ejecuta y muestra su resultado justo debajo; otras contienen texto explicativo. Esta combinación es la razón por la que Jupyter se usa tanto en la enseñanza como en el trabajo profesional de análisis de datos: permite documentar, en el mismo lugar, qué se hizo, con qué código y por qué."
+                },
+                {
+                  "type": "p",
+                  "text": "A partir de la Unidad 1, la mayoría de las unidades de esta asignatura tienen un cuaderno de Jupyter como material principal."
+                }
+              ]
             }
           ]
         },
@@ -107,7 +113,7 @@
           "blocks": [
             {
               "type": "p",
-              "text": "Un entorno virtual es una instalación de Python aislada del resto del ordenador, con sus propias librerías. Wilson et al. (2017), en una guía de buenas prácticas de computación científica ampliamente adoptada, recomiendan trabajar siempre dentro de un entorno aislado y documentado, en vez de instalar librerías directamente sobre el sistema operativo. Esto evita dos problemas frecuentes: que una librería instalada para una asignatura entre en conflicto con la versión que necesita otro programa del ordenador, y que un cuaderno funcione en un ordenador y falle en otro porque cada uno tiene instaladas versiones distintas de las librerías."
+              "text": "Un entorno virtual es una instalación de Python aislada del resto del ordenador, con sus propias librerías. {{cite:ref0}}Wilson et al. (2017){{/cite}}, en una guía de buenas prácticas de computación científica ampliamente adoptada, recomiendan trabajar siempre dentro de un entorno aislado y documentado, en vez de instalar librerías directamente sobre el sistema operativo. Esto evita dos problemas frecuentes: que una librería instalada para una asignatura entre en conflicto con la versión que necesita otro programa del ordenador, y que un cuaderno funcione en un ordenador y falle en otro porque cada uno tiene instaladas versiones distintas de las librerías."
             },
             {
               "type": "p",
@@ -145,19 +151,25 @@
               "text": "De forma orientativa, y sin entrar todavía en el contenido técnico de cada una:"
             },
             {
-              "type": "ul",
-              "items": [
-                "**U1** caracteriza qué hace que un conjunto de datos sea «masivo» y cómo se sitúa un proyecto dentro de un flujo de trabajo general.",
-                "**U2** prepara, limpia y transforma datos a escala con Python y Pandas.",
-                "**U3** explora y visualiza datos masivos.",
-                "**U4** organiza y cataloga corpus y colecciones documentales extensas.",
-                "**U5** accede e integra datos procedentes de bases de datos y de fuentes externas.",
-                "**U6** automatiza procesos y comunica resultados de forma eficaz."
+              "type": "reveal_group",
+              "label": "Seguir leyendo ↓",
+              "blocks": [
+                {
+                  "type": "ul",
+                  "items": [
+                    "**U1** caracteriza qué hace que un conjunto de datos sea «masivo» y cómo se sitúa un proyecto dentro de un flujo de trabajo general.",
+                    "**U2** prepara, limpia y transforma datos a escala con Python y Pandas.",
+                    "**U3** explora y visualiza datos masivos.",
+                    "**U4** organiza y cataloga corpus y colecciones documentales extensas.",
+                    "**U5** accede e integra datos procedentes de bases de datos y de fuentes externas.",
+                    "**U6** automatiza procesos y comunica resultados de forma eficaz."
+                  ]
+                },
+                {
+                  "type": "p",
+                  "text": "Cada una de estas unidades desarrollará su propio contenido con detalle cuando llegue el momento; aquí basta con tener una idea general del recorrido completo."
+                }
               ]
-            },
-            {
-              "type": "p",
-              "text": "Cada una de estas unidades desarrollará su propio contenido con detalle cuando llegue el momento; aquí basta con tener una idea general del recorrido completo."
             }
           ]
         },

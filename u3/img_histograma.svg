@@ -1,20 +1,32 @@
 <svg viewBox="0 0 700 440" xmlns="http://www.w3.org/2000/svg" font-family="Georgia, 'Times New Roman', serif">
   <rect width="700" height="440" fill="#F1E7D6"/>
   <rect x="16" y="16" width="668" height="408" fill="none" stroke="#B5A88F" stroke-width="1.5" stroke-dasharray="4 5"/>
-  <text x="350" y="50" text-anchor="middle" font-size="12" letter-spacing="2.5" fill="#A23B2E" font-family="Arial, Helvetica, sans-serif" font-weight="bold">EJEMPLO ILUSTRATIVO</text>
-  <text x="350" y="78" text-anchor="middle" font-size="20" fill="#1E1812" font-weight="bold">Histograma de longitud de texto</text>
-  <line x1="80" y1="340" x2="620" y2="340" stroke="#3A322A" stroke-width="1.5"/>
-  <line x1="80" y1="120" x2="80" y2="340" stroke="#3A322A" stroke-width="1.5"/>
+  <text x="350" y="46" text-anchor="middle" font-size="12" letter-spacing="2.5" fill="#A23B2E" font-family="Arial, Helvetica, sans-serif" font-weight="bold">DATOS REALES DE LA PRÁCTICA</text>
+  <text x="350" y="74" text-anchor="middle" font-size="20" fill="#1E1812" font-weight="bold">Histograma de longitud_texto</text>
+  <line x1="90" y1="340" x2="640" y2="340" stroke="#3A322A" stroke-width="1.5"/>
+  <line x1="90" y1="100" x2="90" y2="340" stroke="#3A322A" stroke-width="1.5"/>
+  <!-- 12 bins, values 10,12,15,22,35,36,26,36,9,11,5,3 ; max 36 -> scale to 220px -->
   <g fill="#D2652F" fill-opacity="0.82">
-    <rect x="95" y="300" width="55" height="40"/>
-    <rect x="160" y="250" width="55" height="90"/>
-    <rect x="225" y="180" width="55" height="160"/>
-    <rect x="290" y="150" width="55" height="190"/>
-    <rect x="355" y="200" width="55" height="140"/>
-    <rect x="420" y="260" width="55" height="80"/>
-    <rect x="485" y="310" width="55" height="30"/>
+    <rect x="95" y="278" width="42" height="62"/>
+    <rect x="140" y="266" width="42" height="74"/>
+    <rect x="185" y="248" width="42" height="92"/>
+    <rect x="230" y="205" width="42" height="135"/>
+    <rect x="275" y="125" width="42" height="215"/>
+    <rect x="320" y="119" width="42" height="221"/>
+    <rect x="365" y="180" width="42" height="160"/>
+    <rect x="410" y="119" width="42" height="221"/>
+    <rect x="455" y="285" width="42" height="55"/>
+    <rect x="500" y="272" width="42" height="68"/>
+    <rect x="545" y="309" width="42" height="31"/>
+    <rect x="590" y="321" width="42" height="19"/>
   </g>
-  <text x="350" y="365" text-anchor="middle" font-size="12" fill="#3A322A" font-family="Arial, Helvetica, sans-serif">longitud_texto (caracteres)</text>
-  <text x="45" y="230" text-anchor="middle" font-size="12" fill="#3A322A" font-family="Arial, Helvetica, sans-serif" transform="rotate(-90 45 230)">frecuencia</text>
-  <text x="350" y="410" text-anchor="middle" font-size="10.5" fill="#7A6F5C" font-style="italic" font-family="Arial, Helvetica, sans-serif">© Dra. Blanca Hernández Pardo · Datos Masivos · Unidad 3 — datos sintéticos de ejemplo, elaboración propia</text>
+  <text x="90" y="115" font-size="10.5" fill="#3A322A" font-family="Arial, Helvetica, sans-serif">36</text>
+  <text x="90" y="345" font-size="10.5" fill="#3A322A" font-family="Arial, Helvetica, sans-serif">0</text>
+  <text x="0" y="0" font-size="1"> </text>
+  <text x="116" y="360" text-anchor="middle" font-size="10" fill="#3A322A" font-family="Arial, Helvetica, sans-serif">0</text>
+  <text x="365" y="360" text-anchor="middle" font-size="10" fill="#3A322A" font-family="Arial, Helvetica, sans-serif">150</text>
+  <text x="611" y="360" text-anchor="middle" font-size="10" fill="#3A322A" font-family="Arial, Helvetica, sans-serif">280</text>
+  <text x="365" y="385" text-anchor="middle" font-size="12" fill="#3A322A" font-family="Arial, Helvetica, sans-serif">longitud_texto (caracteres)</text>
+  <text x="35" y="220" text-anchor="middle" font-size="12" fill="#3A322A" font-family="Arial, Helvetica, sans-serif" transform="rotate(-90 35 220)">nº de mensajes</text>
+  <text x="350" y="410" text-anchor="middle" font-size="10.5" fill="#7A6F5C" font-style="italic" font-family="Arial, Helvetica, sans-serif">© Dra. Blanca Hernández Pardo · Datos Masivos · Unidad 3 — recreación del histograma real del cuaderno</text>
 </svg>

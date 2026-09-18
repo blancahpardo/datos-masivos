@@ -78,7 +78,7 @@
           "blocks": [
             {
               "type": "p",
-              "text": "No cualquier montón de archivos de texto es un corpus. McEnery y Hardie (2012) señalan que lo que distingue a un corpus de una colección arbitraria de textos es que se reúne de forma **principiada**: con un criterio definido sobre qué se incluye, de dónde procede y cómo está organizado, de manera que otra persona pueda entender y reproducir esos criterios. Una carpeta con miles de archivos escaneados sin catalogar, por muy valiosa que sea la colección subyacente, todavía no es un corpus en ese sentido: es una colección pendiente de convertirse en uno."
+              "text": "No cualquier montón de archivos de texto es un corpus. {{cite:ref1}}McEnery y Hardie (2012){{/cite}} señalan que lo que distingue a un corpus de una colección arbitraria de textos es que se reúne de forma **principiada**: con un criterio definido sobre qué se incluye, de dónde procede y cómo está organizado, de manera que otra persona pueda entender y reproducir esos criterios. Una carpeta con miles de archivos escaneados sin catalogar, por muy valiosa que sea la colección subyacente, todavía no es un corpus en ese sentido: es una colección pendiente de convertirse en uno."
             },
             {
               "type": "p",
@@ -91,7 +91,7 @@
           "blocks": [
             {
               "type": "p",
-              "text": "El mismo argumento que ya se trabajó en la Unidad 1 y la Unidad 2 se aplica aquí, con una escala distinta. Kandel et al. (2012) documentan que gran parte del tiempo real de un proyecto de datos se dedica a localizar, describir y estructurar la información antes de que empiece cualquier análisis. Cuando el material no es una tabla, sino miles de archivos sueltos, esa fase de localización y descripción se vuelve todavía más necesaria: sin un catálogo, ni siquiera es posible plantear cuántos documentos hay disponibles para un estudio futuro."
+              "text": "El mismo argumento que ya se trabajó en la Unidad 1 y la Unidad 2 se aplica aquí, con una escala distinta. {{cite:ref0}}Kandel et al. (2012){{/cite}} documentan que gran parte del tiempo real de un proyecto de datos se dedica a localizar, describir y estructurar la información antes de que empiece cualquier análisis. Cuando el material no es una tabla, sino miles de archivos sueltos, esa fase de localización y descripción se vuelve todavía más necesaria: sin un catálogo, ni siquiera es posible plantear cuántos documentos hay disponibles para un estudio futuro."
             },
             {
               "type": "p",
@@ -104,7 +104,7 @@
           "blocks": [
             {
               "type": "p",
-              "text": "Cuando una colección crece hasta miles de archivos, la forma en que se organizan las carpetas y se nombran los archivos deja de ser un detalle estético y se convierte en una condición de trabajo. Wilson et al. (2017), en una guía de buenas prácticas de computación científica ampliamente adoptada, recomiendan mantener siempre una separación clara entre los datos brutos y cualquier dato derivado o procesado, no modificar nunca los datos brutos directamente, y usar nombres de archivo y de carpeta uniformes e informativos en vez de nombres genéricos o ambiguos."
+              "text": "Cuando una colección crece hasta miles de archivos, la forma en que se organizan las carpetas y se nombran los archivos deja de ser un detalle estético y se convierte en una condición de trabajo. {{cite:ref6}}Wilson et al. (2017){{/cite}}, en una guía de buenas prácticas de computación científica ampliamente adoptada, recomiendan mantener siempre una separación clara entre los datos brutos y cualquier dato derivado o procesado, no modificar nunca los datos brutos directamente, y usar nombres de archivo y de carpeta uniformes e informativos en vez de nombres genéricos o ambiguos."
             },
             {
               "type": "p",
@@ -146,16 +146,22 @@
               "text": "Una vez que se dispone, para cada documento, de su nombre, su carpeta de procedencia, su tamaño y su recuento aproximado de palabras, el paso siguiente es exactamente el que ya se trabajó en la Unidad 2: convertir una colección de registros (en este caso, uno por archivo) en un `dataframe` de Pandas. La diferencia es el origen del registro: en la Unidad 2 cada registro venía de un elemento de una lista JSON ya cargada en memoria; aquí, cada registro se construye explorando el sistema de archivos, uno por documento."
             },
             {
-              "type": "p",
-              "text": "El resultado es una tabla con una fila por documento, lista para agregarse (por ejemplo, número de documentos y palabras totales por subcarpeta con `groupby()`), para filtrarse o para exportarse, igual que cualquier otro `dataframe` preparado en esta asignatura."
-            },
-            {
-              "type": "image_modal",
-              "src": "img_catalogo.svg",
-              "alt": "Figura 1. De la colección de archivos sueltos al catálogo con Pandas (elaboración propia).",
-              "label": "Abre esta infografía para ver el catálogo",
-              "sub": "De archivos sueltos a tabla",
-              "caption": "Figura 1. De la colección de archivos sueltos al catálogo con Pandas (elaboración propia)."
+              "type": "reveal_group",
+              "label": "Seguir leyendo ↓",
+              "blocks": [
+                {
+                  "type": "p",
+                  "text": "El resultado es una tabla con una fila por documento, lista para agregarse (por ejemplo, número de documentos y palabras totales por subcarpeta con `groupby()`), para filtrarse o para exportarse, igual que cualquier otro `dataframe` preparado en esta asignatura."
+                },
+                {
+                  "type": "image_modal",
+                  "src": "img_catalogo.svg",
+                  "alt": "Figura 1. De la colección de archivos sueltos al catálogo con Pandas (elaboración propia).",
+                  "label": "Abre esta infografía para ver el catálogo",
+                  "sub": "De archivos sueltos a tabla",
+                  "caption": "Figura 1. De la colección de archivos sueltos al catálogo con Pandas (elaboración propia)."
+                }
+              ]
             }
           ]
         },

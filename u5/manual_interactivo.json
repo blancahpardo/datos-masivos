@@ -83,7 +83,7 @@
           "blocks": [
             {
               "type": "p",
-              "text": "La forma más extendida de organizar una base de datos es el modelo relacional, formulado por Codd (1970): los datos se organizan en tablas con filas y columnas, cada tabla tiene una clave que identifica de forma única cada fila, y las tablas pueden relacionarse entre sí a través de esas claves. La propuesta de Codd sigue siendo, más de cinco décadas después, la base de la inmensa mayoría de las bases de datos que se usan en el mundo profesional, desde pequeñas bases de datos locales hasta los sistemas sobre los que se apoyan empresas enteras."
+              "text": "La forma más extendida de organizar una base de datos es el modelo relacional, formulado por {{cite:ref0}}Codd (1970){{/cite}}: los datos se organizan en tablas con filas y columnas, cada tabla tiene una clave que identifica de forma única cada fila, y las tablas pueden relacionarse entre sí a través de esas claves. La propuesta de Codd sigue siendo, más de cinco décadas después, la base de la inmensa mayoría de las bases de datos que se usan en el mundo profesional, desde pequeñas bases de datos locales hasta los sistemas sobre los que se apoyan empresas enteras."
             },
             {
               "type": "p",
@@ -122,19 +122,25 @@
           "blocks": [
             {
               "type": "p",
-              "text": "Disponer de dos fuentes de datos no es lo mismo que tener una respuesta. Dong y Srivastava (2015) señalan que la integración de datos a gran escala —combinar información procedente de fuentes distintas, con formatos y grados de fiabilidad distintos— es en sí misma una de las tareas más exigentes del trabajo con datos masivos, precisamente porque las fuentes rara vez usan las mismas convenciones: un mismo término puede estar escrito con mayúsculas distintas, con espacios de más o con variantes ortográficas en una fuente y en otra."
+              "text": "Disponer de dos fuentes de datos no es lo mismo que tener una respuesta. {{cite:ref2}}Dong y Srivastava (2015){{/cite}} señalan que la integración de datos a gran escala —combinar información procedente de fuentes distintas, con formatos y grados de fiabilidad distintos— es en sí misma una de las tareas más exigentes del trabajo con datos masivos, precisamente porque las fuentes rara vez usan las mismas convenciones: un mismo término puede estar escrito con mayúsculas distintas, con espacios de más o con variantes ortográficas en una fuente y en otra."
             },
             {
-              "type": "p",
-              "text": "Por eso, antes de cruzar dos tablas conviene normalizar el campo que se va a comparar (por ejemplo, pasar todo a minúsculas y eliminar espacios sobrantes), tal y como ya se hizo con otros campos de texto en la Unidad 2. Cruzar sin esa normalización previa puede hacer que términos que en la práctica son el mismo no se reconozcan como coincidentes."
-            },
-            {
-              "type": "image_modal",
-              "src": "img_cruce.svg",
-              "alt": "Figura 1. Cruce de la base de datos interna con el glosario externo (elaboración propia).",
-              "label": "Abre esta infografía para ver el cruce de fuentes",
-              "sub": "Base interna + glosario externo",
-              "caption": "Figura 1. Cruce de la base de datos interna con el glosario externo (elaboración propia)."
+              "type": "reveal_group",
+              "label": "Seguir leyendo ↓",
+              "blocks": [
+                {
+                  "type": "p",
+                  "text": "Por eso, antes de cruzar dos tablas conviene normalizar el campo que se va a comparar (por ejemplo, pasar todo a minúsculas y eliminar espacios sobrantes), tal y como ya se hizo con otros campos de texto en la Unidad 2. Cruzar sin esa normalización previa puede hacer que términos que en la práctica son el mismo no se reconozcan como coincidentes."
+                },
+                {
+                  "type": "image_modal",
+                  "src": "img_cruce.svg",
+                  "alt": "Figura 1. Cruce de la base de datos interna con el glosario externo (elaboración propia).",
+                  "label": "Abre esta infografía para ver el cruce de fuentes",
+                  "sub": "Base interna + glosario externo",
+                  "caption": "Figura 1. Cruce de la base de datos interna con el glosario externo (elaboración propia)."
+                }
+              ]
             }
           ]
         },

@@ -74,7 +74,7 @@
           "blocks": [
             {
               "type": "p",
-              "text": "Kandel et al. (2012) documentan que buena parte del tiempo de un proyecto de datos se dedica a tareas de preparación y estructuración, no al análisis en sí. Cuando esas tareas se repiten periódicamente sobre datos con la misma estructura —un informe mensual, un resumen semanal—, repetir manualmente cada vez el mismo proceso no solo consume tiempo: introduce el riesgo de que una persona distinta, o la misma persona en un mes distinto, lo haga de forma ligeramente diferente, sin darse cuenta."
+              "text": "{{cite:ref1}}Kandel et al. (2012){{/cite}} documentan que buena parte del tiempo de un proyecto de datos se dedica a tareas de preparación y estructuración, no al análisis en sí. Cuando esas tareas se repiten periódicamente sobre datos con la misma estructura —un informe mensual, un resumen semanal—, repetir manualmente cada vez el mismo proceso no solo consume tiempo: introduce el riesgo de que una persona distinta, o la misma persona en un mes distinto, lo haga de forma ligeramente diferente, sin darse cuenta."
             },
             {
               "type": "p",
@@ -90,16 +90,22 @@
               "text": "Hasta ahora, los cuadernos de esta asignatura resolvían un encargo concreto sobre un archivo concreto. Para que ese mismo trabajo se pueda repetir sobre archivos distintos sin copiar y pegar celdas, conviene organizarlo como una función: un bloque de código con un nombre, que recibe una entrada (por ejemplo, la ruta de un archivo mensual) y devuelve o guarda un resultado."
             },
             {
-              "type": "p",
-              "text": "La diferencia práctica es importante. Un cuaderno que procesa `neologismos_enero.csv` tiene ese nombre de archivo escrito en alguna celda. Una función `generar_informe_mensual(ruta_archivo)` puede llamarse una vez con `\"neologismos_enero.csv\"` y otra con `\"neologismos_febrero.csv\"`, ejecutando exactamente el mismo código las dos veces, sin haber tenido que modificar ni revisar nada entre una llamada y otra."
-            },
-            {
-              "type": "image_modal",
-              "src": "img_funcion.svg",
-              "alt": "Figura 1. La misma función aplicada a archivos mensuales distintos (elaboración propia).",
-              "label": "Abre esta infografía para ver la automatización",
-              "sub": "La misma función, tres meses",
-              "caption": "Figura 1. La misma función aplicada a archivos mensuales distintos (elaboración propia)."
+              "type": "reveal_group",
+              "label": "Seguir leyendo ↓",
+              "blocks": [
+                {
+                  "type": "p",
+                  "text": "La diferencia práctica es importante. Un cuaderno que procesa `neologismos_enero.csv` tiene ese nombre de archivo escrito en alguna celda. Una función `generar_informe_mensual(ruta_archivo)` puede llamarse una vez con `\"neologismos_enero.csv\"` y otra con `\"neologismos_febrero.csv\"`, ejecutando exactamente el mismo código las dos veces, sin haber tenido que modificar ni revisar nada entre una llamada y otra."
+                },
+                {
+                  "type": "image_modal",
+                  "src": "img_funcion.svg",
+                  "alt": "Figura 1. La misma función aplicada a archivos mensuales distintos (elaboración propia).",
+                  "label": "Abre esta infografía para ver la automatización",
+                  "sub": "La misma función, sin cambios",
+                  "caption": "Figura 1. La misma función aplicada a archivos mensuales distintos (elaboración propia)."
+                }
+              ]
             }
           ]
         },
@@ -108,7 +114,7 @@
           "blocks": [
             {
               "type": "p",
-              "text": "Wilson et al. (2017), ya citados en la Unidad 4 a propósito de la organización de archivos y carpetas, también recomiendan de forma expresa automatizar mediante scripts cualquier tarea que vaya a repetirse, en vez de fiarse de pasos manuales que alguien pueda olvidar u omitir. Un cuaderno interactivo es una herramienta excelente para explorar y desarrollar una solución paso a paso, pero cuando esa solución ya está resuelta y hay que repetirla de forma periódica, conviene convertirla en un script que se pueda ejecutar de principio a fin sin intervención manual."
+              "text": "{{cite:ref8}}Wilson et al. (2017){{/cite}}, ya citados en la Unidad 4 a propósito de la organización de archivos y carpetas, también recomiendan de forma expresa automatizar mediante scripts cualquier tarea que vaya a repetirse, en vez de fiarse de pasos manuales que alguien pueda olvidar u omitir. Un cuaderno interactivo es una herramienta excelente para explorar y desarrollar una solución paso a paso, pero cuando esa solución ya está resuelta y hay que repetirla de forma periódica, conviene convertirla en un script que se pueda ejecutar de principio a fin sin intervención manual."
             },
             {
               "type": "p",
@@ -134,27 +140,33 @@
           "blocks": [
             {
               "type": "p",
-              "text": "Automatizar el cálculo es solo la mitad del encargo: el resultado tiene que poder entenderse. Nussbaumer Knaflic (2015) insiste en que comunicar datos de forma eficaz exige pensar primero en quién va a leer el resultado y qué necesita entender, antes de decidir qué gráfico o qué tabla usar. Un boletín mensual dirigido al público general del Observatorio no necesita una tabla completa con centenares de neologismos: necesita una idea clara y rápida de cuáles son los términos del mes."
+              "text": "Automatizar el cálculo es solo la mitad del encargo: el resultado tiene que poder entenderse. Nussbaumer {{cite:ref3}}Knaflic (2015){{/cite}} insiste en que comunicar datos de forma eficaz exige pensar primero en quién va a leer el resultado y qué necesita entender, antes de decidir qué gráfico o qué tabla usar. Un boletín mensual dirigido al público general del Observatorio no necesita una tabla completa con centenares de neologismos: necesita una idea clara y rápida de cuáles son los términos del mes."
             },
             {
-              "type": "p",
-              "text": "Una técnica concreta que propone la misma autora para llegar a esa claridad es resumir, antes de construir ningún gráfico, el mensaje central en una sola frase: no «los datos de neologismos de este mes», sino algo del tipo «este mes, los anglicismos han dominado claramente el boletín, con casi el doble de menciones que la segunda categoría». Esa frase —lo que Nussbaumer Knaflic (2015) llama la idea central del informe— es la que debe guiar qué tabla y qué gráfico se construyen después, y no al revés."
-            },
-            {
-              "type": "p",
-              "text": "Aquí conviene recuperar lo aprendido en la Unidad 3: un gráfico de barras simple, con los términos más frecuentes ordenados de mayor a menor, comunica esa idea mucho mejor que una tabla extensa. La diferencia respecto a la Unidad 3 no está en la técnica —se sigue usando Matplotlib—, sino en el propósito: en la Unidad 3 el gráfico servía para explorar datos; aquí sirve para comunicar una conclusión ya obtenida a alguien que no va a leer el código ni el proceso, solo el resultado."
-            },
-            {
-              "type": "p",
-              "text": "Nussbaumer Knaflic (2015) explica además que el ojo humano detecta antes que nada ciertos atributos visuales —el color, el tamaño, la posición— antes incluso de leer ninguna etiqueta; a esto lo llama atributos preatentivos. Aplicado al gráfico de barras de esta unidad, esto tiene una consecuencia práctica sencilla: si el boletín quiere destacar el término más frecuente del mes, basta con pintar esa barra de un color distinto al resto, en vez de dejar todas las barras del mismo color y confiar en que quien lea el gráfico haga ese trabajo de comparación por su cuenta."
-            },
-            {
-              "type": "p",
-              "text": "Además, un gráfico de barras solo comunica una comparación honesta si el eje de valores empieza en cero: como la altura de cada barra es lo que el ojo interpreta como la cantidad que representa, recortar el eje para empezar en un valor distinto de cero exagera visualmente las diferencias entre términos, aunque los números de la tabla sean correctos (Wilke, 2019). Esta es una de las pocas reglas de diseño de gráficos que no admite excepciones cuando se trabaja con barras, y conviene revisarla en el propio gráfico antes de darlo por bueno."
-            },
-            {
-              "type": "p",
-              "text": "Para acompañar el gráfico con texto, Dougherty e Ilyankou (2021) proponen una estructura sencilla de tres pasos: primero enunciar el hallazgo (qué ha pasado), después mostrar la evidencia visual que lo respalda (el gráfico), y por último explicar por qué importa (qué debería hacer o saber quien lee el boletín a partir de ese dato). Aplicado al Observatorio de Neologismos, esto significa no limitarse a poner un gráfico de barras sin contexto, sino acompañarlo de una frase que diga qué categoría ha destacado este mes y por qué eso es relevante para quien sigue el boletín."
+              "type": "reveal_group",
+              "label": "Seguir leyendo ↓",
+              "blocks": [
+                {
+                  "type": "p",
+                  "text": "Una técnica concreta que propone la misma autora para llegar a esa claridad es resumir, antes de construir ningún gráfico, el mensaje central en una sola frase: no «los datos de neologismos de este mes», sino algo del tipo «este mes, los anglicismos han dominado claramente el boletín, con casi el doble de menciones que la segunda categoría». Esa frase —lo que Nussbaumer {{cite:ref3}}Knaflic (2015){{/cite}} llama la idea central del informe— es la que debe guiar qué tabla y qué gráfico se construyen después, y no al revés."
+                },
+                {
+                  "type": "p",
+                  "text": "Aquí conviene recuperar lo aprendido en la Unidad 3: un gráfico de barras simple, con los términos más frecuentes ordenados de mayor a menor, comunica esa idea mucho mejor que una tabla extensa. La diferencia respecto a la Unidad 3 no está en la técnica —se sigue usando Matplotlib—, sino en el propósito: en la Unidad 3 el gráfico servía para explorar datos; aquí sirve para comunicar una conclusión ya obtenida a alguien que no va a leer el código ni el proceso, solo el resultado."
+                },
+                {
+                  "type": "p",
+                  "text": "Nussbaumer {{cite:ref3}}Knaflic (2015){{/cite}} explica además que el ojo humano detecta antes que nada ciertos atributos visuales —el color, el tamaño, la posición— antes incluso de leer ninguna etiqueta; a esto lo llama atributos preatentivos. Aplicado al gráfico de barras de esta unidad, esto tiene una consecuencia práctica sencilla: si el boletín quiere destacar el término más frecuente del mes, basta con pintar esa barra de un color distinto al resto, en vez de dejar todas las barras del mismo color y confiar en que quien lea el gráfico haga ese trabajo de comparación por su cuenta."
+                },
+                {
+                  "type": "p",
+                  "text": "Además, un gráfico de barras solo comunica una comparación honesta si el eje de valores empieza en cero: como la altura de cada barra es lo que el ojo interpreta como la cantidad que representa, recortar el eje para empezar en un valor distinto de cero exagera visualmente las diferencias entre términos, aunque los números de la tabla sean correctos (Wilke, 2019). Esta es una de las pocas reglas de diseño de gráficos que no admite excepciones cuando se trabaja con barras, y conviene revisarla en el propio gráfico antes de darlo por bueno."
+                },
+                {
+                  "type": "p",
+                  "text": "Para acompañar el gráfico con texto, {{cite:ref0}}Dougherty e Ilyankou (2021){{/cite}} proponen una estructura sencilla de tres pasos: primero enunciar el hallazgo (qué ha pasado), después mostrar la evidencia visual que lo respalda (el gráfico), y por último explicar por qué importa (qué debería hacer o saber quien lee el boletín a partir de ese dato). Aplicado al Observatorio de Neologismos, esto significa no limitarse a poner un gráfico de barras sin contexto, sino acompañarlo de una frase que diga qué categoría ha destacado este mes y por qué eso es relevante para quien sigue el boletín."
+                }
+              ]
             }
           ]
         },

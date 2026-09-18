@@ -1,33 +1,40 @@
-<svg viewBox="0 0 700 380" xmlns="http://www.w3.org/2000/svg" font-family="Georgia, 'Times New Roman', serif">
-  <rect width="700" height="380" fill="#F1E7D6"/>
-  <rect x="16" y="16" width="668" height="348" fill="none" stroke="#B5A88F" stroke-width="1.5" stroke-dasharray="4 5"/>
-  <text x="350" y="52" text-anchor="middle" font-size="13" letter-spacing="2.5" fill="#A23B2E" font-family="Arial, Helvetica, sans-serif" font-weight="bold">CRUCE DE FUENTES</text>
-  <text x="350" y="82" text-anchor="middle" font-size="20" fill="#1E1812" font-weight="bold">Base interna + glosario externo</text>
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="Georgia, 'Times New Roman', serif">
+  <rect width="900" height="520" fill="#F1E7D6"/>
+  <rect x="16" y="16" width="868" height="488" fill="none" stroke="#B5A88F" stroke-width="1.5" stroke-dasharray="4 5"/>
+  <text x="450" y="48" text-anchor="middle" font-size="12" letter-spacing="2.5" fill="#A23B2E" font-family="Arial, Helvetica, sans-serif" font-weight="bold">DATOS REALES DEL CUADERNO</text>
+  <text x="450" y="76" text-anchor="middle" font-size="20" fill="#1E1812" font-weight="bold">Cruce de la base interna con el glosario externo</text>
 
-  <rect x="60" y="130" width="200" height="120" fill="#fff" stroke="#3E6146" stroke-width="2"/>
-  <rect x="60" y="130" width="200" height="26" fill="#4F7A57"/>
-  <text x="160" y="148" text-anchor="middle" font-size="11" fill="#fff" font-family="Arial, Helvetica, sans-serif" font-weight="bold">terminos_internos (SQL)</text>
-  <text x="75" y="175" font-size="10" fill="#3A322A" font-family="Arial, Helvetica, sans-serif">término</text>
-  <text x="75" y="195" font-size="10" fill="#3A322A" font-family="Arial, Helvetica, sans-serif">proyecto</text>
-  <text x="75" y="215" font-size="10" fill="#3A322A" font-family="Arial, Helvetica, sans-serif">equivalente</text>
-  <text x="75" y="235" font-size="10" fill="#7A6F5C" font-family="Arial, Helvetica, sans-serif">…</text>
+  <rect x="50" y="115" width="230" height="90" rx="6" fill="#1E1812"/>
+  <text x="165" y="145" text-anchor="middle" font-size="13" fill="#F1E7D6" font-family="Arial, Helvetica, sans-serif" font-weight="bold">BASE DE DATOS INTERNA</text>
+  <text x="165" y="170" text-anchor="middle" font-size="10.5" fill="#D9CBB0" font-family="Courier New, monospace">terminos_internos.db</text>
+  <text x="165" y="188" text-anchor="middle" font-size="10.5" fill="#D9CBB0" font-family="Courier New, monospace">read_sql_query()</text>
 
-  <rect x="440" y="130" width="200" height="120" fill="#fff" stroke="#A23B2E" stroke-width="2"/>
-  <rect x="440" y="130" width="200" height="26" fill="#A23B2E"/>
-  <text x="540" y="148" text-anchor="middle" font-size="11" fill="#fff" font-family="Arial, Helvetica, sans-serif" font-weight="bold">glosario_externo (CSV)</text>
-  <text x="455" y="175" font-size="10" fill="#3A322A" font-family="Arial, Helvetica, sans-serif">término</text>
-  <text x="455" y="195" font-size="10" fill="#3A322A" font-family="Arial, Helvetica, sans-serif">fuente</text>
-  <text x="455" y="215" font-size="10" fill="#3A322A" font-family="Arial, Helvetica, sans-serif">idioma</text>
-  <text x="455" y="235" font-size="10" fill="#7A6F5C" font-family="Arial, Helvetica, sans-serif">…</text>
+  <rect x="50" y="220" width="230" height="90" rx="6" fill="#3A322A"/>
+  <text x="165" y="250" text-anchor="middle" font-size="13" fill="#F1E7D6" font-family="Arial, Helvetica, sans-serif" font-weight="bold">GLOSARIO EXTERNO</text>
+  <text x="165" y="275" text-anchor="middle" font-size="10.5" fill="#D9CBB0" font-family="Arial, Helvetica, sans-serif">archivo publicado en una URL</text>
+  <text x="165" y="293" text-anchor="middle" font-size="10.5" fill="#D9CBB0" font-family="Courier New, monospace">read_csv()</text>
 
-  <path d="M260 190 C 320 190 320 190 350 190" stroke="#7A6F5C" stroke-width="2" fill="none"/>
-  <path d="M440 190 C 380 190 380 190 350 190" stroke="#7A6F5C" stroke-width="2" fill="none"/>
-  <circle cx="350" cy="190" r="26" fill="#D2652F" fill-opacity="0.85"/>
-  <text x="350" y="195" text-anchor="middle" font-size="11" fill="#fff" font-family="Arial, Helvetica, sans-serif" font-weight="bold">merge</text>
-  <text x="350" y="238" text-anchor="middle" font-size="10.5" fill="#3A322A" font-family="Arial, Helvetica, sans-serif">término normalizado</text>
+  <path d="M280 160 L 345 205" stroke="#7A6F5C" stroke-width="2" fill="none" marker-end="none"/>
+  <path d="M280 265 L 345 220" stroke="#7A6F5C" stroke-width="2" fill="none"/>
 
-  <rect x="230" y="270" width="240" height="46" fill="#1E1812" rx="4"/>
-  <text x="350" y="298" text-anchor="middle" font-size="12" fill="#F1E7D6" font-family="Arial, Helvetica, sans-serif" font-weight="bold">tabla de cobertura por proyecto</text>
+  <rect x="350" y="160" width="165" height="105" rx="6" fill="#D2652F"/>
+  <text x="432" y="192" text-anchor="middle" font-size="14" fill="#fff" font-family="Arial, Helvetica, sans-serif" font-weight="bold">NORMALIZAR</text>
+  <text x="432" y="216" text-anchor="middle" font-size="10.5" fill="#F6E4D6" font-family="Arial, Helvetica, sans-serif">minúsculas, sin</text>
+  <text x="432" y="231" text-anchor="middle" font-size="10.5" fill="#F6E4D6" font-family="Arial, Helvetica, sans-serif">espacios sobrantes</text>
+  <text x="432" y="252" text-anchor="middle" font-size="9.5" fill="#F6E4D6" font-family="Arial, Helvetica, sans-serif" font-style="italic">el campo que se compara</text>
 
-  <text x="350" y="352" text-anchor="middle" font-size="10.5" fill="#7A6F5C" font-style="italic" font-family="Arial, Helvetica, sans-serif">© Dra. Blanca Hernández Pardo · Datos Masivos · Unidad 5 — elaboración propia</text>
+  <text x="540" y="218" text-anchor="middle" font-size="22" fill="#7A6F5C">→</text>
+
+  <rect x="565" y="160" width="235" height="105" rx="6" fill="#F1E7D6" stroke="#4F7A57" stroke-width="2"/>
+  <text x="682" y="195" text-anchor="middle" font-size="14" fill="#3E6146" font-family="Arial, Helvetica, sans-serif" font-weight="bold">CRUCE</text>
+  <text x="682" y="222" text-anchor="middle" font-size="10.5" fill="#3A322A" font-family="Arial, Helvetica, sans-serif">informe de cobertura</text>
+  <text x="682" y="238" text-anchor="middle" font-size="10.5" fill="#3A322A" font-family="Arial, Helvetica, sans-serif">terminológica</text>
+  <text x="682" y="257" text-anchor="middle" font-size="9.5" fill="#7A6F5C" font-family="Arial, Helvetica, sans-serif" font-style="italic">qué términos tienen equivalente</text>
+
+  <rect x="50" y="340" width="750" height="110" rx="6" fill="#EAD9BE"/>
+  <text x="425" y="372" text-anchor="middle" font-size="13" fill="#1E1812" font-family="Arial, Helvetica, sans-serif" font-weight="bold">Por qué normalizar antes de cruzar</text>
+  <text x="425" y="400" text-anchor="middle" font-size="11.5" fill="#3A322A" font-family="Arial, Helvetica, sans-serif">«Recurso de Apelación» y «recurso de apelación» son el mismo término para una persona,</text>
+  <text x="425" y="420" text-anchor="middle" font-size="11.5" fill="#3A322A" font-family="Arial, Helvetica, sans-serif">pero dos valores distintos para un cruce exacto: sin normalizar, no se reconocen como coincidentes.</text>
+
+  <text x="450" y="480" text-anchor="middle" font-size="10.5" fill="#7A6F5C" font-style="italic" font-family="Arial, Helvetica, sans-serif">© Dra. Blanca Hernández Pardo · Datos Masivos · Unidad 5 — recreación del diagrama real del manual</text>
 </svg>

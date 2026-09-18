@@ -1,42 +1,36 @@
-<svg viewBox="0 0 700 380" xmlns="http://www.w3.org/2000/svg" font-family="Georgia, 'Times New Roman', serif">
-  <rect width="700" height="380" fill="#F1E7D6"/>
-  <rect x="16" y="16" width="668" height="348" fill="none" stroke="#B5A88F" stroke-width="1.5" stroke-dasharray="4 5"/>
-  <text x="350" y="52" text-anchor="middle" font-size="13" letter-spacing="2.5" fill="#A23B2E" font-family="Arial, Helvetica, sans-serif" font-weight="bold">DE ARCHIVOS SUELTOS A CATÁLOGO</text>
-  <text x="350" y="82" text-anchor="middle" font-size="20" fill="#1E1812" font-weight="bold">La colección de recortes, ordenada con Pandas</text>
+<svg viewBox="0 0 900 400" xmlns="http://www.w3.org/2000/svg" font-family="Georgia, 'Times New Roman', serif">
+  <rect width="900" height="400" fill="#F1E7D6"/>
+  <rect x="16" y="16" width="868" height="368" fill="none" stroke="#B5A88F" stroke-width="1.5" stroke-dasharray="4 5"/>
+  <text x="450" y="50" text-anchor="middle" font-size="12" letter-spacing="2.5" fill="#A23B2E" font-family="Arial, Helvetica, sans-serif" font-weight="bold">DATOS REALES DEL CUADERNO</text>
+  <text x="450" y="78" text-anchor="middle" font-size="20" fill="#1E1812" font-weight="bold">De archivos sueltos al catálogo con Pandas</text>
 
-  <!-- loose files -->
-  <g>
-    <rect x="70" y="150" width="60" height="72" rx="4" fill="#D9CBB0" stroke="#7A6F5C" stroke-width="1.5" transform="rotate(-8 100 186)"/>
-    <rect x="95" y="140" width="60" height="72" rx="4" fill="#F1E7D6" stroke="#7A6F5C" stroke-width="1.5" transform="rotate(4 125 176)"/>
-    <rect x="80" y="160" width="60" height="72" rx="4" fill="#D2652F" fill-opacity="0.2" stroke="#A23B2E" stroke-width="1.5" transform="rotate(-2 110 196)"/>
-    <text x="115" y="260" text-anchor="middle" font-size="12" fill="#3A322A" font-family="Arial, Helvetica, sans-serif">.txt sueltos</text>
-    <text x="115" y="278" text-anchor="middle" font-size="11" fill="#7A6F5C" font-family="Arial, Helvetica, sans-serif">prensa_nacional/</text>
-    <text x="115" y="294" text-anchor="middle" font-size="11" fill="#7A6F5C" font-family="Arial, Helvetica, sans-serif">prensa_regional/</text>
-  </g>
+  <rect x="50" y="130" width="230" height="170" rx="6" fill="#F1E7D6" stroke="#1E1812" stroke-width="2"/>
+  <text x="165" y="162" text-anchor="middle" font-size="14" fill="#1E1812" font-family="Courier New, monospace" font-weight="bold">coleccion_orellana/</text>
+  <text x="70" y="195" font-size="11.5" fill="#3A322A" font-family="Courier New, monospace">cartas/carta_001.txt</text>
+  <text x="70" y="220" font-size="11.5" fill="#3A322A" font-family="Courier New, monospace">manuscritos/ms_014.txt</text>
+  <text x="70" y="245" font-size="11.5" fill="#3A322A" font-family="Courier New, monospace">prensa/recorte_233.txt</text>
+  <text x="70" y="270" font-size="11.5" fill="#7A6F5C" font-family="Courier New, monospace">…</text>
 
-  <text x="270" y="195" text-anchor="middle" font-size="30" fill="#7A6F5C">→</text>
-  <text x="270" y="215" text-anchor="middle" font-size="11" fill="#3A322A" font-family="Arial, Helvetica, sans-serif">pathlib +</text>
-  <text x="270" y="230" text-anchor="middle" font-size="11" fill="#3A322A" font-family="Arial, Helvetica, sans-serif">Pandas</text>
+  <text x="330" y="205" text-anchor="middle" font-size="22" fill="#7A6F5C">→</text>
+  <text x="330" y="228" text-anchor="middle" font-size="10.5" fill="#3A322A" font-family="Arial, Helvetica, sans-serif">recorrer con</text>
+  <text x="330" y="241" text-anchor="middle" font-size="10.5" fill="#3A322A" font-family="Courier New, monospace">pathlib.rglob()</text>
 
-  <!-- table -->
-  <g>
-    <rect x="330" y="140" width="300" height="130" fill="#fff" stroke="#3A322A" stroke-width="1.5"/>
-    <rect x="330" y="140" width="300" height="26" fill="#1E1812"/>
-    <text x="345" y="158" font-size="10" fill="#F1E7D6" font-family="Arial, Helvetica, sans-serif">nombre</text>
-    <text x="440" y="158" font-size="10" fill="#F1E7D6" font-family="Arial, Helvetica, sans-serif">subcarpeta</text>
-    <text x="540" y="158" font-size="10" fill="#F1E7D6" font-family="Arial, Helvetica, sans-serif">palabras</text>
-    <line x1="330" y1="192" x2="630" y2="192" stroke="#D9CBB0" stroke-width="1"/>
-    <line x1="330" y1="218" x2="630" y2="218" stroke="#D9CBB0" stroke-width="1"/>
-    <line x1="330" y1="244" x2="630" y2="244" stroke="#D9CBB0" stroke-width="1"/>
-    <text x="345" y="182" font-size="9.5" fill="#3A322A" font-family="Arial, Helvetica, sans-serif">recorte_001.txt</text>
-    <text x="440" y="182" font-size="9.5" fill="#3A322A" font-family="Arial, Helvetica, sans-serif">nacional</text>
-    <text x="345" y="208" font-size="9.5" fill="#3A322A" font-family="Arial, Helvetica, sans-serif">recorte_002.txt</text>
-    <text x="440" y="208" font-size="9.5" fill="#3A322A" font-family="Arial, Helvetica, sans-serif">regional</text>
-    <text x="345" y="234" font-size="9.5" fill="#3A322A" font-family="Arial, Helvetica, sans-serif">recorte_003.txt</text>
-    <text x="440" y="234" font-size="9.5" fill="#3A322A" font-family="Arial, Helvetica, sans-serif">nacional</text>
-    <text x="345" y="260" font-size="9.5" fill="#7A6F5C" font-family="Arial, Helvetica, sans-serif">…</text>
-  </g>
-  <text x="480" y="300" text-anchor="middle" font-size="12" fill="#3A322A" font-family="Arial, Helvetica, sans-serif">un registro por documento, listo para agregar por fondo</text>
+  <rect x="365" y="130" width="230" height="170" rx="6" fill="#4F7A57"/>
+  <text x="480" y="162" text-anchor="middle" font-size="14" fill="#F1E7D6" font-family="Arial, Helvetica, sans-serif" font-weight="bold">por cada archivo</text>
+  <text x="480" y="196" text-anchor="middle" font-size="12" fill="#E4EEE1" font-family="Arial, Helvetica, sans-serif">nombre</text>
+  <text x="480" y="219" text-anchor="middle" font-size="12" fill="#E4EEE1" font-family="Arial, Helvetica, sans-serif">subcarpeta</text>
+  <text x="480" y="242" text-anchor="middle" font-size="12" fill="#E4EEE1" font-family="Arial, Helvetica, sans-serif">tamaño (bytes)</text>
+  <text x="480" y="265" text-anchor="middle" font-size="12" fill="#E4EEE1" font-family="Arial, Helvetica, sans-serif">nº palabras aprox.</text>
 
-  <text x="350" y="352" text-anchor="middle" font-size="10.5" fill="#7A6F5C" font-style="italic" font-family="Arial, Helvetica, sans-serif">© Dra. Blanca Hernández Pardo · Datos Masivos · Unidad 4 — elaboración propia</text>
+  <text x="645" y="205" text-anchor="middle" font-size="22" fill="#7A6F5C">→</text>
+  <text x="645" y="228" text-anchor="middle" font-size="10.5" fill="#3A322A" font-family="Arial, Helvetica, sans-serif">una fila</text>
+  <text x="645" y="241" text-anchor="middle" font-size="10.5" fill="#3A322A" font-family="Arial, Helvetica, sans-serif">por documento</text>
+
+  <rect x="680" y="130" width="170" height="170" rx="6" fill="#1E1812"/>
+  <text x="765" y="170" text-anchor="middle" font-size="14" fill="#F1E7D6" font-family="Arial, Helvetica, sans-serif" font-weight="bold">catálogo</text>
+  <text x="765" y="192" text-anchor="middle" font-size="14" fill="#F1E7D6" font-family="Arial, Helvetica, sans-serif" font-weight="bold">(Pandas)</text>
+  <text x="765" y="230" text-anchor="middle" font-size="12" fill="#D9CBB0" font-family="Arial, Helvetica, sans-serif" font-style="italic">dataframe</text>
+  <text x="765" y="260" text-anchor="middle" font-size="11.5" fill="#D9CBB0" font-family="Arial, Helvetica, sans-serif">1 fila = 1 documento</text>
+
+  <text x="450" y="340" text-anchor="middle" font-size="10.5" fill="#7A6F5C" font-style="italic" font-family="Arial, Helvetica, sans-serif">© Dra. Blanca Hernández Pardo · Datos Masivos · Unidad 4 — recreación del diagrama real del manual</text>
 </svg>

@@ -93,16 +93,22 @@
               "text": "La preparación de datos es una fase metodológica, no solo técnica. En un proyecto de análisis lingüístico o documental, cada decisión tomada antes de interpretar los datos puede afectar a las conclusiones posteriores. Si se eliminan registros sin justificarlo, si se cambian nombres de columnas de manera confusa o si se mezclan fases de limpieza e interpretación, el análisis pierde trazabilidad."
             },
             {
-              "type": "p",
-              "text": "La literatura sobre análisis de datos ha insistido en que el trabajo real de los analistas incluye actividades de búsqueda, limpieza, transformación, validación y comunicación, no únicamente la producción de resultados finales (Kandel et al., 2012). En contextos de ciencia de datos con Python, Pandas se ha consolidado precisamente porque ofrece estructuras y operaciones orientadas al trabajo con datos tabulares y etiquetados (McKinney, 2010; The pandas development team, 2020)."
-            },
-            {
-              "type": "p",
-              "text": "Kandel et al. (2012) documentan, a partir de entrevistas a analistas en entornos empresariales reales, que gran parte del tiempo de un proyecto de análisis se dedica a localizar, limpiar y estructurar los datos antes de que pueda empezar cualquier análisis propiamente dicho, muy por delante del tiempo dedicado a producir resultados o visualizaciones finales. Esta observación es la que da sentido a que Datos Masivos dedique una unidad completa a la preparación antes de llegar a la exploración o la visualización."
-            },
-            {
-              "type": "p",
-              "text": "En esta unidad trabajaremos con un archivo JSON de mensajes. Aunque el *dataset* no es enorme, sí permite simular una situación frecuente: recibir datos textuales semiestructurados y convertirlos en una tabla. La escala no se entiende solo como cantidad de filas; también incluye variedad de campos, presencia de metadatos, formatos anidados y necesidad de reproducibilidad."
+              "type": "reveal_group",
+              "label": "Seguir leyendo ↓",
+              "blocks": [
+                {
+                  "type": "p",
+                  "text": "La literatura sobre análisis de datos ha insistido en que el trabajo real de los analistas incluye actividades de búsqueda, limpieza, transformación, validación y comunicación, no únicamente la producción de resultados finales (Kandel et al., 2012). En contextos de ciencia de datos con Python, Pandas se ha consolidado precisamente porque ofrece estructuras y operaciones orientadas al trabajo con datos tabulares y etiquetados (McKinney, 2010; The pandas development team, 2020)."
+                },
+                {
+                  "type": "p",
+                  "text": "{{cite:ref0}}Kandel et al. (2012){{/cite}} documentan, a partir de entrevistas a analistas en entornos empresariales reales, que gran parte del tiempo de un proyecto de análisis se dedica a localizar, limpiar y estructurar los datos antes de que pueda empezar cualquier análisis propiamente dicho, muy por delante del tiempo dedicado a producir resultados o visualizaciones finales. Esta observación es la que da sentido a que Datos Masivos dedique una unidad completa a la preparación antes de llegar a la exploración o la visualización."
+                },
+                {
+                  "type": "p",
+                  "text": "En esta unidad trabajaremos con un archivo JSON de mensajes. Aunque el *dataset* no es enorme, sí permite simular una situación frecuente: recibir datos textuales semiestructurados y convertirlos en una tabla. La escala no se entiende solo como cantidad de filas; también incluye variedad de campos, presencia de metadatos, formatos anidados y necesidad de reproducibilidad."
+                }
+              ]
             }
           ]
         },
@@ -114,20 +120,39 @@
               "text": "Conviene separar tres objetos:"
             },
             {
-              "type": "p",
-              "text": "**Archivo bruto.** Es la fuente original. Debe conservarse sin modificaciones. Si se altera el archivo bruto, se pierde la posibilidad de volver al punto de partida y comprobar qué decisiones se aplicaron."
-            },
-            {
-              "type": "p",
-              "text": "***Dataframe* (tabla de datos) de trabajo.** Es la representación tabular que se manipula en Python. En Pandas, un *dataframe* permite organizar datos en filas y columnas, consultar su estructura, seleccionar variables y aplicar transformaciones."
-            },
-            {
-              "type": "p",
-              "text": "**Archivo preparado.** Es la versión exportada después de aplicar decisiones documentadas. Puede ser un CSV, un Excel u otro formato adecuado. No sustituye al archivo bruto: lo acompaña como producto derivado."
-            },
-            {
-              "type": "p",
-              "text": "Esta distinción encaja con la idea de reproducibilidad que se asocia al uso de notebooks: combinar código, explicación y resultados facilita que otra persona pueda entender el proceso seguido (Kluyver et al., 2016). Por eso, en los cuadernos de esta unidad no basta con que el código funcione; también debe explicar qué hace."
+              "type": "reveal_group",
+              "label": "Seguir leyendo ↓",
+              "blocks": [
+                {
+                  "type": "term_card_group",
+                  "items": [
+                    {
+                      "term": "Archivo bruto.",
+                      "desc": "Es la fuente original. Debe conservarse sin modificaciones. Si se altera el archivo bruto, se pierde la posibilidad de volver al punto de partida y comprobar qué decisiones se aplicaron."
+                    },
+                    {
+                      "term": "*Dataframe* (tabla de datos) de trabajo.",
+                      "desc": "Es la representación tabular que se manipula en Python. En Pandas, un *dataframe* permite organizar datos en filas y columnas, consultar su estructura, seleccionar variables y aplicar transformaciones."
+                    },
+                    {
+                      "term": "Archivo preparado.",
+                      "desc": "Es la versión exportada después de aplicar decisiones documentadas. Puede ser un CSV, un Excel u otro formato adecuado. No sustituye al archivo bruto: lo acompaña como producto derivado."
+                    }
+                  ]
+                },
+                {
+                  "type": "image_modal",
+                  "src": "img_flujo.svg",
+                  "alt": "Figura 1. Del archivo bruto al archivo preparado, pasando por el dataframe de trabajo (elaboración propia).",
+                  "label": "Abre esta infografía para ver el flujo completo",
+                  "sub": "Del archivo bruto al archivo preparado",
+                  "caption": "Figura 1. Del archivo bruto al archivo preparado, pasando por el dataframe de trabajo (elaboración propia)."
+                },
+                {
+                  "type": "p",
+                  "text": "Esta distinción encaja con la idea de reproducibilidad que se asocia al uso de notebooks: combinar código, explicación y resultados facilita que otra persona pueda entender el proceso seguido (Kluyver et al., 2016). Por eso, en los cuadernos de esta unidad no basta con que el código funcione; también debe explicar qué hace."
+                }
+              ]
             }
           ]
         },
@@ -136,27 +161,51 @@
           "blocks": [
             {
               "type": "p",
-              "text": "Una tabla útil no es simplemente una tabla que se abre en una hoja de cálculo. Debe tener una organización coherente. Wickham (2014) formuló el principio de *tidy data*: cada variable debe formar una columna, cada observación debe formar una fila y cada tipo de unidad observacional debe estar en una tabla. Esta formulación es muy útil para introducir una disciplina básica de organización."
+              "text": "Una tabla útil no es simplemente una tabla que se abre en una hoja de cálculo. Debe tener una organización coherente. {{cite:ref5}}Wickham (2014){{/cite}} formuló el principio de *tidy data*: cada variable debe formar una columna, cada observación debe formar una fila y cada tipo de unidad observacional debe estar en una tabla. Esta formulación es muy útil para introducir una disciplina básica de organización."
             },
             {
-              "type": "p",
-              "text": "En el caso de esta unidad, cada fila representa un mensaje. Las columnas representan variables como identificador, fecha, texto, idioma, usuario, ubicación, fuente de publicación o indicadores derivados. Si mezcláramos en una misma celda datos de usuario, texto, fecha y metadatos, la tabla sería difícil de revisar y de reutilizar."
-            },
-            {
-              "type": "p",
-              "text": "Ejemplo aplicado:"
-            },
-            {
-              "type": "p",
-              "text": "| Fila | Qué representa | Ejemplo de variable | | --- | --- | --- | | Una observación | Un mensaje individual | `id_str` | | Una variable | Una propiedad del mensaje | `texto` | | Una variable derivada | Una medida calculada sin interpretar | `longitud_texto` |"
-            },
-            {
-              "type": "p",
-              "text": "Tabla 1. Correspondencia entre fila, variable y variable derivada según el principio de datos ordenados (elaboración propia)."
-            },
-            {
-              "type": "p",
-              "text": "Esta organización ayuda a preparar el terreno para unidades posteriores: exploración, visualización o minería textual. Pero en esta unidad todavía no analizamos el significado de los mensajes."
+              "type": "reveal_group",
+              "label": "Seguir leyendo ↓",
+              "blocks": [
+                {
+                  "type": "p",
+                  "text": "En el caso de esta unidad, cada fila representa un mensaje. Las columnas representan variables como identificador, fecha, texto, idioma, usuario, ubicación, fuente de publicación o indicadores derivados. Si mezcláramos en una misma celda datos de usuario, texto, fecha y metadatos, la tabla sería difícil de revisar y de reutilizar."
+                },
+                {
+                  "type": "p",
+                  "text": "Ejemplo aplicado:"
+                },
+                {
+                  "type": "table",
+                  "rows": [
+                    [
+                      "Fila",
+                      "Qué representa",
+                      "Ejemplo de variable"
+                    ],
+                    [
+                      "Una observación",
+                      "Un mensaje individual",
+                      "`id_str`"
+                    ],
+                    [
+                      "Una variable",
+                      "Una propiedad del mensaje",
+                      "`texto`"
+                    ],
+                    [
+                      "Una variable derivada",
+                      "Una medida calculada sin interpretar",
+                      "`longitud_texto`"
+                    ]
+                  ],
+                  "title": "Tabla 1. Correspondencia entre fila, variable y variable derivada según el principio de datos ordenados (elaboración propia)."
+                },
+                {
+                  "type": "p",
+                  "text": "Esta organización ayuda a preparar el terreno para unidades posteriores: exploración, visualización o minería textual. Pero en esta unidad todavía no analizamos el significado de los mensajes."
+                }
+              ]
             }
           ]
         },
@@ -168,34 +217,34 @@
               "text": "Importar datos significa cargar un archivo externo en el entorno de trabajo. En los materiales fuente de Data Science con Python se trabaja con `read_csv`, importación de ficheros y creación de *dataframes*. En esta unidad usamos además el módulo estándar `json`, porque el material de trabajo es un archivo JSON."
             },
             {
-              "type": "p",
-              "text": "En un cuaderno reproducible, la ruta del archivo debe estar clara. Si el archivo está en la misma carpeta que el cuaderno, puede usarse una ruta relativa como:"
-            },
-            {
-              "type": "ol",
-              "items": [
-                "ruta_json = Path(\"U2_tweets_brutos.json\")"
+              "type": "reveal_group",
+              "label": "Seguir leyendo ↓",
+              "blocks": [
+                {
+                  "type": "p",
+                  "text": "En un cuaderno reproducible, la ruta del archivo debe estar clara. Si el archivo está en la misma carpeta que el cuaderno, puede usarse una ruta relativa como:"
+                },
+                {
+                  "type": "code",
+                  "code": "ruta_json = Path(\"U2_tweets_brutos.json\")"
+                },
+                {
+                  "type": "p",
+                  "text": "Si el archivo está en otra ubicación, debe indicarse la ruta exacta en el equipo local. En ese caso, el cuaderno debe avisar al estudiante de que modifique la ruta. Lo importante es evitar rutas absolutas ocultas que solo funcionen en el ordenador de quien creó el material."
+                },
+                {
+                  "type": "p",
+                  "text": "Una importación responsable incluye una primera comprobación:"
+                },
+                {
+                  "type": "code",
+                  "code": "len(tweets)\ntype(tweets)\ntype(tweets[0])"
+                },
+                {
+                  "type": "p",
+                  "text": "Estas instrucciones permiten saber cuántos registros se han cargado y qué tipo de estructura se está manipulando."
+                }
               ]
-            },
-            {
-              "type": "p",
-              "text": "Si el archivo está en otra ubicación, debe indicarse la ruta exacta en el equipo local. En ese caso, el cuaderno debe avisar al estudiante de que modifique la ruta. Lo importante es evitar rutas absolutas ocultas que solo funcionen en el ordenador de quien creó el material."
-            },
-            {
-              "type": "p",
-              "text": "Una importación responsable incluye una primera comprobación:"
-            },
-            {
-              "type": "ol",
-              "items": [
-                "len(tweets)",
-                "type(tweets)",
-                "type(tweets[0])"
-              ]
-            },
-            {
-              "type": "p",
-              "text": "Estas instrucciones permiten saber cuántos registros se han cargado y qué tipo de estructura se está manipulando."
             }
           ]
         },
@@ -207,22 +256,28 @@
               "text": "Antes de limpiar, hay que mirar. La inspección inicial permite responder preguntas básicas:"
             },
             {
-              "type": "ul",
-              "items": [
-                "¿cuántos registros hay?;",
-                "¿qué campos aparecen?;",
-                "¿hay datos anidados?;",
-                "¿cuáles son relevantes para el encargo?;",
-                "¿qué campos parecen técnicos y cuáles pueden interpretarse como variables de análisis?"
+              "type": "reveal_group",
+              "label": "Seguir leyendo ↓",
+              "blocks": [
+                {
+                  "type": "ul",
+                  "items": [
+                    "¿cuántos registros hay?;",
+                    "¿qué campos aparecen?;",
+                    "¿hay datos anidados?;",
+                    "¿cuáles son relevantes para el encargo?;",
+                    "¿qué campos parecen técnicos y cuáles pueden interpretarse como variables de análisis?"
+                  ]
+                },
+                {
+                  "type": "p",
+                  "text": "En un JSON de redes sociales, un registro puede incluir campos principales y subcampos. Por ejemplo, la información del usuario puede estar dentro de `user`; las menciones y URL, dentro de `entities`; y el idioma, dentro de `metadata`. Convertir esa estructura en tabla exige seleccionar y extraer."
+                },
+                {
+                  "type": "p",
+                  "text": "No todo campo disponible debe pasar al *dataset* preparado. En un encargo profesional, la selección se justifica por el objetivo. Si el cliente necesita una tabla para revisión documental inicial, quizá basten identificador, fecha, texto, idioma, usuario, ubicación declarada, fuente e indicadores básicos."
+                }
               ]
-            },
-            {
-              "type": "p",
-              "text": "En un JSON de redes sociales, un registro puede incluir campos principales y subcampos. Por ejemplo, la información del usuario puede estar dentro de `user`; las menciones y URL, dentro de `entities`; y el idioma, dentro de `metadata`. Convertir esa estructura en tabla exige seleccionar y extraer."
-            },
-            {
-              "type": "p",
-              "text": "No todo campo disponible debe pasar al *dataset* preparado. En un encargo profesional, la selección se justifica por el objetivo. Si el cliente necesita una tabla para revisión documental inicial, quizá basten identificador, fecha, texto, idioma, usuario, ubicación declarada, fuente e indicadores básicos."
             }
           ]
         },
@@ -234,27 +289,33 @@
               "text": "Seleccionar variables es decidir qué columnas se conservan. Los materiales fuente sobre selección de filas y columnas en *dataframes* permiten trabajar esta operación con Pandas. En esta unidad, la selección debe responder al encargo de LexiData Observatorio."
             },
             {
-              "type": "p",
-              "text": "Una selección mínima puede incluir:"
-            },
-            {
-              "type": "ul",
-              "items": [
-                "`id_str`: identificador del mensaje;",
-                "`fecha_publicacion`: fecha del registro;",
-                "`texto`: contenido textual conservado;",
-                "`idioma`: idioma declarado en los metadatos;",
-                "`usuario`: nombre de usuario o identificador público;",
-                "`ubicacion_usuario`: ubicación declarada, si existe;",
-                "`fuente`: aplicación o cliente desde el que se publicó;",
-                "`num_menciones`, `num_urls`, `num_hashtags`: indicadores descriptivos;",
-                "`es_retuit`: marca básica de difusión;",
-                "`longitud_texto`: longitud del mensaje."
+              "type": "reveal_group",
+              "label": "Seguir leyendo ↓",
+              "blocks": [
+                {
+                  "type": "p",
+                  "text": "Una selección mínima puede incluir:"
+                },
+                {
+                  "type": "ul",
+                  "items": [
+                    "`id_str`: identificador del mensaje;",
+                    "`fecha_publicacion`: fecha del registro;",
+                    "`texto`: contenido textual conservado;",
+                    "`idioma`: idioma declarado en los metadatos;",
+                    "`usuario`: nombre de usuario o identificador público;",
+                    "`ubicacion_usuario`: ubicación declarada, si existe;",
+                    "`fuente`: aplicación o cliente desde el que se publicó;",
+                    "`num_menciones`, `num_urls`, `num_hashtags`: indicadores descriptivos;",
+                    "`es_retuit`: marca básica de difusión;",
+                    "`longitud_texto`: longitud del mensaje."
+                  ]
+                },
+                {
+                  "type": "p",
+                  "text": "La clave está en que estas variables no interpretan el contenido. Contar URL o medir longitud no equivale a afirmar qué piensa una persona ni qué sentimiento expresa un mensaje."
+                }
               ]
-            },
-            {
-              "type": "p",
-              "text": "La clave está en que estas variables no interpretan el contenido. Contar URL o medir longitud no equivale a afirmar qué piensa una persona ni qué sentimiento expresa un mensaje."
             }
           ]
         },
@@ -266,34 +327,34 @@
               "text": "Los datos anidados son habituales en JSON. Un campo puede contener otro diccionario o una lista. Para llevarlos a una tabla, necesitamos extraer valores concretos."
             },
             {
-              "type": "p",
-              "text": "Ejemplo simplificado:"
-            },
-            {
-              "type": "ol",
-              "items": [
-                "usuario = tweet.get(\"user\") or {}",
-                "ubicacion = usuario.get(\"location\") or None"
+              "type": "reveal_group",
+              "label": "Seguir leyendo ↓",
+              "blocks": [
+                {
+                  "type": "p",
+                  "text": "Ejemplo simplificado:"
+                },
+                {
+                  "type": "code",
+                  "code": "usuario = tweet.get(\"user\") or {}\nubicacion = usuario.get(\"location\") or None"
+                },
+                {
+                  "type": "p",
+                  "text": "Aquí se accede a la información del usuario. Si el campo no existe o está vacío, se conserva como ausencia. Después podremos decidir si se deja como valor nulo o se sustituye por una etiqueta expresa."
+                },
+                {
+                  "type": "p",
+                  "text": "Otro ejemplo:"
+                },
+                {
+                  "type": "code",
+                  "code": "entidades = tweet.get(\"entities\") or {}\nnum_urls = len(entidades.get(\"urls\") or [])"
+                },
+                {
+                  "type": "p",
+                  "text": "La operación no lee el significado de las URL. Solo cuenta cuántas aparecen. Es una transformación descriptiva."
+                }
               ]
-            },
-            {
-              "type": "p",
-              "text": "Aquí se accede a la información del usuario. Si el campo no existe o está vacío, se conserva como ausencia. Después podremos decidir si se deja como valor nulo o se sustituye por una etiqueta expresa."
-            },
-            {
-              "type": "p",
-              "text": "Otro ejemplo:"
-            },
-            {
-              "type": "ol",
-              "items": [
-                "entidades = tweet.get(\"entities\") or {}",
-                "num_urls = len(entidades.get(\"urls\") or [])"
-              ]
-            },
-            {
-              "type": "p",
-              "text": "La operación no lee el significado de las URL. Solo cuenta cuántas aparecen. Es una transformación descriptiva."
             }
           ]
         },
@@ -302,22 +363,28 @@
           "blocks": [
             {
               "type": "p",
-              "text": "Rahm y Do (2000) explican que la limpieza de datos se ocupa de detectar y corregir errores e inconsistencias para mejorar la calidad del conjunto de datos. En esta unidad no automatizamos una limpieza compleja, pero sí aplicamos comprobaciones básicas:"
+              "text": "{{cite:ref3}}Rahm y Do (2000){{/cite}} explican que la limpieza de datos se ocupa de detectar y corregir errores e inconsistencias para mejorar la calidad del conjunto de datos. En esta unidad no automatizamos una limpieza compleja, pero sí aplicamos comprobaciones básicas:"
             },
             {
-              "type": "ul",
-              "items": [
-                "duplicados por identificador;",
-                "valores ausentes;",
-                "campos vacíos representados como cadena vacía;",
-                "campos técnicos con marcas HTML;",
-                "tipos de datos inesperados;",
-                "registros con idioma distinto al esperado."
+              "type": "reveal_group",
+              "label": "Seguir leyendo ↓",
+              "blocks": [
+                {
+                  "type": "ul",
+                  "items": [
+                    "duplicados por identificador;",
+                    "valores ausentes;",
+                    "campos vacíos representados como cadena vacía;",
+                    "campos técnicos con marcas HTML;",
+                    "tipos de datos inesperados;",
+                    "registros con idioma distinto al esperado."
+                  ]
+                },
+                {
+                  "type": "p",
+                  "text": "Detectar no significa borrar. Si 45 mensajes no tienen ubicación declarada, eliminarlos sin más sería una decisión fuerte. Podría sesgar el conjunto si los mensajes sin ubicación comparten alguna característica. Una decisión más prudente consiste en etiquetar la ausencia como `sin_ubicacion` y documentarlo."
+                }
               ]
-            },
-            {
-              "type": "p",
-              "text": "Detectar no significa borrar. Si 45 mensajes no tienen ubicación declarada, eliminarlos sin más sería una decisión fuerte. Podría sesgar el conjunto si los mensajes sin ubicación comparten alguna característica. Una decisión más prudente consiste en etiquetar la ausencia como `sin_ubicacion` y documentarlo."
             }
           ]
         },
@@ -353,18 +420,22 @@
               "text": "Exportar el *dataset* preparado crea un producto que puede revisarse fuera del cuaderno. En Pandas, la operación habitual es:"
             },
             {
-              "type": "ol",
-              "items": [
-                "df_limpio.to_csv(\"U2_tweets_preparados_profesor.csv\", index=False, encoding=\"utf-8\")"
+              "type": "reveal_group",
+              "label": "Seguir leyendo ↓",
+              "blocks": [
+                {
+                  "type": "code",
+                  "code": "df_limpio.to_csv(\"U2_tweets_preparados_profesor.csv\", index=False, encoding=\"utf-8\")"
+                },
+                {
+                  "type": "p",
+                  "text": "El parámetro `index=False` evita añadir una columna de índice artificial. La codificación `utf-8` ayuda a conservar caracteres propios del español. Después de exportar, conviene abrir el archivo o volver a cargarlo para comprobar que tiene las columnas esperadas."
+                },
+                {
+                  "type": "p",
+                  "text": "La documentación es parte del producto. Un CSV sin explicación puede ser ambiguo. Debe indicarse qué se ha hecho, qué se ha conservado, qué se ha cambiado y qué queda pendiente de validación."
+                }
               ]
-            },
-            {
-              "type": "p",
-              "text": "El parámetro `index=False` evita añadir una columna de índice artificial. La codificación `utf-8` ayuda a conservar caracteres propios del español. Después de exportar, conviene abrir el archivo o volver a cargarlo para comprobar que tiene las columnas esperadas."
-            },
-            {
-              "type": "p",
-              "text": "La documentación es parte del producto. Un CSV sin explicación puede ser ambiguo. Debe indicarse qué se ha hecho, qué se ha conservado, qué se ha cambiado y qué queda pendiente de validación."
             }
           ]
         },
@@ -443,7 +514,7 @@
             },
             {
               "term": "Por qué no se eliminan registros solo porque resulten incómodos o incompletos.",
-              "desc": "No es una cuestión de estilo, sino de honestidad metodológica. Descartar datos por razones distintas a un criterio de calidad documentado (duplicados, campos corruptos) equivale a decidir en la práctica qué parte de la realidad se muestra, sin decirlo. Kandel et al. (2012) señalan justo este tipo de decisión como una de las más delicadas del trabajo real con datos, y por eso debe quedar siempre documentada, nunca oculta."
+              "desc": "No es una cuestión de estilo, sino de honestidad metodológica. Descartar datos por razones distintas a un criterio de calidad documentado (duplicados, campos corruptos) equivale a decidir en la práctica qué parte de la realidad se muestra, sin decirlo. {{cite:ref0}}Kandel et al. (2012){{/cite}} señalan justo este tipo de decisión como una de las más delicadas del trabajo real con datos, y por eso debe quedar siempre documentada, nunca oculta."
             },
             {
               "term": "Por qué no se inventan metadatos que no aparecen en la fuente.",
