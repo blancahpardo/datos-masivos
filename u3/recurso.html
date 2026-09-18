@@ -2,24 +2,1068 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Próximamente</title>
-<style>
-  body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
-    background:#1E1812;color:#F1E7D6;font-family:Georgia,'Times New Roman',serif;text-align:center;padding:24px;}
-  .box{max-width:420px}
-  .stamp{display:inline-block;border:2px solid #D2652F;color:#D2652F;padding:6px 18px;
-    letter-spacing:3px;text-transform:uppercase;font-size:13px;font-weight:bold;margin-bottom:18px;
-    font-family:Arial,Helvetica,sans-serif;}
-  h1{font-size:26px;margin:0 0 10px}
-  p{font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#B5A88F}
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>El Mirador · Estación de Observación de Datos</title>
+<meta name="author" content="Dr.ª Blanca Hernández Pardo">
+<meta name="description" content="Recurso interactivo de la Unidad 3 de Datos Masivos: exploración y visualización de datos masivos.">
+<style>html,body{margin:0;padding:0} *,*::before,*::after{box-sizing:border-box}</style>
 </head>
 <body>
-  <div class="box">
-    <div class="stamp">Próximamente</div>
-    <h1>Este recurso ya existe</h1>
-    <p>Está preparado, pero todavía no se ha subido a la web.</p>
+<style>
+  /* ============ TOKENS ============ */
+  :root{
+    --paper:#E9EDE1; --deck:#DDE3D4; --panel:#F2F5EC; --bezel:#C2C9B6; --bezel-2:#AFB8A2;
+    --ink:#17262A; --ink-2:#41565B; --ink-3:#6E8288;
+    --amber:#D9741B; --amber-soft:#F6E4CE; --teal:#0F6E6E; --teal-soft:#D5E6E3;
+    --brick:#9E3024; --brick-soft:#F3DCD7;
+    --grid:rgba(23,38,42,.07); --grid-5:rgba(23,38,42,.13);
+    --shadow:rgba(23,38,42,.16); --hair:rgba(23,38,42,.22);
+    --serif:Georgia,"Iowan Old Style","Times New Roman",serif;
+    --grot:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --r:3px; --step:clamp(.98rem,.94rem + .18vw,1.06rem);
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --paper:#141B1C; --deck:#0E1415; --panel:#1B2426; --bezel:#2C3739; --bezel-2:#3A4749;
+      --ink:#E4EAE2; --ink-2:#A8B8B6; --ink-3:#7C8E8C;
+      --amber:#F09140; --amber-soft:#3A2A18; --teal:#37A9A5; --teal-soft:#152C2C;
+      --brick:#E0705E; --brick-soft:#38201C;
+      --grid:rgba(228,234,226,.055); --grid-5:rgba(228,234,226,.11);
+      --shadow:rgba(0,0,0,.5); --hair:rgba(228,234,226,.2);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#141B1C; --deck:#0E1415; --panel:#1B2426; --bezel:#2C3739; --bezel-2:#3A4749;
+    --ink:#E4EAE2; --ink-2:#A8B8B6; --ink-3:#7C8E8C;
+    --amber:#F09140; --amber-soft:#3A2A18; --teal:#37A9A5; --teal-soft:#152C2C;
+    --brick:#E0705E; --brick-soft:#38201C;
+    --grid:rgba(228,234,226,.055); --grid-5:rgba(228,234,226,.11);
+    --shadow:rgba(0,0,0,.5); --hair:rgba(228,234,226,.2);
+  }
+  :root[data-theme="light"]{
+    --paper:#E9EDE1; --deck:#DDE3D4; --panel:#F2F5EC; --bezel:#C2C9B6; --bezel-2:#AFB8A2;
+    --ink:#17262A; --ink-2:#41565B; --ink-3:#6E8288;
+    --amber:#D9741B; --amber-soft:#F6E4CE; --teal:#0F6E6E; --teal-soft:#D5E6E3;
+    --brick:#9E3024; --brick-soft:#F3DCD7;
+    --grid:rgba(23,38,42,.07); --grid-5:rgba(23,38,42,.13);
+    --shadow:rgba(23,38,42,.16); --hair:rgba(23,38,42,.22);
+  }
+  *{box-sizing:border-box}
+
+  .deck{
+    min-height:100vh; color:var(--ink); background-color:var(--deck);
+    background-image:
+      linear-gradient(var(--grid) 1px,transparent 1px),
+      linear-gradient(90deg,var(--grid) 1px,transparent 1px),
+      linear-gradient(var(--grid-5) 1px,transparent 1px),
+      linear-gradient(90deg,var(--grid-5) 1px,transparent 1px);
+    background-size:8px 8px,8px 8px,40px 40px,40px 40px;
+    font-family:var(--grot); font-size:var(--step); line-height:1.6;
+    padding:0 clamp(.7rem,3vw,2rem) 4rem;
+  }
+  .wrap{max-width:980px;margin:0 auto}
+  .prose{max-width:62ch}
+
+  .readout{
+    position:sticky; top:0; z-index:50;
+    margin:0 calc(-1*clamp(.7rem,3vw,2rem)) 2rem;
+    padding:.55rem clamp(.7rem,3vw,2rem);
+    background:var(--bezel); border-bottom:1px solid var(--hair);
+    display:flex; align-items:center; gap:.9rem; flex-wrap:wrap;
+    font-family:var(--mono); font-size:.68rem; letter-spacing:.1em; text-transform:uppercase;
+  }
+  .readout .lamp{width:7px;height:7px;border-radius:50%;background:var(--amber);flex:none;
+    box-shadow:0 0 0 3px color-mix(in srgb,var(--amber) 22%,transparent)}
+  .readout .rname{font-weight:700;color:var(--ink)}
+  .readout .spacer{flex:1 1 auto}
+  .readout .stat{color:var(--ink-2);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .readout .stat b{color:var(--ink);font-weight:700}
+  .bar{height:4px;flex:0 0 118px;background:var(--bezel-2);border-radius:2px;overflow:hidden}
+  .bar i{display:block;height:100%;width:0%;background:var(--amber);transition:width .5s cubic-bezier(.2,.7,.3,1)}
+  .tbtn{font:inherit;letter-spacing:inherit;text-transform:inherit;background:transparent;
+    border:1px solid var(--hair);color:var(--ink-2);padding:.2rem .5rem;border-radius:var(--r);cursor:pointer}
+  .tbtn:hover{color:var(--ink);border-color:var(--ink-3)}
+
+  .hero{padding:1rem 0 2.4rem}
+  .stamp{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--mono);font-size:.66rem;
+    letter-spacing:.16em;text-transform:uppercase;color:var(--ink-2);border:1px solid var(--hair);
+    border-radius:var(--r);padding:.3rem .6rem;margin-bottom:1.4rem}
+  .stamp s{width:5px;height:5px;background:var(--teal);border-radius:50%;flex:none}
+  h1{font-family:var(--grot);font-weight:800;letter-spacing:-.035em;line-height:.94;
+    font-size:clamp(2.5rem,8.5vw,5.1rem);margin:0 0 .1em;text-wrap:balance}
+  h1 em{font-style:normal;color:var(--amber)}
+  .sub{font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--ink-3);margin:0 0 1.6rem}
+  .lede{font-family:var(--serif);font-size:1.14rem;line-height:1.68;color:var(--ink-2);margin:0 0 1rem}
+  .lede strong{color:var(--ink);font-weight:400;box-shadow:inset 0 -.5em 0 var(--amber-soft)}
+
+  .note{background:var(--paper);border:1px solid var(--hair);border-left:4px solid var(--teal);
+    border-radius:0 var(--r) var(--r) 0;padding:1.1rem 1.3rem;margin:2rem 0;
+    font-family:var(--serif);color:var(--ink-2);line-height:1.66}
+  .note h4{font-family:var(--mono);font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--teal);margin:0 0 .5rem;font-weight:700}
+  .note p{margin:0 0 .6rem} .note p:last-child{margin:0}
+  .note cite{font-size:.9em;color:var(--ink-3);font-style:italic}
+
+  .sala{display:flex;align-items:baseline;gap:.9rem;margin:3.4rem 0 .3rem;padding-bottom:.5rem;
+    border-bottom:2px solid var(--ink)}
+  .sala .k{font-family:var(--mono);font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--amber);font-weight:700}
+  .sala h2{font-family:var(--grot);font-weight:800;letter-spacing:-.02em;
+    font-size:clamp(1.3rem,3.6vw,1.75rem);margin:0}
+  .sala-d{font-family:var(--serif);color:var(--ink-3);margin:.6rem 0 0;max-width:62ch;font-size:.98rem}
+
+  .inst{background:var(--bezel);border:1px solid var(--hair);border-radius:var(--r);
+    margin:1.6rem 0;box-shadow:0 1px 0 var(--shadow);overflow:hidden}
+  .plate{display:flex;align-items:center;gap:.7rem;padding:.6rem .85rem;flex-wrap:wrap}
+  .plate .no{font-family:var(--mono);font-weight:700;font-size:.7rem;letter-spacing:.06em;
+    background:var(--ink);color:var(--paper);padding:.22rem .42rem;border-radius:2px;flex:none}
+  .plate .ttl{font-family:var(--grot);font-weight:700;letter-spacing:-.01em;font-size:1.02rem}
+  .plate .ref{font-family:var(--mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2)}
+  .plate .sp{flex:1 1 auto}
+  .chip{font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;
+    padding:.2rem .45rem;border-radius:2px;border:1px solid var(--hair);color:var(--ink-2);white-space:nowrap}
+  .chip.ok{background:var(--teal);border-color:var(--teal);color:#fff}
+  .screen{background:var(--panel);border-top:1px solid var(--hair);padding:1.1rem .95rem 1.2rem}
+  .q{font-family:var(--serif);font-size:1.06rem;line-height:1.6;margin:0 0 .3rem}
+  .qh{font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ink-3);margin:0 0 .45rem}
+  .brief{font-family:var(--serif);color:var(--ink-2);margin:.5rem 0 1rem;font-size:1rem}
+  .brief ol{margin:.6rem 0 .6rem 1.1rem;padding:0} .brief li{margin:.22rem 0}
+  .brief b{color:var(--ink)}
+  .howto{font-family:var(--mono);font-size:.72rem;line-height:1.7;color:var(--ink-2);
+    background:var(--paper);border:1px solid var(--hair);border-radius:var(--r);
+    padding:.6rem .75rem;margin:.8rem 0 0}
+  .howto b{color:var(--ink)}
+
+  .opts{display:grid;gap:.5rem;margin:.9rem 0 0}
+  .opts.two{grid-template-columns:repeat(auto-fit,minmax(215px,1fr))}
+  .opt{display:flex;align-items:flex-start;gap:.6rem;text-align:left;width:100%;font:inherit;
+    color:var(--ink);background:var(--paper);border:1px solid var(--hair);border-radius:var(--r);
+    padding:.6rem .7rem;cursor:pointer;transition:border-color .14s,background .14s,transform .14s}
+  .opt:hover:not(:disabled){border-color:var(--amber);transform:translateX(2px)}
+  .opt:disabled{cursor:default}
+  .opt .tag{font-family:var(--mono);font-size:.66rem;font-weight:700;color:var(--ink-3);
+    border:1px solid var(--hair);border-radius:2px;padding:.05rem .3rem;flex:none;margin-top:.12rem}
+  .opt .txt{flex:1} .opt .txt small{display:block;color:var(--ink-3);font-size:.82rem;margin-top:.15rem;line-height:1.45}
+  .opt.good{border-color:var(--teal);background:var(--teal-soft)}
+  .opt.good .tag{border-color:var(--teal);color:var(--teal)}
+  .opt.bad{border-color:var(--brick);background:var(--brick-soft)}
+  .opt.bad .tag{border-color:var(--brick);color:var(--brick)}
+
+  .verdict{display:none;margin:.95rem 0 0;padding:.8rem .9rem;border-radius:var(--r);
+    font-family:var(--serif);line-height:1.6;border:1px solid var(--hair);background:var(--paper)}
+  .verdict.on{display:block;animation:rise .3s ease-out}
+  .verdict b.vh{font-family:var(--mono);font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;
+    display:block;margin-bottom:.35rem}
+  .verdict.y{border-left:4px solid var(--teal)} .verdict.y b.vh{color:var(--teal)}
+  .verdict.n{border-left:4px solid var(--brick)} .verdict.n b.vh{color:var(--brick)}
+  .verdict.w{border-left:4px solid var(--amber)} .verdict.w b.vh{color:var(--amber)}
+  .verdict p{margin:0 0 .55rem} .verdict p:last-child{margin:0}
+  @keyframes rise{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){.verdict.on{animation:none}}
+
+  .refs{margin:1.1rem 0 0;padding:.75rem .85rem;background:var(--paper);border:1px solid var(--hair);
+    border-radius:var(--r)}
+  .refs h5{font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ink-3);margin:0 0 .45rem;font-weight:700}
+  .refs p{font-family:var(--serif);font-size:.82rem;line-height:1.55;color:var(--ink-2);
+    margin:0 0 .45rem;padding-left:1.4rem;text-indent:-1.4rem}
+  .refs p:last-child{margin:0}
+  .refs i{font-style:italic}
+  .refs a{color:var(--teal);text-decoration:none;word-break:break-all}
+  .refs a:hover{text-decoration:underline}
+
+  pre,code{font-family:var(--mono)}
+  .code{background:var(--paper);border:1px solid var(--hair);border-left:3px solid var(--ink-3);
+    border-radius:0 var(--r) var(--r) 0;padding:.7rem .85rem;margin:.9rem 0;
+    font-size:.82rem;line-height:1.75;overflow-x:auto;white-space:pre}
+  .code .cm{color:var(--ink-3)} .code .kw{color:var(--teal);font-weight:700}
+  .code .st{color:var(--amber)} .code .ln{color:var(--ink-3);user-select:none}
+  .out{background:var(--paper);border:1px solid var(--hair);border-left:3px solid var(--teal);
+    border-radius:0 var(--r) var(--r) 0;padding:.7rem .85rem;margin:.6rem 0 0;
+    font-family:var(--mono);font-size:.76rem;line-height:1.65;overflow-x:auto;white-space:pre;color:var(--ink-2)}
+  .outh{font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--teal);font-weight:700;margin:.9rem 0 -.2rem}
+
+  .lines{margin:.9rem 0;border:1px solid var(--hair);border-radius:var(--r);overflow:hidden}
+  .lrow{display:flex;gap:.7rem;width:100%;text-align:left;font-family:var(--mono);font-size:.8rem;
+    background:var(--paper);color:var(--ink);border:0;border-bottom:1px solid var(--hair);
+    padding:.4rem .7rem;cursor:pointer;line-height:1.6;white-space:pre;overflow-x:auto}
+  .lrow:last-child{border-bottom:0}
+  .lrow:hover:not(:disabled){background:var(--amber-soft)}
+  .lrow:disabled{cursor:default}
+  .lrow .n{color:var(--ink-3);flex:none;user-select:none}
+  .lrow.good{background:var(--teal-soft);box-shadow:inset 3px 0 0 var(--teal)}
+  .lrow.bad{background:var(--brick-soft);box-shadow:inset 3px 0 0 var(--brick)}
+
+  .pool{display:flex;flex-wrap:wrap;gap:.45rem;margin:.9rem 0}
+  .tok{font:inherit;font-size:.9rem;text-align:left;background:var(--paper);color:var(--ink);
+    border:1px solid var(--hair);border-radius:var(--r);padding:.42rem .6rem;cursor:pointer;
+    max-width:100%;transition:border-color .14s,transform .14s}
+  .tok:hover:not(:disabled){border-color:var(--amber);transform:translateY(-1px)}
+  .tok[aria-pressed="true"]{border-color:var(--amber);box-shadow:0 0 0 2px var(--amber-soft);background:var(--amber-soft)}
+  .tok:disabled{cursor:default;opacity:.55}
+  .bins{display:grid;gap:.6rem;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));margin:1rem 0 0}
+  .bin{background:var(--paper);border:1px dashed var(--hair);border-radius:var(--r);padding:.6rem;
+    min-height:104px;display:flex;flex-direction:column;gap:.4rem;cursor:pointer;text-align:left;
+    font:inherit;color:var(--ink);transition:border-color .14s,background .14s}
+  .bin:hover:not(:disabled),.bin.armed{border-color:var(--amber);border-style:solid;background:var(--amber-soft)}
+  .bin:disabled{cursor:default}
+  .bin .bh{font-family:var(--mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700}
+  .bin .bd{font-size:.78rem;color:var(--ink-3);line-height:1.4;font-family:var(--serif)}
+  .bin.n1 .bh{color:var(--teal)} .bin.n2 .bh{color:var(--amber)} .bin.n3 .bh{color:var(--brick)}
+  .drop{display:flex;flex-direction:column;gap:.3rem;margin-top:.15rem}
+  .drop span{font-size:.8rem;padding:.28rem .45rem;border-radius:2px;background:var(--panel);
+    border:1px solid var(--hair);line-height:1.4;cursor:pointer}
+  .drop span.good{border-color:var(--teal);color:var(--teal)}
+  .drop span.bad{border-color:var(--brick);color:var(--brick)}
+
+  .rank,.seq{display:flex;flex-direction:column;gap:.4rem;margin:.9rem 0}
+  .rk,.sq{display:flex;align-items:center;gap:.65rem;background:var(--paper);border:1px solid var(--hair);
+    border-radius:var(--r);padding:.5rem .6rem}
+  .rk .pos,.sq .pos{font-family:var(--mono);font-weight:700;font-size:.72rem;color:var(--paper);
+    background:var(--ink-3);width:1.35rem;height:1.35rem;display:grid;place-items:center;
+    border-radius:2px;flex:none}
+  .rk .lbl,.sq .lbl{flex:1;font-size:.94rem}
+  .rk .lbl small{display:block;color:var(--ink-3);font-size:.8rem;font-family:var(--serif)}
+  .rk .mv,.sq .mv{display:flex;gap:.25rem;flex:none}
+  .rk .mv button,.sq .mv button{font-family:var(--mono);font-size:.8rem;line-height:1;width:1.6rem;
+    height:1.6rem;background:var(--panel);color:var(--ink-2);border:1px solid var(--hair);
+    border-radius:2px;cursor:pointer}
+  .rk .mv button:hover:not(:disabled),.sq .mv button:hover:not(:disabled){border-color:var(--amber);color:var(--ink)}
+  .rk .mv button:disabled,.sq .mv button:disabled{opacity:.3;cursor:default}
+  .rk.good,.sq.good{border-color:var(--teal);background:var(--teal-soft)}
+  .rk.good .pos,.sq.good .pos{background:var(--teal)}
+  .rk.bad,.sq.bad{border-color:var(--brick);background:var(--brick-soft)}
+  .rk.bad .pos,.sq.bad .pos{background:var(--brick)}
+  .rk.sol,.sq.sol{border-color:var(--amber);background:var(--amber-soft)}
+  .rk.sol .pos,.sq.sol .pos{background:var(--amber)}
+
+  .row{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem;align-items:center}
+  .btn{font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;
+    font-weight:700;background:var(--ink);color:var(--paper);border:1px solid var(--ink);
+    padding:.5rem .85rem;border-radius:var(--r);cursor:pointer;transition:background .14s,transform .1s}
+  .btn:hover:not(:disabled){background:var(--amber);border-color:var(--amber);color:#fff}
+  .btn:active:not(:disabled){transform:translateY(1px)}
+  .btn:disabled{opacity:.35;cursor:default}
+  .btn.gh{background:transparent;color:var(--ink-2);border-color:var(--hair)}
+  .btn.gh:hover:not(:disabled){background:transparent;color:var(--ink);border-color:var(--ink-3)}
+  .tries{font-family:var(--mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--ink-3);display:flex;align-items:center;gap:.4rem}
+  .tries s{display:flex;gap:.25rem}
+  .tries s i{width:8px;height:8px;border-radius:50%;background:var(--bezel-2);
+    border:1px solid var(--hair);display:block}
+  .tries s i.used{background:var(--brick);border-color:var(--brick)}
+  .tries s i.now{box-shadow:0 0 0 3px var(--amber-soft);border-color:var(--amber)}
+  .pips{display:flex;gap:.3rem;margin-left:auto;align-items:center}
+  .pip{width:8px;height:8px;border-radius:50%;background:var(--bezel-2);border:1px solid var(--hair)}
+  .pip.y{background:var(--teal);border-color:var(--teal)}
+  .pip.n{background:var(--brick);border-color:var(--brick)}
+  .pip.now{box-shadow:0 0 0 3px var(--amber-soft);border-color:var(--amber)}
+
+  .plot{background:var(--paper);border:1px solid var(--hair);border-radius:var(--r);
+    padding:.7rem;margin:.9rem 0 0;overflow-x:auto}
+  .plot figcaption{font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--ink-3);margin-top:.45rem;line-height:1.5}
+  svg{display:block;max-width:100%;height:auto}
+  .pen{stroke:var(--ink);fill:none;stroke-width:1;vector-effect:non-scaling-stroke}
+  .axl{font-family:var(--mono);font-size:8px;fill:var(--ink-3);letter-spacing:.06em}
+  .axt{font-family:var(--mono);font-size:9px;fill:var(--ink-2);letter-spacing:.1em;text-transform:uppercase}
+  .drawn{stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:draw .8s ease-out forwards}
+  @keyframes draw{to{stroke-dashoffset:0}}
+  .grow{transform:scaleY(0);transform-origin:bottom;animation:grow .5s cubic-bezier(.2,.8,.3,1) forwards}
+  @keyframes grow{to{transform:scaleY(1)}}
+  .pop{opacity:0;animation:pop .35s ease-out forwards}
+  @keyframes pop{to{opacity:1}}
+  @media (prefers-reduced-motion:reduce){
+    .drawn,.grow,.pop{animation:none;stroke-dashoffset:0;transform:none;opacity:1}
+  }
+
+  .final{background:var(--ink);color:var(--paper);border-radius:var(--r);padding:1.6rem 1.3rem;margin:3rem 0 0}
+  .final h3{font-family:var(--grot);font-weight:800;letter-spacing:-.02em;
+    font-size:clamp(1.3rem,4vw,1.9rem);margin:0 0 .2rem}
+  .final .sc{font-family:var(--mono);font-size:3.1rem;font-weight:700;letter-spacing:-.03em;
+    font-variant-numeric:tabular-nums;color:var(--amber);line-height:1;margin:.7rem 0 .1rem}
+  .final .scl{font-family:var(--mono);font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;opacity:.6}
+  .final .badge{display:inline-block;font-family:var(--mono);font-size:.66rem;letter-spacing:.12em;
+    text-transform:uppercase;font-weight:700;border:1px solid var(--amber);color:var(--amber);
+    padding:.3rem .6rem;border-radius:var(--r);margin:.9rem 0 0}
+  .final p{font-family:var(--serif);opacity:.82;line-height:1.66;max-width:60ch}
+  .final .lock{font-family:var(--serif);opacity:.5;font-style:italic}
+  .fbar{height:5px;background:rgba(255,255,255,.13);border-radius:3px;overflow:hidden;margin:1.1rem 0 .4rem}
+  .fbar i{display:block;height:100%;width:0%;background:var(--amber);transition:width .8s cubic-bezier(.2,.7,.3,1)}
+  .final .fref{margin-top:1.4rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,.16)}
+  .final .fref h5{font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;
+    opacity:.55;margin:0 0 .45rem;font-weight:700}
+  .final .fref p{font-size:.82rem;opacity:.6;padding-left:1.4rem;text-indent:-1.4rem;margin:0}
+
+  .foot{margin-top:3rem;padding-top:1.1rem;border-top:1px solid var(--hair);
+    font-family:var(--mono);font-size:.64rem;letter-spacing:.06em;color:var(--ink-3);line-height:1.9}
+  .foot b{color:var(--ink-2);font-weight:700}
+  :focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+</style>
+
+<div class="deck">
+
+  <div class="readout">
+    <span class="lamp" aria-hidden="true"></span>
+    <span class="rname">Mirador DataLab</span>
+    <span class="stat">Est. Observación 03</span>
+    <span class="spacer"></span>
+    <span class="stat">Módulos <b id="rMod">0</b>/7</span>
+    <div class="bar" role="progressbar" aria-label="Progreso" aria-valuemin="0" aria-valuemax="7" aria-valuenow="0" id="rBar"><i></i></div>
+    <span class="stat">Aciertos <b id="rHit">0</b>/<span id="rTot">0</span></span>
+    <button class="tbtn" id="tgl" type="button">Luz</button>
   </div>
+
+  <div class="wrap">
+
+    <header class="hero">
+      <span class="stamp"><s aria-hidden="true"></s>Datos Masivos · Unidad 3</span>
+      <h1>El <em>Mirador</em></h1>
+      <p class="sub">Estación de observación · Exploración y visualización</p>
+      <div class="prose">
+        <p class="lede">Primer día en <strong>Mirador DataLab</strong>. Sobre la mesa, el encargo del Observatorio de Lectura Pública y Participación Digital: cien mensajes públicos, ya preparados, esperando a que alguien los mire.</p>
+        <p class="lede">Nadie va a concluir nada todavía. Eso es justo lo que vas a aprender aquí: <strong>mirar antes de afirmar</strong>. Siete módulos, dos salas y un plóter que dibuja lo que le pidas — si se lo pides bien.</p>
+      </div>
+    </header>
+
+    <div class="note">
+      <h4>Nota de campo · el conjunto de datos</h4>
+      <p>Trabajas sobre una tabla real de <b>100 mensajes</b> y <b>12 variables</b>. Cada fila es un mensaje; las columnas recogen datos técnicos (desde qué aplicación se envió, cuántos caracteres tiene, cuántos hashtags, menciones y enlaces incluye, y si es un reenvío). Todos los números que verás salen de esa tabla.</p>
+      <p>No hace falta que conozcas el archivo de antemano: cada ejercicio te da los datos que necesitas para resolverlo.</p>
+      <p><cite>La exploración de datos, tal como la formuló Tukey (1977), consiste en examinar y describir un conjunto antes de cerrar hipótesis o modelos.</cite></p>
+    </div>
+
+    <div class="sala"><span class="k">Sala A</span><h2>Teoría</h2></div>
+    <p class="sala-d">Elegir el instrumento adecuado, saber por qué el ojo lo lee bien y reconocer cuándo un gráfico falla. Cuatro módulos.</p>
+
+    <section class="inst" id="m1">
+      <div class="plate"><span class="no">01</span><span class="ttl">El instrumento correcto</span>
+        <span class="sp"></span><span class="ref">Marco 1.5–1.9</span><span class="chip" id="c1">Pendiente</span></div>
+      <div class="screen">
+        <p class="brief">El Observatorio te hace una pregunta. Tú eliges qué gráfico responde mejor. Si aciertas, el plóter lo dibuja con los datos reales.</p>
+        <p class="qh" id="q1h"></p>
+        <p class="q" id="q1"></p>
+        <div class="opts two" id="o1"></div>
+        <div class="verdict" id="v1"></div>
+        <div id="p1"></div>
+        <div class="row"><button class="btn" id="n1" disabled type="button">Siguiente consulta</button>
+          <span class="pips" id="pip1"></span></div>
+        <div class="refs" id="ref1"></div>
+      </div>
+    </section>
+
+    <section class="inst" id="m2">
+      <div class="plate"><span class="no">02</span><span class="ttl">La escalera de Cleveland</span>
+        <span class="sp"></span><span class="ref">Marco 1.7 · 1.8</span><span class="chip" id="c2">Pendiente</span></div>
+      <div class="screen">
+        <p class="brief">Cuando lees un gráfico, tu ojo tiene que traducir una forma en una cantidad. Y no todas las formas se traducen igual de bien: comparar dos alturas es fácil, comparar dos círculos es mucho más difícil. Cleveland y McGill (1984) midieron esa diferencia y ordenaron las codificaciones visuales según la precisión con que las decodificamos.</p>
+        <div class="howto"><b>Qué hacer:</b> coloca las cuatro codificaciones de <b>más</b> precisa (arriba) a <b>menos</b> precisa (abajo) con las flechas, y pulsa «Comprobar escalera».<br><b>Tienes 3 intentos.</b> Si fallas, se te marcará en verde lo que esté en su sitio y en rojo lo que no, sin decirte cuál es el orden bueno.</div>
+        <div class="rank" id="r2"></div>
+        <div class="verdict" id="v2"></div>
+        <div class="row">
+          <button class="btn" id="ck2" type="button">Comprobar escalera</button>
+          <button class="btn gh" id="rs2" type="button">Reiniciar</button>
+          <span class="tries" id="t2"></span>
+        </div>
+        <div class="refs" id="ref2"></div>
+      </div>
+    </section>
+
+    <section class="inst" id="m3">
+      <div class="plate"><span class="no">03</span><span class="ttl">Control de calidad</span>
+        <span class="sp"></span><span class="ref">Marco 1.9 · Healy (2019)</span><span class="chip" id="c3">Pendiente</span></div>
+      <div class="screen">
+        <p class="brief">Healy (2019) distingue tres formas <b>independientes</b> en que un gráfico puede fallar: por estética, por contenido o por percepción. Un gráfico puede estar impecable en dos de ellas y fallar en la tercera. Diagnostica cada caso.</p>
+        <p class="qh" id="q3h"></p>
+        <p class="q" id="q3"></p>
+        <div id="p3"></div>
+        <div class="opts" id="o3"></div>
+        <div class="verdict" id="v3"></div>
+        <div class="row"><button class="btn" id="n3" disabled type="button">Siguiente caso</button>
+          <span class="pips" id="pip3"></span></div>
+        <div class="refs" id="ref3"></div>
+      </div>
+    </section>
+
+    <section class="inst" id="m4">
+      <div class="plate"><span class="no">04</span><span class="ttl">Los tres niveles</span>
+        <span class="sp"></span><span class="ref">Marco 1.10</span><span class="chip" id="c4">Pendiente</span></div>
+      <div class="screen">
+        <p class="brief">Al mirar un gráfico puedes decir tres cosas muy distintas, y confundirlas es el error más caro de esta unidad:</p>
+        <p class="brief"><b>1. Describir</b> — cuentas lo que el gráfico muestra, sin añadir nada.<br>
+          <b>2. Formular una hipótesis</b> — propones una explicación posible y reconoces que habría que comprobarla.<br>
+          <b>3. Concluir</b> — afirmas algo como demostrado. En una fase exploratoria esto <b>no está permitido</b>: exige un análisis que aquí no se ha hecho.</p>
+        <div class="howto"><b>Qué hacer:</b> abajo tienes siete frases sobre estos mensajes. Pincha una frase para seleccionarla y después pincha la cubeta a la que crees que pertenece. Si te equivocas al colocarla, vuelve a pincharla dentro de la cubeta para devolverla arriba.<br>Cuando estén las siete colocadas, pulsa «Comprobar clasificación». <b>Tienes 3 intentos.</b></div>
+        <div class="pool" id="pool4"></div>
+        <div class="bins" id="bins4"></div>
+        <div class="verdict" id="v4"></div>
+        <div class="row">
+          <button class="btn" id="ck4" disabled type="button">Comprobar clasificación</button>
+          <button class="btn gh" id="rs4" type="button">Reiniciar</button>
+          <span class="tries" id="t4"></span>
+        </div>
+      </div>
+    </section>
+
+    <div class="note">
+      <h4>Nota de campo · el paso a la práctica</h4>
+      <p>Hasta aquí has decidido <em>qué</em> mirar y <em>cómo</em> juzgarlo. Lo que viene ahora es el cuaderno: el sitio donde una ruta mal escrita o una columna con otro nombre tiran abajo un análisis correcto. No vas a ejecutar nada — vas a razonar qué haría el código si lo ejecutaras.</p>
+    </div>
+
+    <div class="sala"><span class="k">Sala B</span><h2>Práctica</h2></div>
+    <p class="sala-d">Trabajo con código en Python, sin ejecutar una sola celda. Interpretar salidas, ordenar un proceso y encontrar errores. Tres módulos.</p>
+
+    <section class="inst" id="m5">
+      <div class="plate"><span class="no">05</span><span class="ttl">Lee la salida</span>
+        <span class="sp"></span><span class="ref">Marco 1.4</span><span class="chip" id="c5">Pendiente</span></div>
+      <div class="screen">
+        <p class="brief">Antes de graficar hay que mirar la tabla. Alguien ya ha cargado los datos en Pandas y ha ejecutado <code>df.info()</code>, que resume qué contiene la tabla y de qué tipo es cada columna. <b>Esta es la salida real, y la vas a necesitar en las cuatro celdas de este módulo:</b></p>
+        <div class="out" id="info5"></div>
+        <p class="qh" id="q5h"></p>
+        <div id="code5"></div>
+        <div id="out5"></div>
+        <p class="q" id="q5"></p>
+        <div class="opts" id="o5"></div>
+        <div class="verdict" id="v5"></div>
+        <div class="row"><button class="btn" id="n5" disabled type="button">Siguiente celda</button>
+          <span class="pips" id="pip5"></span></div>
+      </div>
+    </section>
+
+    <section class="inst" id="m6">
+      <div class="plate"><span class="no">06</span><span class="ttl">Ordena el proceso</span>
+        <span class="sp"></span><span class="ref">Flujo exploratorio</span><span class="chip" id="c6">Pendiente</span></div>
+      <div class="screen">
+        <p class="brief">El Observatorio te entrega un archivo CSV con los 100 mensajes ya preparados por otra persona. Tu encargo: montar desde cero un cuaderno de Jupyter que explore esos datos y que <b>pueda ejecutarse de principio a fin en cualquier ordenador</b>, no solo en el tuyo, hasta llegar a una lectura de los patrones que encuentres.</p>
+        <div class="howto"><b>Qué hacer:</b> estos son los ocho pasos que hay que dar, desordenados. Colócalos en el orden correcto de ejecución con las flechas y pulsa «Comprobar proceso».<br>Piensa en dos cosas: qué tiene que estar listo <b>antes</b> de poder cargar nada, y qué hay que saber de los datos <b>antes</b> de dibujarlos. <b>Tienes 3 intentos.</b></div>
+        <div class="seq" id="s6"></div>
+        <div class="verdict" id="v6"></div>
+        <div class="row">
+          <button class="btn" id="ck6" type="button">Comprobar proceso</button>
+          <button class="btn gh" id="rs6" type="button">Reiniciar</button>
+          <span class="tries" id="t6"></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="inst" id="m7">
+      <div class="plate"><span class="no">07</span><span class="ttl">Depura la celda</span>
+        <span class="sp"></span><span class="ref">Reproducibilidad</span><span class="chip" id="c7">Pendiente</span></div>
+      <div class="screen">
+        <p class="brief">Cada celda tiene exactamente un fallo. Pincha la línea culpable. El enunciado te dice qué síntoma da.</p>
+        <p class="qh" id="q7h"></p>
+        <p class="q" id="q7"></p>
+        <div class="lines" id="l7"></div>
+        <div class="verdict" id="v7"></div>
+        <div class="row"><button class="btn" id="n7" disabled type="button">Siguiente celda</button>
+          <span class="pips" id="pip7"></span></div>
+      </div>
+    </section>
+
+    <section class="final" id="fin">
+      <h3>Informe de observación</h3>
+      <div class="fbar"><i id="fBar"></i></div>
+      <div class="sc" id="fSc">0<span style="font-size:.42em;opacity:.55">/24</span></div>
+      <p class="scl" id="fLbl">Estación sin completar</p>
+      <div id="fBody"><p class="lock">Completa los siete módulos para firmar el informe.</p></div>
+      <div class="fref">
+        <h5>Referencia</h5>
+        <p>Tukey, J. W. (1977). <i>Exploratory data analysis</i>. Addison-Wesley.</p>
+      </div>
+    </section>
+
+    <footer class="foot">
+      <b>© Dr.ª Blanca Hernández Pardo</b> · Datos Masivos · Unidad 3: Exploración y visualización de datos masivos<br>
+      Recurso didáctico interactivo. Los datos proceden del conjunto preparado de la unidad (100 mensajes, 12 variables).<br>
+      Queda prohibida la difusión, distribución o reproducción total o parcial de este material sin autorización expresa de la autora.
+    </footer>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  const $=s=>document.querySelector(s);
+  const el=(t,c,h)=>{const n=document.createElement(t);if(c)n.className=c;if(h!=null)n.innerHTML=h;return n;};
+  const shuffle=a=>{const b=a.slice();for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));
+    [b[i],b[j]]=[b[j],b[i]];}return b;};
+  /* baraja las opciones de un ítem y recalcula dónde quedó la correcta */
+  function mixOpts(it){const idx=shuffle(it.o.map((_,i)=>i));
+    return Object.assign({},it,{o:idx.map(i=>it.o[i]),ok:idx.indexOf(it.ok)});}
+  /* orden inicial aleatorio que nunca sea ya el correcto */
+  function mixOrder(n){let a;do{a=shuffle([...Array(n).keys()]);}while(a.every((v,i)=>v===i));return a;}
+
+  const root=document.documentElement;
+  function prefersDark(){try{return !!(window.matchMedia&&window.matchMedia("(prefers-color-scheme:dark)").matches);}catch(e){return false;}}
+  $("#tgl").addEventListener("click",()=>{
+    const cur=root.getAttribute("data-theme")||(prefersDark()?"dark":"light");
+    root.setAttribute("data-theme",cur==="dark"?"light":"dark");});
+
+  /* ---------- referencias ---------- */
+  const R={
+    cm:'Cleveland, W. S., &amp; McGill, R. (1984). Graphical perception: Theory, experimentation, and application to the development of graphical methods. <i>Journal of the American Statistical Association, 79</i>(387), 531-554. <a href="https://doi.org/10.1080/01621459.1984.10478080" target="_blank" rel="noopener">https://doi.org/10.1080/01621459.1984.10478080</a>',
+    he:'Healy, K. (2019). <i>Data visualization: A practical introduction</i>. Princeton University Press.',
+    sh:'Shneiderman, B. (1996). The eyes have it: A task by data type taxonomy for information visualizations. <i>Proceedings 1996 IEEE Symposium on Visual Languages</i>, 336-343. <a href="https://doi.org/10.1109/VL.1996.545307" target="_blank" rel="noopener">https://doi.org/10.1109/VL.1996.545307</a>'
+  };
+  function refs(host,keys){
+    $(host).innerHTML="<h5>Referencias</h5>"+keys.map(k=>"<p>"+R[k]+"</p>").join("");
+  }
+  refs("#ref1",["cm","he","sh"]); refs("#ref2",["cm","he"]); refs("#ref3",["cm","he"]);
+
+  /* ---------- estado ---------- */
+  const TOTAL_Q=24, MAXT=3;
+  const st={done:new Set(),hit:0,ans:0};
+  function sync(){
+    $("#rMod").textContent=st.done.size;
+    $("#rHit").textContent=st.hit; $("#rTot").textContent=st.ans;
+    const b=$("#rBar"); b.querySelector("i").style.width=(st.done.size/7*100)+"%";
+    b.setAttribute("aria-valuenow",st.done.size);
+    $("#fBar").style.width=(st.hit/TOTAL_Q*100)+"%";
+    $("#fSc").innerHTML=st.hit+'<span style="font-size:.42em;opacity:.55">/'+TOTAL_Q+'</span>';
+    if(st.done.size===7)report(); else $("#fLbl").textContent=st.done.size?"Estación en curso":"Estación sin completar";
+  }
+  function mark(n){$("#c"+n).textContent="Completado";$("#c"+n).classList.add("ok");st.done.add(n);sync();}
+  function scored(ok){st.ans++;if(ok)st.hit++;sync();}
+  function say(node,kind,head,html){node.className="verdict on "+kind;
+    node.innerHTML='<b class="vh">'+head+"</b>"+html;}
+  function pips(host,n,idx,res){host.innerHTML="";
+    for(let i=0;i<n;i++){const p=el("span","pip");
+      if(res[i]===true)p.classList.add("y"); else if(res[i]===false)p.classList.add("n");
+      if(i===idx&&res[i]===undefined)p.classList.add("now"); host.appendChild(p);}}
+  function tries(host,used,closed){
+    let s='<s>'; for(let i=0;i<MAXT;i++)
+      s+='<i class="'+(i<used?"used":(i===used&&!closed?"now":""))+'"></i>';
+    s+="</s>"+(closed?"Cerrado":"Intento "+Math.min(used+1,MAXT)+" de "+MAXT);
+    $(host).innerHTML=s;
+  }
+
+  /* ---------- datos reales ---------- */
+  const HIST={counts:[1,1,1,2,0,1,3,4,0,5,3,79]};
+  const BOX=[{k:"False",n:17,q1:124,med:139,q3:140,lo:104,hi:140,out:[78]},
+             {k:"True",n:83,q1:139,med:140,q3:140,lo:139,hi:140,out:[70,87,89,107,111,113,124,126,134,137]}];
+  const SC=[[0,140,1],[0,140,1],[0,140,0],[0,140,1],[0,140,1],[2,140,1],[3,138,0],[0,126,1],[0,104,0],[0,140,1],[0,89,1],[0,140,1],[0,140,1],[0,140,0],[0,140,0],[0,140,1],[0,140,1],[0,113,1],[0,140,1],[0,140,1],[0,107,1],[0,139,1],[0,140,1],[1,140,1],[0,78,0],[0,140,1],[0,131,0],[0,140,1],[0,139,1],[0,139,1],[0,140,1],[0,139,1],[0,140,1],[0,140,1],[0,140,1],[0,139,1],[0,140,1],[0,139,1],[0,140,1],[0,140,1],[0,107,1],[12,139,1],[0,140,1],[0,126,1],[0,140,1],[0,124,0],[0,140,1],[0,139,1],[0,140,1],[0,137,1],[5,132,0],[0,140,0],[0,126,1],[1,139,1],[2,112,0],[0,140,1],[0,140,1],[0,139,1],[1,111,1],[0,140,0],[0,140,0],[0,134,1],[0,140,1],[0,140,1],[1,140,1],[0,140,1],[0,140,1],[2,124,1],[0,140,1],[0,89,1],[0,139,1],[0,140,1],[0,139,1],[0,140,1],[1,140,1],[0,108,0],[0,139,1],[0,140,1],[0,111,1],[0,140,1],[0,139,0],[0,139,1],[0,70,1],[0,140,1],[0,139,1],[0,140,1],[0,140,1],[0,140,1],[0,137,1],[0,140,1],[0,139,1],[0,139,1],[0,140,0],[1,140,1],[0,140,1],[0,140,1],[0,140,1],[0,87,1],[0,139,0],[0,140,1]];
+  const VARS=["longitud_texto","num_hashtags","num_menciones","num_urls"];
+  const CORR=[[1,.017,.058,-.21],[.017,1,-.1,.005],[.058,-.1,1,-.078],[-.21,.005,-.078,1]];
+  const IDN=[1,.9843,.9664,.9646,.9584,.9341,.9147,.9138,.9098,.8992,.8773,.8699,.8682,.8554,.8324,.824,.8176,.8155,.813,.7987,.7964,.7903,.7863,.7845,.7614,.7374,.726,.7214,.718,.7163,.7145,.7079,.7061,.7055,.6999,.6982,.6658,.6395,.6335,.6328,.6273,.6256,.6174,.6052,.6013,.5891,.5866,.533,.4979,.495,.4874,.4664,.4585,.4485,.4457,.4377,.4368,.4271,.4265,.4193,.417,.4169,.4032,.3779,.3744,.3599,.357,.3502,.3435,.3227,.3163,.3162,.3079,.2873,.265,.2419,.236,.2315,.2231,.2133,.1962,.1859,.1724,.1357,.1204,.1126,.1118,.111,.1073,.105,.1028,.1,.0658,.0634,.0613,.0341,.0099,.003,.0025,0];
+
+  /* ---------- plóter ---------- */
+  const NS="http://www.w3.org/2000/svg";
+  function svg(w,h){const s=document.createElementNS(NS,"svg");
+    s.setAttribute("viewBox","0 0 "+w+" "+h);s.setAttribute("width",w);s.setAttribute("height",h);
+    s.setAttribute("role","img");return s;}
+  function mk(t,a){const n=document.createElementNS(NS,t);for(const k in a)n.setAttribute(k,a[k]);return n;}
+  function txt(x,y,s,c,an){const n=mk("text",{x:x,y:y,class:c||"axl"});if(an)n.setAttribute("text-anchor",an);
+    n.textContent=s;return n;}
+  function drawn(node,delay){let L=200;try{if(node.getTotalLength)L=node.getTotalLength()||200;}catch(e){}
+    node.style.setProperty("--len",L);node.classList.add("drawn");
+    node.style.animationDelay=(delay||0)+"ms";return node;}
+  function penTo(p,a,d){const n=mk("path",a);p.appendChild(n);return drawn(n,d);}
+  function fig(sv,cap){const f=el("figure","plot");f.appendChild(sv);
+    if(cap)f.appendChild(el("figcaption",null,cap));return f;}
+
+  const W=470,H=210,M={l:38,r:12,t:14,b:32}, IW=W-M.l-M.r, IH=H-M.t-M.b;
+  function frame(s,xl,yl){
+    s.appendChild(mk("path",{class:"pen",d:"M"+M.l+" "+M.t+"V"+(M.t+IH)+"H"+(M.l+IW)}));
+    if(xl)s.appendChild(txt(M.l+IW/2,H-6,xl,"axt","middle"));
+    if(yl){const t=txt(0,0,yl,"axt","middle");
+      t.setAttribute("transform","translate(11,"+(M.t+IH/2)+") rotate(-90)");s.appendChild(t);}}
+
+  function plotHist(){
+    const s=svg(W,H);frame(s,"longitud_texto","n.º mensajes");
+    const mx=80,bw=IW/HIST.counts.length;
+    HIST.counts.forEach((c,i)=>{if(!c)return;const h=c/mx*IH;
+      const r=mk("rect",{x:(M.l+i*bw+1).toFixed(1),y:(M.t+IH-h).toFixed(1),width:(bw-2).toFixed(1),
+        height:h.toFixed(1),fill:"var(--teal)","fill-opacity":".72",stroke:"var(--teal)","stroke-width":"1"});
+      r.classList.add("grow");r.style.animationDelay=(i*45)+"ms";s.appendChild(r);});
+    [0,20,40,60,80].forEach(v=>s.appendChild(txt(M.l-5,M.t+IH-v/mx*IH+3,v,"axl","end")));
+    [70,105,140].forEach(v=>s.appendChild(txt(M.l+(v-70)/70*IW,M.t+IH+13,v,"axl","middle")));
+    return fig(s,"Histograma de longitud_texto · 12 intervalos · 100 mensajes");}
+
+  function plotBox(){
+    const s=svg(W,H);frame(s,"es_retuit","longitud_texto");
+    const lo=65,hi=145,y=v=>M.t+IH-(v-lo)/(hi-lo)*IH;
+    [70,90,110,130,140].forEach(v=>s.appendChild(txt(M.l-5,y(v)+3,v,"axl","end")));
+    BOX.forEach((b,i)=>{const cx=M.l+IW*(i+.5)/2,bw2=46,col=i?"var(--amber)":"var(--teal)";
+      penTo(s,{class:"pen",d:"M"+cx+" "+y(b.lo)+"V"+y(b.hi),stroke:col},i*160);
+      [b.lo,b.hi].forEach(v=>penTo(s,{class:"pen",d:"M"+(cx-11)+" "+y(v)+"H"+(cx+11),stroke:col},i*160+120));
+      const r=mk("rect",{x:cx-bw2/2,y:y(b.q3),width:bw2,height:Math.max(y(b.q1)-y(b.q3),1.2),
+        fill:col,"fill-opacity":".2",stroke:col,"stroke-width":"1"});
+      r.classList.add("pop");r.style.animationDelay=(i*160+200)+"ms";s.appendChild(r);
+      penTo(s,{class:"pen",d:"M"+(cx-bw2/2)+" "+y(b.med)+"H"+(cx+bw2/2),stroke:col,"stroke-width":"2"},i*160+320);
+      b.out.forEach((v,j)=>{const c=mk("circle",{cx:cx,cy:y(v),r:2.6,fill:"none",stroke:col,"stroke-width":"1"});
+        c.classList.add("pop");c.style.animationDelay=(i*160+380+j*30)+"ms";s.appendChild(c);});
+      s.appendChild(txt(cx,M.t+IH+13,b.k+" (n="+b.n+")","axl","middle"));});
+    return fig(s,"Boxplot de longitud_texto según es_retuit · mediana, cuartiles y valores extremos");}
+
+  function plotScatter(){
+    const s=svg(W,H);frame(s,"num_hashtags","longitud_texto");
+    const x=v=>M.l+v/13*IW,y=v=>M.t+IH-(v-65)/80*IH;
+    [0,4,8,12].forEach(v=>s.appendChild(txt(x(v),M.t+IH+13,v,"axl","middle")));
+    [70,100,130,140].forEach(v=>s.appendChild(txt(M.l-5,y(v)+3,v,"axl","end")));
+    SC.forEach((p,i)=>{const c=mk("circle",{cx:x(p[0]).toFixed(1),cy:y(p[1]).toFixed(1),r:3,
+      fill:p[2]?"var(--amber)":"var(--teal)","fill-opacity":".5",
+      stroke:p[2]?"var(--amber)":"var(--teal)","stroke-width":".7"});
+      c.classList.add("pop");c.style.animationDelay=(i*7)+"ms";s.appendChild(c);});
+    s.appendChild(txt(M.l+IW-2,M.t+10,"ámbar = retuit · turquesa = no","axl","end"));
+    return fig(s,"num_hashtags frente a longitud_texto · 100 puntos · el valor extremo de 12 hashtags queda a la derecha");}
+
+  function plotHeat(){
+    const n=4,cell=34,ox=118,oy=22,s=svg(W,oy+n*cell+16);
+    for(let i=0;i<n;i++){
+      s.appendChild(txt(ox-6,oy+i*cell+cell/2+3,VARS[i],"axl","end"));
+      const t=txt(0,0,VARS[i].replace("longitud_","long_"),"axl","start");
+      t.setAttribute("transform","translate("+(ox+i*cell+cell/2+3)+","+(oy-6)+") rotate(-52)");s.appendChild(t);
+      for(let j=0;j<n;j++){const v=CORR[i][j],a=Math.abs(v);
+        const g=mk("g",{});g.classList.add("pop");g.style.animationDelay=((i*n+j)*28)+"ms";
+        g.appendChild(mk("rect",{x:ox+j*cell,y:oy+i*cell,width:cell,height:cell,
+          fill:v>=0?"var(--teal)":"var(--brick)","fill-opacity":(.1+a*.72).toFixed(2),
+          stroke:"var(--hair)","stroke-width":".5"}));
+        const lab=txt(ox+j*cell+cell/2,oy+i*cell+cell/2+3,
+          (v===1?"1":v.toFixed(3).replace(/^-?0\./,m=>m[0]==="-"?"-.":".")),"axl","middle");
+        if(a>.55)lab.setAttribute("fill","var(--paper)");
+        g.appendChild(lab);s.appendChild(g);}}
+    return fig(s,"Matriz de correlación entre las cuatro variables numéricas · el color da la vista panorámica, no el valor exacto");}
+
+  function plotTruncado(){
+    const s=svg(W,H);frame(s,"es_retuit","longitud_texto (eje recortado)");
+    const lo=120,hi=142,y=v=>M.t+IH-(v-lo)/(hi-lo)*IH;
+    [120,130,140].forEach(v=>s.appendChild(txt(M.l-5,y(v)+3,v,"axl","end")));
+    [{k:"False",v:139},{k:"True",v:140}].forEach((b,i)=>{
+      const cx=M.l+IW*(i+.5)/2,w2=54,h=M.t+IH-y(b.v);
+      const r=mk("rect",{x:cx-w2/2,y:y(b.v),width:w2,height:h,fill:"var(--brick)","fill-opacity":".6",
+        stroke:"var(--brick)","stroke-width":"1"});
+      r.classList.add("grow");r.style.animationDelay=(i*90)+"ms";s.appendChild(r);
+      s.appendChild(txt(cx,M.t+IH+13,b.k,"axl","middle"));
+      s.appendChild(txt(cx,y(b.v)-5,b.v,"axl","middle"));});
+    return fig(s,"Mediana de longitud_texto por grupo · los dos valores son correctos: 139 y 140");}
+
+  function plotAreas(){
+    const s=svg(W,H);
+    [{k:"Android",v:61},{k:"iPhone",v:18},{k:"Web App",v:16},{k:"iPad",v:2}].forEach((b,i)=>{
+      const cx=M.l+30+i*104,cy=M.t+IH/2,r=Math.sqrt(b.v)*4.6;
+      const c=mk("circle",{cx:cx,cy:cy,r:r,fill:"var(--amber)","fill-opacity":".45",
+        stroke:"var(--amber)","stroke-width":"1"});
+      c.classList.add("pop");c.style.animationDelay=(i*90)+"ms";s.appendChild(c);
+      s.appendChild(txt(cx,M.t+IH+22,b.k,"axl","middle"));});
+    s.appendChild(txt(W/2,M.t+2,"MENSAJES POR FUENTE","axt","middle"));
+    return fig(s,"Recuento de mensajes por fuente, codificado mediante el área de cada círculo");}
+
+  function plotSinEtiquetas(){
+    const s=svg(W,H);
+    s.appendChild(mk("path",{class:"pen",d:"M"+M.l+" "+M.t+"V"+(M.t+IH)+"H"+(M.l+IW)}));
+    const mx=80,bw=IW/HIST.counts.length;
+    HIST.counts.forEach((c,i)=>{if(!c)return;const h=c/mx*IH;
+      const r=mk("rect",{x:(M.l+i*bw+1).toFixed(1),y:(M.t+IH-h).toFixed(1),width:(bw-2).toFixed(1),
+        height:h.toFixed(1),fill:"var(--ink-3)","fill-opacity":".6",stroke:"var(--ink-3)","stroke-width":"1"});
+      r.classList.add("grow");r.style.animationDelay=(i*40)+"ms";s.appendChild(r);});
+    return fig(s,"Gráfico entregado al cliente exactamente así");}
+
+  function plotIds(){
+    const s=svg(W,H);frame(s,"índice de fila","id_str");
+    IDN.forEach((v,i)=>{const x=M.l+i/(IDN.length-1)*IW,y=M.t+IH-v*IH*.9-6;
+      const c=mk("circle",{cx:x.toFixed(1),cy:y.toFixed(1),r:2.6,fill:"var(--teal)","fill-opacity":".55",
+        stroke:"var(--teal)","stroke-width":".7"});
+      c.classList.add("pop");c.style.animationDelay=(i*7)+"ms";s.appendChild(c);});
+    s.appendChild(txt(M.l-5,M.t+9,"1,2674621e18","axl","end"));
+    s.appendChild(txt(M.l-5,M.t+IH,"1,2674619e18","axl","end"));
+    return fig(s,"id_str frente al índice de fila · valores reales · todo el eje vertical abarca 1,8·10¹¹ sobre una base de 1,27·10¹⁸");}
+
+  /* ================= M01 ================= */
+  const Q1=shuffle([
+    {q:"«¿Cómo se reparte la longitud de los mensajes? ¿Son casi todos parecidos o hay mucha variedad?»",ok:0,
+     o:[["Histograma","divide el rango de una variable en intervalos y cuenta cuántos registros caen en cada uno"],
+        ["Boxplot","resume con mediana y cuartiles, pensado para comparar grupos"],
+        ["Scatter plot","relaciona dos variables numéricas"],
+        ["Heatmap","vista panorámica de una matriz de correlaciones"]],
+     w:"El histograma es la forma más directa de observar una distribución. Y aquí revela algo que ninguna media contaría: <b>79 de los 100 mensajes</b> caen en el último intervalo, pegados a 140 caracteres.",p:plotHist},
+    {q:"«¿Son más largos los mensajes originales que los reenviados?»",ok:1,
+     o:[["Histograma","muestra una distribución, pero no compara dos grupos de un vistazo"],
+        ["Boxplot","compara una variable numérica entre grupos con mediana, cuartiles y extremos"],
+        ["Scatter plot","necesita dos variables numéricas, y «ser reenvío» es una categoría"],
+        ["Tabla de frecuencias","cuenta categorías, no describe la dispersión"]],
+     w:"Comparar una variable numérica entre grupos es exactamente el trabajo del boxplot. Fíjate: los 83 reenvíos están casi todos aplastados en 140, con una caja tan estrecha que apenas se ve, y <b>diez valores extremos</b>. Los 17 originales se reparten más.",p:plotBox},
+    {q:"«¿Los mensajes con más hashtags tienden a ser más largos o más cortos?»",ok:2,
+     o:[["Histograma","una sola variable a la vez"],
+        ["Boxplot","aquí las dos variables son numéricas, no hay grupos que comparar"],
+        ["Scatter plot","cada registro es un punto en el plano definido por dos variables numéricas"],
+        ["Heatmap","resume asociaciones, pero no muestra los registros uno a uno"]],
+     w:"Dos variables numéricas piden un scatter plot: cada mensaje es un punto. Cleveland y McGill (1984) explican por qué es tan fiable — codifica mediante <b>posición</b>, la codificación más precisa. Y salta a la vista un mensaje con 12 hashtags, muy lejos del resto.",p:plotScatter},
+    {q:"«De las cuatro medidas numéricas que tenemos, ¿cuáles se mueven juntas y cuáles no?»",ok:3,
+     o:[["Histograma","describe una variable"],
+        ["Boxplot","una variable numérica y una categórica"],
+        ["Scatter plot","dos variables; harían falta seis gráficos para cubrir todos los pares"],
+        ["Heatmap de correlación","muestra la matriz completa de asociaciones de un vistazo"]],
+     w:"El heatmap da la vista panorámica que Shneiderman (1996) pone primero: general, luego filtrado, luego detalle. Aquí todas las correlaciones son débiles — la mayor en valor absoluto es <b>-0,21</b>. Y recuerda: el color no sirve para leer un valor exacto (Healy, 2019).",p:plotHeat}
+  ]).map(mixOpts);
+  let i1=0;const r1=[];
+  function m1(){
+    const it=Q1[i1];$("#q1h").textContent="Consulta "+(i1+1)+" de "+Q1.length;
+    $("#q1").textContent=it.q;$("#v1").className="verdict";$("#p1").innerHTML="";
+    $("#n1").disabled=true;pips($("#pip1"),Q1.length,i1,r1);
+    const box=$("#o1");box.innerHTML="";
+    it.o.forEach((o,k)=>{const b=el("button","opt");b.type="button";
+      b.innerHTML='<span class="tag">'+"ABCD"[k]+'</span><span class="txt">'+o[0]+"<small>"+o[1]+"</small></span>";
+      b.addEventListener("click",()=>{
+        [...box.children].forEach(c=>c.disabled=true);
+        const ok=k===it.ok;b.classList.add(ok?"good":"bad");
+        if(!ok)box.children[it.ok].classList.add("good");
+        r1[i1]=ok;scored(ok);
+        say($("#v1"),ok?"y":"n",ok?"Instrumento correcto":"No es el instrumento adecuado","<p>"+it.w+"</p>");
+        $("#p1").appendChild(it.p());pips($("#pip1"),Q1.length,i1,r1);$("#n1").disabled=false;
+        if(i1===Q1.length-1){$("#n1").textContent="Módulo completado";mark(1);}});
+      box.appendChild(b);});
+  }
+  $("#n1").addEventListener("click",()=>{if(i1<Q1.length-1){i1++;m1();}});
+  m1();
+
+  /* ================= M02 ================= */
+  const LADDER=[
+    {t:"Posición en una escala común",d:"la altura de un punto sobre un eje compartido"},
+    {t:"Longitud",d:"el largo de una barra"},
+    {t:"Ángulo o pendiente",d:"la inclinación de un sector o de una línea"},
+    {t:"Área o volumen",d:"el tamaño de un círculo o de una burbuja"}];
+  const FB2="<p>El orden es <b>posición → longitud → ángulo → área</b>. Por eso el scatter plot, que codifica mediante posición en dos ejes, es la opción más fiable para relacionar dos variables numéricas, y por eso un heatmap —que codifica con color— sirve para detectar de un vistazo qué destaca, pero no para leer un valor exacto (Healy, 2019).</p>";
+  let ord2=mixOrder(4),try2=0,closed2=false;
+  function m2(state){
+    const h=$("#r2");h.innerHTML="";
+    ord2.forEach((idx,pos)=>{
+      const it=LADDER[idx],row=el("div","rk");
+      if(state==="check")row.classList.add(idx===pos?"good":"bad");
+      else if(state==="sol")row.classList.add("sol");
+      row.innerHTML='<span class="pos">'+(pos+1)+'</span><span class="lbl">'+it.t+"<small>"+it.d+"</small></span>";
+      const mv=el("div","mv"),up=el("button",null,"↑"),dn=el("button",null,"↓");
+      up.type=dn.type="button";
+      up.setAttribute("aria-label","Subir: "+it.t);dn.setAttribute("aria-label","Bajar: "+it.t);
+      up.disabled=closed2||pos===0;dn.disabled=closed2||pos===ord2.length-1;
+      up.addEventListener("click",()=>{[ord2[pos-1],ord2[pos]]=[ord2[pos],ord2[pos-1]];m2(null);});
+      dn.addEventListener("click",()=>{[ord2[pos+1],ord2[pos]]=[ord2[pos],ord2[pos+1]];m2(null);});
+      mv.append(up,dn);row.appendChild(mv);h.appendChild(row);});
+    tries("#t2",try2,closed2);
+  }
+  function close2(solved){
+    closed2=true;ord2=[0,1,2,3];m2("sol");
+    $("#ck2").disabled=true;$("#rs2").disabled=true;
+    scored(solved);mark(2);
+    say($("#v2"),solved?"y":"n",solved?"Escalera correcta":"Solución",
+      (solved?"":"<p>Se han agotado los tres intentos. Esta es la escalera correcta:</p>")+FB2);
+  }
+  $("#ck2").addEventListener("click",()=>{
+    if(closed2)return;
+    try2++;
+    const good=ord2.filter((v,i)=>v===i).length;
+    if(good===4){close2(true);return;}
+    if(try2>=MAXT){close2(false);return;}
+    m2("check");
+    say($("#v2"),"w","Intento "+try2+" de "+MAXT,
+      "<p>Tienes <b>"+good+" de 4</b> en su sitio. Las filas en verde están bien colocadas; las de rojo, no. Reordena y vuelve a comprobar.</p>");
+  });
+  $("#rs2").addEventListener("click",()=>{
+    if(closed2)return;ord2=mixOrder(4);$("#v2").className="verdict";m2(null);});
+  m2(null);
+
+  /* ================= M03 ================= */
+  const FOPT0=[["Fallo estético","mal etiquetado, colores confusos, ilegible"],
+               ["Fallo de contenido","representa datos incorrectos o que no significan nada"],
+               ["Fallo perceptivo","usa una codificación que el ojo no lee con precisión"]];
+  const FAIL=shuffle([
+    {q:"El cliente pide comparar la longitud mediana de los mensajes según sean reenvíos o no. Recibe este gráfico. Los dos números son correctos: 139 y 140.",p:plotTruncado,ok:2,
+     w:"Los datos son correctos y el gráfico está bien rotulado. El problema es <b>perceptivo</b>: el eje empieza en 120, así que una diferencia real de un solo carácter aparece como una barra casi el doble de alta. En un gráfico de barras el ojo iguala la altura con la cantidad, de modo que recortar el eje engaña aunque las cifras sean exactas."},
+    {q:"Este gráfico representa cuántos mensajes vienen de cada aplicación. Los recuentos son los reales: 61, 18, 16 y 2.",p:plotAreas,ok:2,
+     w:"Otra vez el fallo es <b>perceptivo</b>: el área es la codificación que peor estima el ojo (Cleveland y McGill, 1984). ¿Es el primer círculo tres veces el segundo, o cuatro? Con barras, la comparación sería inmediata. Los datos, de nuevo, están bien."},
+    {q:"El histograma de la longitud de los mensajes, entregado al cliente exactamente en este estado.",p:plotSinEtiquetas,ok:0,
+     w:"Fallo <b>estético</b>: los datos son correctos y la codificación es la adecuada, pero sin título, sin nombres de eje y sin escala nadie puede saber qué se está mirando. Healy insiste en que las tres formas de fallar son independientes: este gráfico acierta en contenido y en percepción, y falla igualmente."},
+    {q:"Alguien ha graficado la columna id_str, el identificador de cada mensaje, que Pandas cargó como número porque son dígitos. Sale una tendencia descendente impecable.",p:plotIds,ok:1,
+     w:"Fallo de <b>contenido</b>: el gráfico está limpio, bien rotulado y su codificación es la más precisa que existe… y no significa nada. <code>id_str</code> es un identificador, no una magnitud. Esa bajada tan limpia solo refleja el <b>orden en que se recogieron los mensajes</b>, del más reciente al más antiguo. Y fíjate en la escala: todo el eje abarca una variación de una cienmillonésima parte del valor."}
+  ]).map(it=>{const idx=shuffle([0,1,2]);
+    return Object.assign({},it,{fo:idx.map(i=>FOPT0[i]),ok:idx.indexOf(it.ok)});});
+  let i3=0;const r3=[];
+  function m3(){
+    const it=FAIL[i3];$("#q3h").textContent="Caso "+(i3+1)+" de "+FAIL.length;
+    $("#q3").textContent=it.q;$("#v3").className="verdict";
+    $("#p3").innerHTML="";$("#p3").appendChild(it.p());
+    $("#n3").disabled=true;pips($("#pip3"),FAIL.length,i3,r3);
+    const box=$("#o3");box.innerHTML="";
+    it.fo.forEach((o,k)=>{const b=el("button","opt");b.type="button";
+      b.innerHTML='<span class="tag">'+"ABC"[k]+'</span><span class="txt">'+o[0]+"<small>"+o[1]+"</small></span>";
+      b.addEventListener("click",()=>{
+        [...box.children].forEach(c=>c.disabled=true);
+        const ok=k===it.ok;b.classList.add(ok?"good":"bad");
+        if(!ok)box.children[it.ok].classList.add("good");
+        r3[i3]=ok;scored(ok);
+        say($("#v3"),ok?"y":"n",ok?"Diagnóstico correcto":"Ese no es el fallo","<p>"+it.w+"</p>");
+        pips($("#pip3"),FAIL.length,i3,r3);$("#n3").disabled=false;
+        if(i3===FAIL.length-1){$("#n3").textContent="Módulo completado";mark(3);}});
+      box.appendChild(b);});
+  }
+  $("#n3").addEventListener("click",()=>{if(i3<FAIL.length-1){i3++;m3();}});
+  m3();
+
+  /* ================= M04 ================= */
+  const LV=shuffle([
+    {t:"El 83 % de los mensajes de la muestra son reenvíos.",lv:0},
+    {t:"La longitud se concentra de forma muy marcada en 140 caracteres.",lv:0},
+    {t:"La aplicación de Android aparece como origen en 61 de los 100 mensajes.",lv:0},
+    {t:"Convendría comprobar si el límite de caracteres de la plataforma explica esa concentración en 140.",lv:1},
+    {t:"Quizá los mensajes con más hashtags busquen mayor difusión; habría que contrastarlo con otras variables.",lv:1},
+    {t:"Los usuarios de Android participan más en el debate público que los de iPhone.",lv:2},
+    {t:"La proporción de reenvíos demuestra que la conversación está automatizada.",lv:2}
+  ]);
+  const BN=[{h:"1 · Descripción",d:"cuenta lo que se ve, sin añadir nada"},
+            {h:"2 · Hipótesis",d:"propone una explicación y reconoce que habría que comprobarla"},
+            {h:"3 · Conclusión",d:"afirma algo como demostrado: no permitido aquí"}];
+  const FB4="<p>La frontera que más cuesta es la última. «Los usuarios de Android participan más» suena descriptivo, pero da un salto enorme: saber desde qué aplicación se envió un mensaje no dice quiénes son esas personas, ni cuántas hay, ni con qué intención escriben. Y «demuestra que la conversación está automatizada» convierte un recuento en un veredicto.</p><p>En esta unidad trabajas los dos primeros niveles. El tercero exige un análisis que aquí no se ha hecho.</p>";
+  let sel4=null,put4=LV.map(()=>null),try4=0,closed4=false;
+  function m4(state){
+    const pool=$("#pool4");pool.innerHTML="";
+    LV.forEach((f,i)=>{if(put4[i]!==null)return;
+      const b=el("button","tok",f.t);b.type="button";
+      b.setAttribute("aria-pressed",sel4===i?"true":"false");b.disabled=closed4;
+      b.addEventListener("click",()=>{sel4=sel4===i?null:i;m4(null);});
+      pool.appendChild(b);});
+    if(!pool.children.length)pool.appendChild(el("span","chip",closed4?"Clasificación cerrada":"Las siete están colocadas"));
+    const bins=$("#bins4");bins.innerHTML="";
+    BN.forEach((bn,k)=>{
+      const b=el("button","bin n"+(k+1));b.type="button";b.disabled=closed4;
+      if(sel4!==null&&!closed4)b.classList.add("armed");
+      b.innerHTML='<span class="bh">'+bn.h+'</span><span class="bd">'+bn.d+"</span>";
+      const dz=el("div","drop");
+      LV.forEach((f,i)=>{if(put4[i]!==k)return;
+        const s=el("span",null,f.t);
+        if(state==="check")s.classList.add(f.lv===k?"good":"bad");
+        else if(state==="sol")s.classList.add("good");
+        if(!closed4){s.title="Quitar de esta cubeta";
+          s.addEventListener("click",ev=>{ev.stopPropagation();put4[i]=null;
+            $("#ck4").disabled=put4.some(v=>v===null);m4(null);});}
+        dz.appendChild(s);});
+      b.appendChild(dz);
+      b.addEventListener("click",()=>{if(sel4===null||closed4)return;
+        put4[sel4]=k;sel4=null;m4(null);$("#ck4").disabled=put4.some(v=>v===null);});
+      bins.appendChild(b);});
+    tries("#t4",try4,closed4);
+  }
+  function close4(solved,good){
+    closed4=true;
+    for(let i=0;i<LV.length;i++)scored(put4[i]===LV[i].lv);
+    put4=LV.map(f=>f.lv);m4("sol");
+    $("#ck4").disabled=true;$("#rs4").disabled=true;mark(4);
+    say($("#v4"),solved?"y":"n",solved?"Clasificación correcta":"Solución",
+      (solved?"<p>Las siete en su sitio.</p>"
+             :"<p>Se han agotado los tres intentos. En el último llevabas <b>"+good+" de 7</b>. Arriba tienes la clasificación correcta.</p>")+FB4);
+  }
+  $("#ck4").addEventListener("click",()=>{
+    if(closed4||put4.some(v=>v===null))return;
+    try4++;
+    const good=LV.filter((f,i)=>put4[i]===f.lv).length;
+    if(good===LV.length){close4(true,good);return;}
+    if(try4>=MAXT){close4(false,good);return;}
+    m4("check");
+    say($("#v4"),"w","Intento "+try4+" de "+MAXT,
+      "<p>Tienes <b>"+good+" de 7</b> bien clasificadas. Las frases en verde están en su cubeta; las de rojo, no. Pincha una frase en rojo para devolverla arriba y colócala en otra cubeta.</p>");
+  });
+  $("#rs4").addEventListener("click",()=>{
+    if(closed4)return;put4=LV.map(()=>null);sel4=null;
+    $("#ck4").disabled=true;$("#v4").className="verdict";m4(null);});
+  m4(null);
+
+  /* ================= M05 ================= */
+  const INFO=
+"&lt;class 'pandas.core.frame.DataFrame'&gt;\n"+
+"RangeIndex: 100 entries, 0 to 99\n"+
+"Data columns (total 12 columns):\n"+
+" #   Column             Non-Null Count  Dtype\n"+
+"---  ------             --------------  -----\n"+
+" 0   id_str             100 non-null    int64\n"+
+" 1   fecha_publicacion  100 non-null    object\n"+
+" 2   idioma             100 non-null    object\n"+
+" 3   usuario            100 non-null    object\n"+
+" 4   ubicacion_usuario  100 non-null    object\n"+
+" 5   fuente             100 non-null    object\n"+
+" 6   texto              100 non-null    object\n"+
+" 7   longitud_texto     100 non-null    int64\n"+
+" 8   num_hashtags       100 non-null    int64\n"+
+" 9   num_menciones      100 non-null    int64\n"+
+" 10  num_urls           100 non-null    int64\n"+
+" 11  es_retuit          100 non-null    bool";
+  $("#info5").innerHTML=INFO;
+
+  function codeBlock(lines){
+    const c=el("div","code");
+    c.innerHTML=lines.map((l,i)=>'<span class="ln">'+String(i+1).padStart(2)+"  </span>"+l).join("\n");
+    return c;}
+
+  const Q5=shuffle([
+    {code:['df.shape'],out:null,
+     q:"Según el resumen de arriba, ¿qué devuelve esta celda?",ok:1,
+     o:["(12, 100)","(100, 12)","100","(100, 12, 1)"],
+     w:"<code>shape</code> devuelve <b>(filas, columnas)</b>, en ese orden. El resumen lo dice de dos maneras: «RangeIndex: 100 entries» son las filas y «total 12 columns» las columnas. Invertir el orden es el despiste más común."},
+    {code:['df[<span class="st">"???"</span>].hist()'],out:null,
+     q:"Cinco columnas aparecen como int64, es decir, números enteros. Pero una de ellas <b>no representa una cantidad</b> y no tiene sentido graficarla. ¿Cuál?",ok:0,
+     o:["id_str — es el identificador único de cada mensaje",
+        "longitud_texto — cuenta caracteres",
+        "num_hashtags — cuenta hashtags",
+        "num_urls — cuenta enlaces"],
+     w:"<b>id_str</b> es una etiqueta que identifica cada mensaje, no una medida de nada. Que esté formada por dígitos hace que Pandas la cargue como int64, pero sumarla, promediarla o graficarla no significa nada. Por eso se revisan los tipos <em>y</em> el significado de cada columna antes de dibujar: el tipo de dato no garantiza que la variable sea una magnitud."},
+    {code:['df[<span class="st">"longitud_texto"</span>].describe()'],
+     out:"count    100.00\nmean     133.42\nstd       14.72\nmin       70.00\n25%      139.00\n50%      140.00\n75%      140.00\nmax      140.00",
+     q:"El valor «50 %» es la mediana. ¿Qué describe mejor a esta variable?",ok:0,
+     o:["Al menos la mitad de los mensajes llega al máximo de 140, y la media queda por debajo arrastrada por unos pocos mensajes cortos",
+        "Los mensajes se reparten de forma bastante equilibrada entre 70 y 140 caracteres",
+        "La media de 133,42 es el valor que más se repite",
+        "Hay un error de carga: la mediana no puede coincidir con el máximo"],
+     w:"Mediana, tercer cuartil y máximo valen <b>140</b>: eso significa que más de la mitad de los mensajes está pegada a ese techo. La media, 133,42, queda por debajo porque unos pocos mensajes muy cortos (el mínimo es 70) tiran de ella hacia abajo. Cuando media y mediana se separan así, la media describe mal el conjunto — y es la señal de que hacía falta un histograma."},
+    {code:['df[<span class="st">"num_hashtags"</span>].describe()'],
+     out:"count    100.00\nmean       0.32\nstd        1.37\nmin        0.00\n25%        0.00\n50%        0.00\n75%        0.00\nmax       12.00",
+     q:"¿Cuál es la lectura correcta de esta salida?",ok:1,
+     o:["Los mensajes llevan de media un hashtag, así que su uso está bastante extendido",
+        "La gran mayoría de mensajes no lleva ningún hashtag, y hay al menos un caso muy atípico",
+        "El máximo de 12 es un error de carga y hay que eliminar esa fila",
+        "La media y el máximo son incompatibles: la salida tiene un fallo"],
+     w:"Los tres cuartiles valen <b>0</b>: al menos el 75 % de los mensajes no lleva ningún hashtag. La media de 0,32 con un máximo de 12 confirma que hay algún caso extremo tirando de ella. Y ese caso no se borra por ser raro: primero se comprueba si es un error de carga o un mensaje legítimamente cargado de hashtags. Un valor extremo es una señal, no basura."}
+  ]).map(mixOpts);
+  let i5=0;const r5=[];
+  function m5(){
+    const it=Q5[i5];$("#q5h").textContent="Celda "+(i5+1)+" de "+Q5.length;
+    $("#code5").innerHTML="";$("#code5").appendChild(codeBlock(it.code));
+    $("#out5").innerHTML="";
+    if(it.out){$("#out5").appendChild(el("p","outh","Salida"));
+      const o=el("div","out");o.textContent=it.out;$("#out5").appendChild(o);}
+    $("#q5").innerHTML=it.q;$("#v5").className="verdict";
+    $("#n5").disabled=true;pips($("#pip5"),Q5.length,i5,r5);
+    const box=$("#o5");box.innerHTML="";
+    it.o.forEach((o,k)=>{const b=el("button","opt");b.type="button";
+      b.innerHTML='<span class="tag">'+"ABCD"[k]+'</span><span class="txt">'+o+"</span>";
+      b.addEventListener("click",()=>{
+        [...box.children].forEach(c=>c.disabled=true);
+        const ok=k===it.ok;b.classList.add(ok?"good":"bad");
+        if(!ok)box.children[it.ok].classList.add("good");
+        r5[i5]=ok;scored(ok);
+        say($("#v5"),ok?"y":"n",ok?"Lectura correcta":"Revisa la salida","<p>"+it.w+"</p>");
+        pips($("#pip5"),Q5.length,i5,r5);$("#n5").disabled=false;
+        if(i5===Q5.length-1){$("#n5").textContent="Módulo completado";mark(5);}});
+      box.appendChild(b);});
+  }
+  $("#n5").addEventListener("click",()=>{if(i5<Q5.length-1){i5++;m5();}});
+  m5();
+
+  /* ================= M06 ================= */
+  const STEPS=[
+    "Activar el entorno virtual del proyecto y seleccionar su kernel en Jupyter",
+    "Comprobar que las librerías necesarias (Pandas, Matplotlib, Seaborn) están disponibles",
+    "Cargar el archivo CSV usando una ruta relativa",
+    "Revisar cuántas filas y columnas hay, de qué tipo es cada una y ver las primeras filas",
+    "Crear tablas de resumen con recuentos y estadísticos descriptivos",
+    "Visualizar la distribución de las variables numéricas con histogramas",
+    "Comparar grupos con boxplots y explorar relaciones con scatter plots",
+    "Redactar una lectura prudente de los patrones observados"];
+  const FB6="<p>El orden importa por dos motivos. El entorno y las librerías van <b>antes</b> de cargar nada: si el kernel no es el del entorno virtual, el cuaderno no será reproducible en otro ordenador. Y revisar filas, columnas y tipos va <b>antes</b> de graficar: si una columna numérica se cargó como texto, el gráfico fallará o —peor— saldrá bien y estará mal.</p><p>La lectura prudente se redacta al final, cuando ya has visto los datos. Nunca antes: si escribes primero la conclusión, acabarás buscando el gráfico que te dé la razón.</p>";
+  let ord6=mixOrder(8),try6=0,closed6=false;
+  function m6(state){
+    const h=$("#s6");h.innerHTML="";
+    ord6.forEach((idx,pos)=>{
+      const row=el("div","sq");
+      if(state==="check")row.classList.add(idx===pos?"good":"bad");
+      else if(state==="sol")row.classList.add("sol");
+      row.innerHTML='<span class="pos">'+(pos+1)+'</span><span class="lbl">'+STEPS[idx]+"</span>";
+      const mv=el("div","mv"),up=el("button",null,"↑"),dn=el("button",null,"↓");
+      up.type=dn.type="button";
+      up.setAttribute("aria-label","Subir paso");dn.setAttribute("aria-label","Bajar paso");
+      up.disabled=closed6||pos===0;dn.disabled=closed6||pos===ord6.length-1;
+      up.addEventListener("click",()=>{[ord6[pos-1],ord6[pos]]=[ord6[pos],ord6[pos-1]];m6(null);});
+      dn.addEventListener("click",()=>{[ord6[pos+1],ord6[pos]]=[ord6[pos],ord6[pos+1]];m6(null);});
+      mv.append(up,dn);row.appendChild(mv);h.appendChild(row);});
+    tries("#t6",try6,closed6);
+  }
+  function close6(solved,good){
+    closed6=true;ord6=[...Array(8).keys()];m6("sol");
+    $("#ck6").disabled=true;$("#rs6").disabled=true;
+    scored(solved);mark(6);
+    say($("#v6"),solved?"y":"n",solved?"Proceso correcto":"Solución",
+      (solved?"":"<p>Se han agotado los tres intentos. En el último llevabas <b>"+good+" de 8</b> en su sitio. Arriba tienes el orden correcto.</p>")+FB6);
+  }
+  $("#ck6").addEventListener("click",()=>{
+    if(closed6)return;
+    try6++;
+    const good=ord6.filter((v,i)=>v===i).length;
+    if(good===8){close6(true,good);return;}
+    if(try6>=MAXT){close6(false,good);return;}
+    m6("check");
+    say($("#v6"),"w","Intento "+try6+" de "+MAXT,
+      "<p>Tienes <b>"+good+" de 8</b> en su sitio. Los pasos en verde están bien colocados; los de rojo, no. Reordena y vuelve a comprobar.</p>");
+  });
+  $("#rs6").addEventListener("click",()=>{
+    if(closed6)return;ord6=mixOrder(8);$("#v6").className="verdict";m6(null);});
+  m6(null);
+
+  /* ================= M07 ================= */
+  const BUGS=shuffle([
+    {q:"Esta celda funciona en el portátil de quien la escribió y falla en cualquier otro ordenador.",
+     lines:['<span class="kw">import</span> pandas <span class="kw">as</span> pd',
+            '<span class="kw">import</span> seaborn <span class="kw">as</span> sns',
+            'df = pd.read_csv(<span class="st">"C:/Users/ana/Escritorio/mensajes.csv"</span>)',
+            'df.head()'],ok:2,
+     w:"Línea 3: es una <b>ruta absoluta</b> del ordenador de una persona concreta. En cualquier otro equipo esa carpeta no existe y la carga falla. Por eso se usan rutas relativas: un cuaderno debe poder ejecutarse fuera del equipo donde se escribió."},
+    {q:"El archivo se carga bien, pero esta celda lanza un KeyError.",
+     lines:['df = pd.read_csv(<span class="st">"mensajes.csv"</span>)',
+            'sns.histplot(data=df, x=<span class="st">"longitud"</span>, bins=<span class="st">12</span>)',
+            'plt.show()'],ok:1,
+     w:"Línea 2: la columna se llama <b>longitud_texto</b>, no <code>longitud</code>. Es el error más frecuente en clase, y es justo lo que evita revisar los nombres de columna antes de graficar: no se adivinan, se comprueban."},
+    {q:"Esta celda lanza un NameError, aunque a simple vista todo parece definido.",
+     lines:['<span class="kw">import</span> pandas <span class="kw">as</span> pd',
+            '<span class="kw">import</span> seaborn <span class="kw">as</span> sns',
+            'correlaciones = df[variables].corr()',
+            'variables = [<span class="st">"longitud_texto"</span>, <span class="st">"num_hashtags"</span>]',
+            'sns.heatmap(correlaciones, annot=<span class="kw">True</span>)'],ok:2,
+     w:"Línea 3 usa <code>variables</code> una línea <b>antes</b> de que exista. En un cuaderno este fallo es especialmente traicionero: si en su día ejecutaste las celdas en otro orden, la variable puede seguir viva en memoria y la celda parecerá correcta — hasta que alguien lo ejecute todo de principio a fin."}
+  ]);
+  let i7=0;const r7=[];
+  function m7(){
+    const it=BUGS[i7];$("#q7h").textContent="Celda "+(i7+1)+" de "+BUGS.length;
+    $("#q7").textContent=it.q;$("#v7").className="verdict";
+    $("#n7").disabled=true;pips($("#pip7"),BUGS.length,i7,r7);
+    const h=$("#l7");h.innerHTML="";
+    it.lines.forEach((l,k)=>{const b=el("button","lrow");b.type="button";
+      b.innerHTML='<span class="n">'+String(k+1).padStart(2)+"</span><span>"+l+"</span>";
+      b.setAttribute("aria-label","Línea "+(k+1));
+      b.addEventListener("click",()=>{
+        [...h.children].forEach(c=>c.disabled=true);
+        const ok=k===it.ok;b.classList.add(ok?"good":"bad");
+        if(!ok)h.children[it.ok].classList.add("good");
+        r7[i7]=ok;scored(ok);
+        say($("#v7"),ok?"y":"n",ok?"Línea correcta":"El fallo está en otra línea","<p>"+it.w+"</p>");
+        pips($("#pip7"),BUGS.length,i7,r7);$("#n7").disabled=false;
+        if(i7===BUGS.length-1){$("#n7").textContent="Estación completada";mark(7);}});
+      h.appendChild(b);});
+  }
+  $("#n7").addEventListener("click",()=>{if(i7<BUGS.length-1){i7++;m7();}});
+  m7();
+
+  /* ================= INFORME ================= */
+  function report(){
+    const p=st.hit/TOTAL_Q;let badge,lbl,t1;
+    if(p>=.9){badge="Analista de observación · mención";lbl="Estación completada con distinción";
+      t1="Has elegido el instrumento adecuado, has sabido por qué el ojo lo lee bien y —lo más difícil— has sabido dónde parar.";}
+    else if(p>=.7){badge="Analista de observación";lbl="Estación completada";
+      t1="Dominas el criterio: sabes qué vista pide cada pregunta y reconoces un gráfico que falla. Repasa los casos que marcaste en rojo.";}
+    else if(p>=.5){badge="Observación en prácticas";lbl="Estación completada · conviene repasar";
+      t1="La mecánica la tienes. Lo que conviene volver a leer es el criterio: por qué se elige un gráfico y hasta dónde puede llegar una lectura.";}
+    else{badge="Vuelta al mirador";lbl="Estación completada · repasa el marco teórico";
+      t1="Has llegado al final, y eso ya dice algo. Antes de repetir, vuelve al marco teórico de la unidad: casi todos los fallos de aquí se resuelven ahí.";}
+    $("#fLbl").textContent=lbl;
+    $("#fBody").innerHTML='<div class="badge">'+badge+"</div><p>"+t1+"</p>"+
+      "<p>Y con esto cierras la Unidad 3 tal como la abre Tukey: la exploración no demuestra nada. "+
+      "Describe, sugiere y decide qué preguntas merecen una fase siguiente. Que un patrón se vea "+
+      "no significa que exista una causa — significa que hay algo que mirar mejor.</p>"+
+      '<p style="opacity:.62;font-size:.9rem">Vuelve a cargar la página para repetir la estación: '+
+      "los casos y las opciones aparecerán en otro orden.</p>";
+  }
+
+  sync();
+})();
+</script>
+
 </body>
 </html>

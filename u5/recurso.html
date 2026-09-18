@@ -2,24 +2,774 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Próximamente</title>
-<style>
-  body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
-    background:#1E1812;color:#F1E7D6;font-family:Georgia,'Times New Roman',serif;text-align:center;padding:24px;}
-  .box{max-width:420px}
-  .stamp{display:inline-block;border:2px solid #D2652F;color:#D2652F;padding:6px 18px;
-    letter-spacing:3px;text-transform:uppercase;font-size:13px;font-weight:bold;margin-bottom:18px;
-    font-family:Arial,Helvetica,sans-serif;}
-  h1{font-size:26px;margin:0 0 10px}
-  p{font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#B5A88F}
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>El Expediente · Términos &amp; Trama</title>
+<meta name="author" content="Dr.ª Blanca Hernández Pardo">
+<meta name="description" content="Recurso interactivo de la Unidad 5 de Datos Masivos: almacenamiento y acceso a datos a gran escala.">
+<style>html,body{margin:0;padding:0} *,*::before,*::after{box-sizing:border-box}</style>
 </head>
 <body>
-  <div class="box">
-    <div class="stamp">Próximamente</div>
-    <h1>Este recurso ya existe</h1>
-    <p>Está preparado, pero todavía no se ha subido a la web.</p>
+<style>
+  :root{
+    --page:#E7E3D8; --card:#F5F2EA; --card-2:#EDE9DD;
+    --ink:#14211C; --ink-2:#3D5148; --ink-3:#6B7C74;
+    --band:#1B4034; --band-2:#26584A;
+    --brass:#9A6C13; --brass-soft:#F0E3C4;
+    --carmine:#962C38; --carmine-soft:#F4DFE0;
+    --seal:#26705A; --seal-soft:#DCEAE2;
+    --rule:rgba(20,33,28,.2); --rule-2:rgba(20,33,28,.09);
+    --shade:rgba(20,33,28,.14);
+    --serif:Georgia,"Iowan Old Style","Palatino Linotype",Palatino,serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --r:2px;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --page:#0E1714; --card:#17231F; --card-2:#1D2B26;
+      --ink:#E6E7DF; --ink-2:#AFC0B7; --ink-3:#7E9187;
+      --band:#1E3B32; --band-2:#2A5548;
+      --brass:#D9A548; --brass-soft:#3A2E14;
+      --carmine:#D6626C; --carmine-soft:#3B1F23;
+      --seal:#4FA98C; --seal-soft:#153029;
+      --rule:rgba(230,231,223,.22); --rule-2:rgba(230,231,223,.1);
+      --shade:rgba(0,0,0,.45);
+    }
+  }
+  :root[data-theme="dark"]{
+    --page:#0E1714; --card:#17231F; --card-2:#1D2B26;
+    --ink:#E6E7DF; --ink-2:#AFC0B7; --ink-3:#7E9187;
+    --band:#1E3B32; --band-2:#2A5548;
+    --brass:#D9A548; --brass-soft:#3A2E14;
+    --carmine:#D6626C; --carmine-soft:#3B1F23;
+    --seal:#4FA98C; --seal-soft:#153029;
+    --rule:rgba(230,231,223,.22); --rule-2:rgba(230,231,223,.1);
+    --shade:rgba(0,0,0,.45);
+  }
+  :root[data-theme="light"]{
+    --page:#E7E3D8; --card:#F5F2EA; --card-2:#EDE9DD;
+    --ink:#14211C; --ink-2:#3D5148; --ink-3:#6B7C74;
+    --band:#1B4034; --band-2:#26584A;
+    --brass:#9A6C13; --brass-soft:#F0E3C4;
+    --carmine:#962C38; --carmine-soft:#F4DFE0;
+    --seal:#26705A; --seal-soft:#DCEAE2;
+    --rule:rgba(20,33,28,.2); --rule-2:rgba(20,33,28,.09);
+    --shade:rgba(20,33,28,.14);
+  }
+  *{box-sizing:border-box}
+
+  .arch{
+    min-height:100vh;background:var(--page);color:var(--ink);
+    font-family:var(--sans);font-size:clamp(.97rem,.94rem + .16vw,1.04rem);line-height:1.62;
+    padding:0 clamp(.7rem,3vw,2rem) 4rem;
+  }
+  .shell{max-width:1180px;margin:0 auto}
+
+  /* ===== CABECERA DEL EXPEDIENTE ===== */
+  .cover{background:var(--band);color:#F1EFE6;margin:0 calc(-1*clamp(.7rem,3vw,2rem)) 0;
+    padding:1.6rem clamp(.7rem,3vw,2rem) 1.5rem;border-bottom:3px solid var(--brass)}
+  .cover-in{max-width:none;width:100%}
+  .caseno{font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--brass);margin:0 0 .9rem;display:flex;gap:.9rem;flex-wrap:wrap;align-items:center}
+  .caseno b{color:#F1EFE6;font-weight:700}
+  h1{font-family:var(--serif);font-weight:700;font-size:clamp(2.1rem,6.4vw,3.7rem);
+    letter-spacing:-.02em;line-height:1.02;margin:0 0 .35rem;text-wrap:balance}
+  h1 i{font-style:italic;color:var(--brass)}
+  .cover p{font-family:var(--serif);font-size:1.06rem;line-height:1.62;opacity:.86;
+    max-width:none;margin:.7rem 0 0}
+  @media (min-width:1400px){.cover p{font-size:1.14rem;line-height:1.7}}
+  .cover .tools{display:flex;gap:.5rem;margin-top:1.1rem;flex-wrap:wrap}
+  .lampb{font-family:var(--mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;
+    background:transparent;border:1px solid rgba(241,239,230,.35);color:#F1EFE6;
+    padding:.32rem .6rem;border-radius:var(--r);cursor:pointer}
+  .lampb:hover{border-color:var(--brass);color:var(--brass)}
+
+  /* ===== REJILLA PRINCIPAL ===== */
+  .grid{display:grid;gap:1.6rem;margin-top:1.8rem;grid-template-columns:1fr}
+  @media (min-width:940px){.grid{grid-template-columns:1fr 288px;align-items:start}}
+
+  /* ===== FICHA LATERAL ===== */
+  .ficha{background:var(--card);border:1px solid var(--rule);border-radius:var(--r);
+    box-shadow:0 1px 0 var(--shade);order:-1}
+  @media (min-width:940px){.ficha{position:sticky;top:1rem;order:0}}
+  .ficha h3{font-family:var(--mono);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;
+    color:#F1EFE6;background:var(--band);margin:0;padding:.6rem .8rem;font-weight:700}
+  .ficha ul{list-style:none;margin:0;padding:.5rem .8rem .8rem}
+  .ficha li{display:flex;justify-content:space-between;gap:.6rem;align-items:baseline;
+    padding:.44rem 0;border-bottom:1px dashed var(--rule-2);font-size:.82rem}
+  .ficha li:last-child{border-bottom:0}
+  .ficha .k{font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--ink-3);flex:1}
+  .ficha .v{font-family:var(--mono);font-size:.78rem;color:var(--ink-3);font-variant-numeric:tabular-nums;
+    text-align:right}
+  .ficha li.set .v{color:var(--seal);font-weight:700}
+  .ficha li.set .k{color:var(--ink-2)}
+  .prog{padding:.7rem .8rem;border-top:1px solid var(--rule)}
+  .prog .pl{font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ink-3);display:flex;justify-content:space-between;margin-bottom:.4rem}
+  .seals{display:flex;gap:.3rem}
+  .seals i{flex:1;height:6px;background:var(--card-2);border:1px solid var(--rule-2);border-radius:1px}
+  .seals i.on{background:var(--seal);border-color:var(--seal)}
+
+  /* ===== FASES ===== */
+  .phase{background:var(--card);border:1px solid var(--rule);border-radius:var(--r);
+    margin-bottom:1.1rem;box-shadow:0 1px 0 var(--shade);overflow:hidden}
+  .phase.locked{opacity:.52}
+  .ph{display:flex;align-items:center;gap:.75rem;padding:.7rem .85rem;background:var(--card-2);
+    border-bottom:1px solid var(--rule);flex-wrap:wrap}
+  .ph .n{font-family:var(--mono);font-size:.64rem;font-weight:700;letter-spacing:.1em;
+    background:var(--band);color:#F1EFE6;padding:.24rem .44rem;border-radius:var(--r);flex:none}
+  .ph .t{font-family:var(--serif);font-weight:700;font-size:1.1rem;letter-spacing:-.01em}
+  .ph .sp{flex:1 1 auto}
+  .ph .src{font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+  .stamp{font-family:var(--mono);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;
+    font-weight:700;padding:.22rem .45rem;border-radius:var(--r);border:1px solid var(--rule);
+    color:var(--ink-3);white-space:nowrap}
+  .stamp.ok{color:#fff;background:var(--seal);border-color:var(--seal)}
+  .stamp.lock{color:var(--ink-3)}
+  .body{padding:1rem .85rem 1.15rem}
+  .phase.locked .body{display:none}
+  .lockmsg{padding:.75rem .85rem;font-family:var(--serif);color:var(--ink-3);font-size:.92rem;font-style:italic}
+  .phase:not(.locked) .lockmsg{display:none}
+
+  .brief{font-family:var(--serif);font-size:1.02rem;line-height:1.66;color:var(--ink-2);margin:0 0 .8rem}
+  .brief b{color:var(--ink)}
+  .task{font-family:var(--mono);font-size:.71rem;line-height:1.7;color:var(--ink-2);
+    background:var(--card-2);border-left:3px solid var(--brass);padding:.6rem .7rem;margin:.85rem 0}
+  .task b{color:var(--ink)}
+
+  /* ===== F1 · rejilla de conmutadores ===== */
+  .swgrid{display:flex;flex-direction:column;gap:.5rem;margin:.9rem 0}
+  .swrow{border:1px solid var(--rule);border-radius:var(--r);padding:.6rem .7rem;background:var(--page)}
+  .swrow .lab{font-size:.93rem;margin-bottom:.5rem;line-height:1.5}
+  .swopts{display:flex;gap:.35rem;flex-wrap:wrap}
+  .swopts button{font-family:var(--mono);font-size:.64rem;letter-spacing:.06em;text-transform:uppercase;
+    background:var(--card);color:var(--ink-2);border:1px solid var(--rule);padding:.34rem .55rem;
+    border-radius:var(--r);cursor:pointer;flex:1 1 auto;min-width:112px}
+  .swopts button:hover:not(:disabled){border-color:var(--brass);color:var(--ink)}
+  .swopts button[aria-pressed="true"]{background:var(--band);border-color:var(--band);color:#F1EFE6;font-weight:700}
+  .swopts button:disabled{cursor:default}
+  .swrow.good{border-color:var(--seal);background:var(--seal-soft)}
+  .swrow.bad{border-color:var(--carmine);background:var(--carmine-soft)}
+
+  /* ===== F2 · tabla pinchable ===== */
+  .tw{overflow-x:auto;margin:.9rem 0;border:1px solid var(--rule);border-radius:var(--r)}
+  table.rel{border-collapse:collapse;width:100%;font-family:var(--mono);font-size:.74rem;min-width:520px}
+  table.rel th{background:var(--band);color:#F1EFE6;padding:0;text-align:left;font-weight:700}
+  table.rel th button{width:100%;font:inherit;letter-spacing:.06em;text-transform:uppercase;font-size:.64rem;
+    background:transparent;border:0;color:inherit;padding:.5rem .55rem;cursor:pointer;text-align:left}
+  table.rel th button:hover:not(:disabled){background:var(--band-2)}
+  table.rel th button:disabled{cursor:default}
+  table.rel th.good{background:var(--seal)} table.rel th.bad{background:var(--carmine)}
+  table.rel td{padding:.36rem .55rem;border-top:1px solid var(--rule-2);color:var(--ink-2);white-space:nowrap}
+  table.rel tbody tr:nth-child(even){background:var(--card-2)}
+  table.rel td.hl{color:var(--carmine);font-weight:700}
+
+  /* ===== F3 · constructor de consulta ===== */
+  .qbuild{font-family:var(--mono);font-size:.84rem;background:var(--band);color:#F1EFE6;
+    padding:.75rem .8rem;border-radius:var(--r);margin:.9rem 0;min-height:2.9rem;line-height:1.9;
+    overflow-x:auto;white-space:pre-wrap;word-break:break-word}
+  .qbuild .ph0{opacity:.4}
+  .qbuild .cur{border-bottom:2px solid var(--brass);animation:blink 1.1s step-end infinite}
+  @keyframes blink{50%{border-color:transparent}}
+  .bank{display:flex;flex-wrap:wrap;gap:.4rem;margin:.8rem 0}
+  .tk{font-family:var(--mono);font-size:.76rem;background:var(--card-2);color:var(--ink);
+    border:1px solid var(--rule);padding:.38rem .6rem;border-radius:var(--r);cursor:pointer}
+  .tk:hover:not(:disabled){border-color:var(--brass);background:var(--brass-soft)}
+  .tk:disabled{opacity:.3;cursor:default}
+  .tk.shake{animation:shk .32s}
+  @keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}
+    50%{transform:translateX(4px)}75%{transform:translateX(-2px)}}
+
+  /* ===== F4 · disyuntiva ===== */
+  .forks{display:grid;gap:.6rem;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));margin:.9rem 0}
+  .fork{text-align:left;font:inherit;background:var(--page);border:1px solid var(--rule);
+    border-radius:var(--r);padding:.8rem;cursor:pointer;color:var(--ink)}
+  .fork:hover:not(:disabled){border-color:var(--brass)}
+  .fork:disabled{cursor:default}
+  .fork .fh{font-family:var(--mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;
+    font-weight:700;margin-bottom:.35rem;display:block}
+  .fork .fd{font-size:.86rem;color:var(--ink-3);line-height:1.5;font-family:var(--serif)}
+  .fork.good{border-color:var(--seal);background:var(--seal-soft)}
+  .fork.good .fh{color:var(--seal)}
+  .fork.bad{border-color:var(--carmine);background:var(--carmine-soft)}
+  .fork.bad .fh{color:var(--carmine)}
+
+  /* ===== F5 · diagnóstico de discrepancias, fila a fila ===== */
+  .sw{font-family:var(--mono);font-size:.66rem;letter-spacing:.03em;background:var(--card-2);
+    color:var(--ink-2);border:1px solid var(--rule);padding:.36rem .55rem;border-radius:var(--r);
+    cursor:pointer;display:inline-flex;align-items:center;gap:.4rem;position:relative}
+  .sw::before{content:"";width:18px;height:10px;border-radius:6px;background:var(--rule);
+    position:relative;flex:none;transition:background .16s}
+  .sw::after{content:"";width:6px;height:6px;border-radius:50%;background:var(--card);
+    position:absolute;transform:translateX(-13px);transition:transform .16s}
+  .sw[aria-pressed="true"]{border-color:var(--seal);color:var(--ink);background:var(--seal-soft)}
+  .sw[aria-pressed="true"]::before{background:var(--seal)}
+  .sw[aria-pressed="true"]::after{transform:translateX(-5px)}
+  .sw:disabled{cursor:default;opacity:.75}
+
+  .pairs{display:flex;flex-direction:column;gap:.55rem;margin:.9rem 0}
+  .drow{border:1px solid var(--rule);border-radius:var(--r);padding:.6rem .7rem;background:var(--page)}
+  .drow .dstr{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin-bottom:.5rem}
+  .drow .s{font-family:var(--mono);font-size:.78rem;color:var(--ink-2);white-space:pre;overflow-x:auto}
+  .drow .ind{font-family:var(--mono);font-size:.68rem;font-weight:700;padding:.1rem .38rem;
+    border-radius:var(--r);white-space:nowrap;flex:none}
+  .drow .ind.no{background:var(--carmine-soft);color:var(--carmine);border:1px solid var(--carmine)}
+  .drow .ind.yes{background:var(--seal);color:#fff;border:1px solid var(--seal)}
+  .drow .dsw{display:flex;gap:.35rem;flex-wrap:wrap}
+  .drow.good{border-color:var(--seal);background:var(--seal-soft)}
+  .drow.bad{border-color:var(--carmine)}
+  .drow.bad .dstr{color:var(--carmine)}
+
+  /* ===== veredicto ===== */
+  .vd{display:none;margin:.95rem 0 0;padding:.8rem .9rem;border-radius:var(--r);
+    font-family:var(--serif);line-height:1.62;background:var(--page);border:1px solid var(--rule)}
+  .vd.on{display:block;animation:up .28s ease-out}
+  .vd h4{font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;
+    margin:0 0 .35rem;font-weight:700}
+  .vd p{margin:0 0 .55rem} .vd p:last-child{margin:0}
+  .vd.y{border-left:4px solid var(--seal)} .vd.y h4{color:var(--seal)}
+  .vd.n{border-left:4px solid var(--carmine)} .vd.n h4{color:var(--carmine)}
+  .vd.w{border-left:4px solid var(--brass)} .vd.w h4{color:var(--brass)}
+  @keyframes up{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){.vd.on{animation:none}.qbuild .cur{animation:none}.tk.shake{animation:none}}
+
+  .acts{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.95rem;align-items:center}
+  .btn{font-family:var(--mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;
+    background:var(--band);color:#F1EFE6;border:1px solid var(--band);padding:.5rem .85rem;
+    border-radius:var(--r);cursor:pointer}
+  .btn:hover:not(:disabled){background:var(--brass);border-color:var(--brass);color:#fff}
+  .btn:disabled{opacity:.35;cursor:default}
+  .btn.gh{background:transparent;color:var(--ink-2);border-color:var(--rule)}
+  .btn.gh:hover:not(:disabled){background:transparent;border-color:var(--ink-3);color:var(--ink)}
+  .hint{font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;color:var(--ink-3)}
+
+  .out{font-family:var(--mono);font-size:.74rem;line-height:1.6;background:var(--page);
+    border:1px solid var(--rule);border-left:3px solid var(--seal);padding:.6rem .7rem;
+    margin:.7rem 0 0;overflow-x:auto;white-space:pre;color:var(--ink-2)}
+  .outh{font-family:var(--mono);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--seal);font-weight:700;margin:.85rem 0 -.25rem}
+
+  .refs{margin:1rem 0 0;padding:.7rem .8rem;background:var(--page);border:1px solid var(--rule);border-radius:var(--r)}
+  .refs h5{font-family:var(--mono);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ink-3);margin:0 0 .4rem;font-weight:700}
+  .refs p{font-family:var(--serif);font-size:.81rem;line-height:1.5;color:var(--ink-2);margin:0 0 .4rem;
+    padding-left:1.4rem;text-indent:-1.4rem}
+  .refs p:last-child{margin:0}
+  .refs i{font-style:italic}
+  .refs a{color:var(--seal);text-decoration:none;word-break:break-all}
+  .refs a:hover{text-decoration:underline}
+
+  /* ===== CIERRE ===== */
+  .close{background:var(--band);color:#F1EFE6;border-radius:var(--r);padding:1.5rem 1.2rem;margin-top:1.6rem}
+  .close h2{font-family:var(--serif);font-size:clamp(1.4rem,4vw,2.1rem);margin:0 0 .3rem;letter-spacing:-.01em}
+  .close .verd{font-family:var(--mono);font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--brass);font-weight:700}
+  .close p{font-family:var(--serif);line-height:1.66;opacity:.85;max-width:60ch}
+  .close .lock2{font-style:italic;opacity:.5}
+  .close .tally{display:flex;gap:1.4rem;flex-wrap:wrap;margin:1.1rem 0 .3rem}
+  .close .tally div{font-family:var(--mono)}
+  .close .tally b{display:block;font-size:2rem;color:var(--brass);font-variant-numeric:tabular-nums;line-height:1}
+  .close .tally span{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;opacity:.6}
+  .close .fref{margin-top:1.3rem;padding-top:.9rem;border-top:1px solid rgba(241,239,230,.18)}
+  .close .fref h5{font-family:var(--mono);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;
+    opacity:.55;margin:0 0 .4rem}
+  .close .fref p{font-size:.8rem;opacity:.6;padding-left:1.4rem;text-indent:-1.4rem;margin:0 0 .35rem}
+
+  .foot{margin-top:2.4rem;padding-top:1rem;border-top:1px solid var(--rule);
+    font-family:var(--mono);font-size:.62rem;letter-spacing:.05em;color:var(--ink-3);line-height:1.9}
+  .foot b{color:var(--ink-2)}
+  :focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+</style>
+
+<div class="arch">
+  <div class="cover">
+    <div class="cover-in">
+      <p class="caseno"><span>Expediente <b>ITJ-2026-114</b></span><span>Cliente: <b>Red Iberia de Traducción Jurídica</b></span><span>Datos Masivos · Unidad 5</span></p>
+      <h1>El <i>Expediente</i></h1>
+      <p>Trabajas en <b>Términos &amp; Trama</b>, una consultora de terminología jurídica. La Red Iberia lleva años acumulando en su base de datos interna los términos que ha traducido. Antes de encargar una revisión terminológica completa —que cuesta dinero— quiere saber una cosa: <b>cuántos de esos términos ya tienen equivalente oficial</b> en un glosario público de referencia.</p>
+      <p>Hasta ahora eso se hacía copiando y pegando a mano. Tu encargo es automatizarlo. Seis fases; cada una desbloquea la siguiente, porque no se puede cruzar lo que aún no se ha traído.</p>
+      <div class="tools"><button class="lampb" id="tgl" type="button">Cambiar luz</button></div>
+    </div>
   </div>
+
+  <div class="shell">
+    <div class="grid">
+      <main>
+
+        <!-- F1 -->
+        <section class="phase" id="p1">
+          <div class="ph"><span class="n">01</span><span class="t">¿Dónde vive cada dato?</span>
+            <span class="sp"></span><span class="src">Marco 1.1</span><span class="stamp" id="s1">En curso</span></div>
+          <div class="body">
+            <p class="brief">Antes de escribir una sola línea, hay que saber de dónde sale cada cosa. En un encargo real la información no está en un único sitio: una parte vive en <b>bases de datos internas</b> de la organización, otra en <b>fuentes externas publicadas</b> (portales, glosarios institucionales, repositorios abiertos), y otra sencillamente <b>no existe como dato</b> y habría que producirla.</p>
+            <div class="task"><b>Tu tarea:</b> para cada elemento del encargo, marca de dónde puede obtenerse. Cuando tengas los cinco, pulsa «Comprobar procedencias».</div>
+            <div class="swgrid" id="g1"></div>
+            <div class="vd" id="v1"></div>
+            <div class="acts"><button class="btn" id="ck1" disabled type="button">Comprobar procedencias</button>
+              <span class="hint" id="h1"></span></div>
+          </div>
+        </section>
+
+        <!-- F2 -->
+        <section class="phase locked" id="p2">
+          <div class="ph"><span class="n">02</span><span class="t">La tabla y su clave</span>
+            <span class="sp"></span><span class="src">Marco 1.2 · Codd (1970)</span><span class="stamp lock" id="s2">Sellado</span></div>
+          <p class="lockmsg">Se abrirá cuando cierres la fase 01.</p>
+          <div class="body">
+            <p class="brief">Ya sabes que los términos están en una base de datos interna. Esta es su tabla, <code>terminos_internos</code>: <b>400 filas</b>, una por cada vez que un término se incorporó en algún proyecto y algún idioma. Abajo ves las seis primeras.</p>
+            <p class="brief">El modelo relacional que formuló Codd (1970) organiza los datos así: filas y columnas, y <b>una clave que identifica de forma única cada fila</b>. Esa clave es lo que después permite relacionar unas tablas con otras sin duplicar información.</p>
+            <div class="tw"><table class="rel" id="t2"></table></div>
+            <p class="brief" id="q2"></p>
+            <div class="vd" id="v2"></div>
+            <div class="acts"><span class="hint" id="h2">Pincha en la cabecera de una columna.</span></div>
+            <div class="refs" id="ref2"></div>
+          </div>
+        </section>
+
+        <!-- F3 -->
+        <section class="phase locked" id="p3">
+          <div class="ph"><span class="n">03</span><span class="t">Construir la consulta</span>
+            <span class="sp"></span><span class="src">Marco 1.3</span><span class="stamp lock" id="s3">Sellado</span></div>
+          <p class="lockmsg">Se abrirá cuando cierres la fase 02.</p>
+          <div class="body">
+            <p class="brief">Una base de datos no se carga entera en memoria como si fuera un CSV: <b>se le hacen preguntas concretas</b> en un lenguaje llamado SQL, y solo el resultado viaja hasta Python. Para eso hace falta abrir una <b>conexión</b>, y después Pandas ejecuta la consulta con <code>read_sql_query()</code> y te devuelve directamente una tabla.</p>
+            <p class="brief">Una consulta SQL básica tiene tres piezas: <code>SELECT</code> qué columnas quieres, <code>FROM</code> qué tabla, y opcionalmente <code>WHERE</code> qué condición deben cumplir las filas.</p>
+            <div class="task"><b>Tu tarea:</b> la responsable del proyecto pide <b>el término y el idioma de todos los registros en francés</b>. Monta la consulta pulsando las piezas en el orden correcto. Si una pieza no encaja ahí, se rechazará.</div>
+            <div class="qbuild" id="qb"></div>
+            <div class="bank" id="bank"></div>
+            <div class="vd" id="v3"></div>
+            <div class="acts"><button class="btn gh" id="rs3" type="button">Empezar de nuevo</button>
+              <span class="hint" id="h3"></span></div>
+          </div>
+        </section>
+
+        <!-- F4 -->
+        <section class="phase locked" id="p4">
+          <div class="ph"><span class="n">04</span><span class="t">Traer el glosario externo</span>
+            <span class="sp"></span><span class="src">Marco 1.4</span><span class="stamp lock" id="s4">Sellado</span></div>
+          <p class="lockmsg">Se abrirá cuando cierres la fase 03.</p>
+          <div class="body">
+            <p class="brief">Ya tienes los términos internos. Falta la otra mitad: el <b>glosario público de referencia</b>, que no está en vuestra base de datos sino publicado en el portal de una institución, como un archivo CSV colgado en una dirección web.</p>
+            <p class="brief">Aquí hay una comodidad que sorprende: Pandas lee desde una dirección web <b>con la misma función</b> que usa para un archivo del disco, <code>read_csv()</code>. Solo cambia la ruta que le pasas. Pero esa comodidad tiene una contrapartida.</p>
+            <div class="task"><b>Tu tarea:</b> la sesión de trabajo con el cliente es mañana a primera hora. Decide cómo vas a acceder al glosario.</div>
+            <div class="forks" id="f4"></div>
+            <div class="vd" id="v4"></div>
+            <div class="acts"><span class="hint" id="h4"></span></div>
+          </div>
+        </section>
+
+        <!-- F5 -->
+        <section class="phase locked" id="p5">
+          <div class="ph"><span class="n">05</span><span class="t">La mesa de normalización</span>
+            <span class="sp"></span><span class="src">Marco 1.5 · Dong y Srivastava (2015)</span><span class="stamp lock" id="s5">Sellado</span></div>
+          <p class="lockmsg">Se abrirá cuando cierres la fase 04.</p>
+          <div class="body">
+            <p class="brief">Tienes las dos fuentes. Podría parecer que ya está: se cruzan por el término y listo. No lo está. Dong y Srivastava (2015) señalan que <b>integrar datos de orígenes distintos es una de las tareas más exigentes</b> del trabajo con datos masivos, precisamente porque cada fuente sigue sus propias convenciones.</p>
+            <p class="brief">Para una persona, «Fuerza Mayor» y «fuerza mayor» son lo mismo. Para un cruce informático son <b>dos valores distintos</b>: si un solo carácter difiere —una mayúscula, un espacio invisible al final, un acento— la coincidencia falla y el término se queda huérfano.</p>
+            <div class="task"><b>Tu tarea:</b> abajo hay seis pares de términos que <b>deberían</b> casar y no casan. Para cada par, decide <b>cuáles de las tres transformaciones hacen falta</b> —ni una menos, ni una de más— y actívalas con los tres interruptores de esa fila. El indicador de la derecha te dice si, con lo que llevas marcado, el par ya coincide.<br><b>Por qué importa no pasarte:</b> normalizar de más no es gratis. Si quitas los acentos a un campo entero porque un solo par lo necesitaba, corres el riesgo de fusionar por error dos términos distintos que solo se diferencian por una tilde. La disciplina consiste en aplicar exactamente lo necesario, no todo lo que se te ocurra.<br><b>Aviso honesto:</b> los archivos de esta unidad vienen limpios; estas variantes están alteradas a propósito para que veas el efecto. En un encargo real casi nunca vienen así.</div>
+            <div class="pairs" id="pr5"></div>
+            <div class="vd" id="v5"></div>
+            <div class="acts"><button class="btn" id="ck5" type="button">Comprobar diagnóstico</button>
+              <span class="hint" id="h5"></span></div>
+            <div class="refs" id="ref5"></div>
+          </div>
+        </section>
+
+        <!-- F6 -->
+        <section class="phase locked" id="p6">
+          <div class="ph"><span class="n">06</span><span class="t">Cerrar el ciclo</span>
+            <span class="sp"></span><span class="src">Marco 1.6</span><span class="stamp lock" id="s6">Sellado</span></div>
+          <p class="lockmsg">Se abrirá cuando cierres la fase 05.</p>
+          <div class="body">
+            <p class="brief">El cruce ya está hecho y el resultado vive en la memoria de Python. Si cierras el programa ahora, desaparece. Del mismo modo que Pandas lee de una base de datos, <b>puede escribir en ella</b> con <code>to_sql()</code>: así el resultado queda disponible para que otras personas o aplicaciones lo consulten.</p>
+            <div class="task"><b>Tu tarea:</b> decide dónde se guarda el informe de cobertura.</div>
+            <div class="forks" id="f6"></div>
+            <div class="vd" id="v6"></div>
+            <div class="acts"><span class="hint" id="h6"></span></div>
+          </div>
+        </section>
+
+        <section class="close" id="fin">
+          <p class="verd" id="fv">Expediente abierto</p>
+          <h2 id="fh">Sin cerrar</h2>
+          <div id="fb"><p class="lock2">Completa las seis fases para firmar el expediente.</p></div>
+          <div class="fref">
+            <h5>Referencias</h5>
+            <p>Codd, E. F. (1970). A relational model of data for large shared data banks. <i>Communications of the ACM, 13</i>(6), 377-387. https://doi.org/10.1145/362384.362685</p>
+            <p>Dong, X. L., &amp; Srivastava, D. (2015). <i>Big data integration</i>. Morgan &amp; Claypool.</p>
+          </div>
+        </section>
+
+        <footer class="foot">
+          <b>© Dr.ª Blanca Hernández Pardo</b> · Datos Masivos · Unidad 5: Almacenamiento y acceso a datos a gran escala<br>
+          Recurso didáctico interactivo. Los datos proceden de los materiales de la unidad: 400 registros internos, 30 términos distintos y un glosario externo de 22 equivalencias.<br>
+          Queda prohibida la difusión, distribución o reproducción total o parcial de este material sin autorización expresa de la autora.
+        </footer>
+      </main>
+
+      <aside class="ficha">
+        <h3>Ficha del caso</h3>
+        <ul id="fichaList"></ul>
+        <div class="prog">
+          <div class="pl"><span>Sellos</span><span id="pcount">0 / 6</span></div>
+          <div class="seals" id="seals"></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  const $=s=>document.querySelector(s);
+  const el=(t,c,h)=>{const n=document.createElement(t);if(c)n.className=c;if(h!=null)n.innerHTML=h;return n;};
+  const shuffle=a=>{const b=a.slice();for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));
+    [b[i],b[j]]=[b[j],b[i]];}return b;};
+  function prefersDark(){try{return !!(window.matchMedia&&window.matchMedia("(prefers-color-scheme:dark)").matches);}catch(e){return false;}}
+  $("#tgl").addEventListener("click",()=>{const r=document.documentElement;
+    const cur=r.getAttribute("data-theme")||(prefersDark()?"dark":"light");
+    r.setAttribute("data-theme",cur==="dark"?"light":"dark");});
+
+  const REF={
+    codd:'Codd, E. F. (1970). A relational model of data for large shared data banks. <i>Communications of the ACM, 13</i>(6), 377-387. <a href="https://doi.org/10.1145/362384.362685" target="_blank" rel="noopener">https://doi.org/10.1145/362384.362685</a>',
+    dong:'Dong, X. L., &amp; Srivastava, D. (2015). <i>Big data integration</i>. Morgan &amp; Claypool.'
+  };
+  $("#ref2").innerHTML="<h5>Referencia</h5><p>"+REF.codd+"</p>";
+  $("#ref5").innerHTML="<h5>Referencia</h5><p>"+REF.dong+"</p>";
+
+  /* ---------- ficha lateral ---------- */
+  const FICHA=[
+    ["conn","Conexión","—"],["reg","Registros internos","—"],["dist","Términos distintos","—"],
+    ["glos","Glosario externo","—"],["norm","Pares normalizados","—"],
+    ["cob","Cobertura","—"],["out","Salida","—"]];
+  function paintFicha(){
+    const ul=$("#fichaList");ul.innerHTML="";
+    FICHA.forEach(([k,lab,val])=>{
+      const li=el("li",val==="—"?"":"set");
+      li.innerHTML='<span class="k">'+lab+'</span><span class="v">'+val+"</span>";
+      ul.appendChild(li);});
+  }
+  function setFicha(key,val){const r=FICHA.find(f=>f[0]===key);if(r){r[2]=val;paintFicha();}}
+  paintFicha();
+
+  /* ---------- estado ---------- */
+  const st={sellos:new Set(),limpio:new Set()};
+  const seals=$("#seals");
+  for(let i=0;i<6;i++)seals.appendChild(el("i"));
+  function sello(n,clean){
+    st.sellos.add(n); if(clean)st.limpio.add(n);
+    $("#s"+n).textContent="Cerrada";$("#s"+n).className="stamp ok";
+    seals.children[n-1].classList.add("on");
+    $("#pcount").textContent=st.sellos.size+" / 6";
+    const nx=$("#p"+(n+1));
+    if(nx){nx.classList.remove("locked");$("#s"+(n+1)).textContent="En curso";$("#s"+(n+1)).className="stamp";}
+    if(st.sellos.size===6)cerrar();
+  }
+  function say(node,kind,head,html){node.className="vd on "+kind;
+    node.innerHTML="<h4>"+head+"</h4>"+html;}
+
+  /* ================= F1 ================= */
+  const ORIG=[["int","Base de datos interna"],["ext","Fuente externa publicada"],["no","No existe: habría que producirlo"]];
+  const ITEMS=shuffle([
+    {t:"Los 400 registros de términos que la Red ha ido acumulando desde 2018",a:"int"},
+    {t:"El glosario multilingüe público que sirve de referencia oficial",a:"ext"},
+    {t:"La fecha en que cada término se incorporó y el proyecto en que se usó",a:"int"},
+    {t:"El equivalente en inglés de «fuerza mayor» según ese glosario",a:"ext"},
+    {t:"Si la equivalencia recogida en el glosario es jurídicamente la más adecuada",a:"no"}
+  ]);
+  const sel1=ITEMS.map(()=>null);let closed1=false;
+  function m1(check){
+    const g=$("#g1");g.innerHTML="";
+    ITEMS.forEach((it,i)=>{
+      const row=el("div","swrow");
+      if(check)row.classList.add(sel1[i]===it.a?"good":"bad");
+      row.appendChild(el("div","lab",it.t));
+      const o=el("div","swopts");
+      ORIG.forEach(([k,lab])=>{
+        const b=el("button",null,lab);b.type="button";
+        b.setAttribute("aria-pressed",sel1[i]===k?"true":"false");b.disabled=closed1;
+        b.addEventListener("click",()=>{sel1[i]=k;m1(false);
+          $("#ck1").disabled=sel1.some(v=>v===null);});
+        o.appendChild(b);});
+      row.appendChild(o);g.appendChild(row);});
+    $("#h1").textContent=closed1?"":sel1.filter(v=>v!==null).length+" de 5 marcados";
+  }
+  let try1=0;
+  $("#ck1").addEventListener("click",()=>{
+    if(closed1||sel1.some(v=>v===null))return;
+    try1++;
+    const good=ITEMS.filter((it,i)=>sel1[i]===it.a).length;
+    if(good<ITEMS.length){m1(true);
+      say($("#v1"),"w","Revisa las marcadas en rojo",
+        "<p>Aciertas <b>"+good+" de 5</b>. Corrige las que están en rojo y vuelve a comprobar.</p>");
+      return;}
+    closed1=true;m1(true);$("#ck1").disabled=true;
+    setFicha("conn","pendiente");
+    say($("#v1"),"y","Procedencias correctas",
+      "<p>Los datos del encargo salen de <b>dos orígenes distintos</b>, y eso es lo normal: las bases de datos internas guardan lo que la organización ha producido, y las fuentes externas aportan lo que no le pertenece pero necesita.</p>"+
+      "<p>La quinta no es un descuido: <b>ningún acceso a datos resuelve un juicio profesional</b>. Que el glosario recoja una equivalencia no la convierte en la más adecuada para un contrato concreto. Ese trabajo es de un jurista, y el informe que vas a construir no lo sustituye — solo dice qué términos <em>ya están recogidos</em> y cuáles no.</p>");
+    sello(1,try1===1);
+  });
+  m1(false);
+
+  /* ================= F2 ================= */
+  const COLS=["id","termino","idioma","proyecto","fecha_incorporacion"];
+  const ROWS=[
+    ["1","recurso de apelación","portugués","Proyecto Faro","2020-11-12"],
+    ["2","buena fe contractual","alemán","Proyecto Delta","2026-04-19"],
+    ["3","buena fe contractual","francés","Proyecto Faro","2023-03-23"],
+    ["4","arrendamiento financiero","inglés","Proyecto Atlas","2019-10-05"],
+    ["5","nulidad de pleno derecho","italiano","Proyecto Vector","2020-10-06"],
+    ["6","cláusula penal","francés","Proyecto Delta","2024-06-08"]];
+  const Q2=[
+    {q:"<b>Pregunta 1 de 2.</b> ¿Cuál de estas columnas puede funcionar como <b>clave primaria</b>, es decir, identificar de forma única cada una de las 400 filas?",ok:"id",
+     w:"<p><b>id</b> es la única que no se repite nunca: hay 400 filas y 400 identificadores distintos. Esa es la condición que pide el modelo relacional — sin una clave única no se puede señalar una fila concreta ni relacionarla con otra tabla sin ambigüedad.</p>",
+     bad:{termino:"Fíjate en las filas 2 y 3: «buena fe contractual» aparece dos veces. En la tabla completa hay 400 filas pero solo 30 términos distintos, así que el término se repite muchísimo.",
+          idioma:"Solo hay cinco idiomas para 400 filas: se repite constantemente.",
+          proyecto:"Solo hay seis proyectos para 400 filas.",
+          fecha_incorporacion:"Nada impide que dos términos se incorporaran el mismo día, y de hecho ocurre."}},
+    {q:"<b>Pregunta 2 de 2.</b> El cliente quiere saber <b>cuántos términos distintos</b> maneja la Red. ¿En qué columna hay que mirar?",ok:"termino",
+     w:"<p>En <b>termino</b>. Y aquí está el matiz que más se escapa: la tabla tiene <b>400 filas pero solo 30 términos distintos</b>, porque cada término aparece una vez por cada idioma y proyecto en que se usó. Contar filas daría 400 y sería una respuesta equivocada a la pregunta del cliente.</p>",
+     bad:{id:"id cuenta filas, no términos: daría 400, que es cuántas veces se ha incorporado algo, no cuántas cosas distintas hay.",
+          idioma:"Eso te diría en cuántos idiomas se trabaja (cinco), no cuántos términos hay.",
+          proyecto:"Eso te diría cuántos proyectos hay (seis).",
+          fecha_incorporacion:"Las fechas no identifican términos."}}
+  ];
+  let i2=0,clean2=true,closed2=false;
+  function m2(markCol,ok){
+    const t=$("#t2");t.innerHTML="";
+    const thead=el("thead"),tr=el("tr");
+    COLS.forEach(c=>{const th=el("th");
+      if(markCol===c)th.classList.add(ok?"good":"bad");
+      const b=el("button",null,c);b.type="button";b.disabled=closed2;
+      b.addEventListener("click",()=>pick2(c));
+      th.appendChild(b);tr.appendChild(th);});
+    thead.appendChild(tr);t.appendChild(thead);
+    const tb=el("tbody");
+    ROWS.forEach(r=>{const row=el("tr");
+      r.forEach((v,k)=>{const td=el("td",null,v);
+        if(k===1&&(v==="buena fe contractual"))td.classList.add("hl");
+        row.appendChild(td);});
+      tb.appendChild(row);});
+    t.appendChild(tb);
+    $("#q2").innerHTML=Q2[i2].q;
+  }
+  function pick2(c){
+    if(closed2)return;
+    const it=Q2[i2],ok=c===it.ok;
+    if(!ok){clean2=false;m2(c,false);
+      say($("#v2"),"n","Esa columna no sirve","<p>"+(it.bad[c]||"Prueba con otra.")+"</p>");
+      return;}
+    m2(c,true);
+    if(i2===0){
+      say($("#v2"),"y","Clave correcta",it.w+"<p>Pulsa una columna para responder la segunda pregunta.</p>");
+      i2=1;setTimeout(()=>{m2(null,false);},0);
+      return;}
+    closed2=true;m2(c,true);
+    setFicha("reg","400 filas");setFicha("dist","30 términos");
+    say($("#v2"),"y","Correcto",it.w+
+      "<p>Esta distinción entre <em>filas</em> y <em>valores distintos</em> es la que hace que el informe final hable de 30 términos y no de 400 registros.</p>");
+    sello(2,clean2);
+  }
+  m2(null,false);
+
+  /* ================= F3 ================= */
+  const SEQ=["SELECT","termino, idioma","FROM","terminos_internos","WHERE","idioma = 'francés'"];
+  const DIST=["DROP TABLE","glosario_externo","equivalente_en","ORDER BY fecha"];
+  let built=[],clean3=true,closed3=false;
+  const BANK=shuffle(SEQ.concat(DIST));
+  function m3(){
+    const qb=$("#qb");
+    qb.innerHTML=built.length
+      ? built.join(" ")+(closed3?"":' <span class="cur">&nbsp;</span>')
+      : '<span class="ph0">La consulta aparecerá aquí…</span>';
+    const b=$("#bank");b.innerHTML="";
+    BANK.forEach(tk=>{
+      const btn=el("button","tk",tk);btn.type="button";
+      const used=built.includes(tk);
+      btn.disabled=closed3||used;
+      btn.addEventListener("click",()=>{
+        if(closed3)return;
+        if(tk===SEQ[built.length]){
+          built.push(tk);m3();
+          if(built.length===SEQ.length)done3();
+        }else{
+          clean3=false;btn.classList.add("shake");
+          setTimeout(()=>btn.classList.remove("shake"),340);
+          say($("#v3"),"n","Ahí no encaja",
+            "<p>"+nudge(built.length)+"</p>");
+        }});
+      b.appendChild(btn);});
+    $("#h3").textContent=closed3?"":built.length+" de "+SEQ.length+" piezas";
+  }
+  function nudge(n){
+    return ["Toda consulta empieza diciendo qué se quiere leer.",
+      "Después de SELECT van las columnas que quieres, separadas por comas.",
+      "Ya has dicho qué columnas; ahora hay que indicar de dónde salen.",
+      "Después de FROM va el nombre de la tabla que contiene esos términos.",
+      "Te falta la condición: quieres solo una parte de las filas, no todas.",
+      "Después de WHERE va la condición que deben cumplir las filas."][n]||"Prueba con otra pieza.";
+  }
+  function done3(){
+    closed3=true;m3();
+    setFicha("conn","sqlite3 abierta");
+    say($("#v3"),"y","Consulta correcta",
+      "<p>Esta consulta devuelve <b>81 filas</b>: los registros en francés de los 400 totales. Solo esas 81 viajan hasta Python — no las 400.</p>"+
+      "<p>Ahí está la diferencia de fondo con un CSV: el archivo hay que abrirlo entero, mientras que a una base de datos <b>le preguntas</b> y te responde solo lo que pediste. Con 400 filas da igual; con cuarenta millones, es la diferencia entre que funcione y que no.</p>"+
+      "<p>En Python, la orden completa sería:</p>"+
+      '<div class="out">import sqlite3\nimport pandas as pd\n\nconexion = sqlite3.connect("terminos_internos.db")\ndf = pd.read_sql_query(\n    "SELECT termino, idioma FROM terminos_internos WHERE idioma = \'francés\'",\n    conexion\n)</div>');
+    sello(3,clean3);
+  }
+  $("#rs3").addEventListener("click",()=>{if(closed3)return;built=[];$("#v3").className="vd";m3();});
+  m3();
+
+  /* ================= F4 ================= */
+  const F4=shuffle([
+    {h:"Leer directamente desde la URL del portal",ok:false,
+     d:"Una sola línea, siempre actualizada: read_csv apunta a la dirección web y listo.",
+     w:"<p>Es lo que más se parece a lo ideal… hasta que falla. A las 8:40 de la mañana el portal devuelve un <b>error 404</b>: alguien reorganizó las carpetas del sitio durante la noche y la dirección ya no existe. La sesión con el cliente empieza en veinte minutos y tu cuaderno no arranca.</p>"+
+       "<p>La web pública es volátil por naturaleza: la dirección puede cambiar, el servidor puede caerse y nadie te avisa. No es que leer desde una URL esté mal —la sintaxis es idéntica y es una capacidad muy potente—, es que <b>hacer depender una sesión crítica de que un servidor ajeno siga en pie</b> es asumir un riesgo que no controlas.</p>"+
+       "<p>Elige ahora la otra opción para continuar.</p>"},
+    {h:"Descargar una copia local y trabajar con ella",ok:true,
+     d:"Una línea más de trabajo hoy: guardas el archivo y lees desde tu carpeta.",
+     w:"<p>Buena decisión. La sintaxis de <code>read_csv()</code> es <b>exactamente la misma</b>: solo cambia la ruta que le pasas, de una dirección web a una ruta de tu proyecto. No pierdes nada técnicamente y ganas control sobre la disponibilidad del dato.</p>"+
+       "<p>Esto no significa desconfiar de las fuentes externas: significa que, cuando algo tiene que funcionar en un momento concreto —una clase, una demostración, un proceso automatizado—, conviene <b>no depender de un servidor que no es tuyo</b>. El glosario tiene 22 equivalencias y ya está en tu carpeta.</p>"}
+  ]);
+  let closed4=false,clean4=true;
+  function m4(){
+    const c=$("#f4");c.innerHTML="";
+    F4.forEach(f=>{
+      const b=el("button","fork");b.type="button";
+      b.innerHTML='<span class="fh">'+f.h+'</span><span class="fd">'+f.d+"</span>";
+      b.disabled=closed4;
+      b.addEventListener("click",()=>{
+        if(closed4)return;
+        if(!f.ok){clean4=false;b.classList.add("bad");b.disabled=true;
+          say($("#v4"),"n","El portal ha caído","<p>"+f.w+"</p>");return;}
+        closed4=true;b.classList.add("good");
+        [...c.children].forEach(x=>x.disabled=true);
+        setFicha("glos","22 equivalencias");
+        say($("#v4"),"y","Glosario disponible",f.w);
+        sello(4,clean4);m4b();});
+      c.appendChild(b);});
+  }
+  function m4b(){[...$("#f4").children].forEach(x=>x.disabled=true);}
+  m4();
+
+  /* ================= F5 · diagnóstico de discrepancias, fila a fila ================= */
+  const SWS=[{k:"low",lab:"minúsculas"},{k:"trim",lab:"espacios"},{k:"acc",lab:"acentos"}];
+  const strip=s=>s.normalize("NFD").replace(/[̀-ͯ]/g,"");  // marcas diacríticas combinantes
+  const DPAIRS=shuffle([
+    {a:"ACUERDO MARCO",b:"acuerdo marco",need:["low"]},
+    {a:"cosa juzgada  ",b:"cosa juzgada",need:["trim"]},
+    {a:"clausula penal",b:"cláusula penal",need:["acc"]},
+    {a:" Debido Proceso ",b:"debido proceso",need:["low","trim"]},
+    {a:"GARANTIA REAL",b:"garantía real",need:["low","acc"]},
+    {a:"  RECURSO DE APELACION ",b:"recurso de apelación",need:["low","trim","acc"]}
+  ]).map(p=>Object.assign({on:{low:false,trim:false,acc:false}},p));
+  let try5=0,closed5=false;
+  function norm5(s,on){let x=s;if(on.low)x=x.toLowerCase();if(on.trim)x=x.trim();if(on.acc)x=strip(x);return x;}
+  function exact(on,need){const keys=["low","trim","acc"];
+    return keys.every(k=>on[k]===need.includes(k));}
+  function m5(state){
+    const pc=$("#pr5");pc.innerHTML="";
+    DPAIRS.forEach((p,i)=>{
+      const eq=norm5(p.a,p.on)===norm5(p.b,p.on);
+      const row=el("div","drow");
+      if(state==="check")row.classList.add(exact(p.on,p.need)?"good":"bad");
+      const str=el("div","dstr");
+      str.innerHTML='<span class="s">'+p.a.replace(/ /g,"·")+'</span>'+
+        '<span class="ind '+(eq?"yes":"no")+'">'+(eq?"coinciden":"no coinciden")+"</span>"+
+        '<span class="s">'+p.b.replace(/ /g,"·")+"</span>";
+      row.appendChild(str);
+      const sw=el("div","dsw");
+      SWS.forEach(s=>{const b=el("button","sw",s.lab);b.type="button";
+        b.setAttribute("aria-pressed",p.on[s.k]?"true":"false");b.disabled=closed5;
+        b.addEventListener("click",()=>{p.on[s.k]=!p.on[s.k];m5(null);});
+        sw.appendChild(b);});
+      row.appendChild(sw);pc.appendChild(row);});
+    $("#h5").textContent=closed5?"Cerrado":"";
+  }
+  function close5(solved){
+    closed5=true;m5("check");
+    $("#ck5").disabled=true;
+    setFicha("norm","6 de 6");setFicha("cob","22 de 30 · 73,3 %");
+    say($("#v5"),solved?"y":"w",solved?"Diagnóstico correcto":"Diagnóstico incompleto",
+      (solved?"":"<p>Alguna fila no llevaba exactamente las transformaciones necesarias. Revísalas antes de seguir.</p>")+
+      "<p>Cada par necesitaba una combinación distinta. Marcar de más no rompe <em>este</em> cruce concreto, pero sí generaliza mal: si aplicas «sin acentos» a las 400 filas de <code>terminos_internos</code> porque un único par lo pedía, corres el riesgo de fusionar por error dos términos que solo se diferencian por una tilde.</p>"+
+      "<p>Aplicado al encargo completo, el cruce da el resultado que buscaba el cliente: de los <b>30 términos distintos</b> de la Red, <b>22 tienen equivalente</b> en el glosario y <b>8 no</b>. Estos son los ocho que quedan fuera:</p>"+
+      '<div class="out">compraventa mercantil      levantamiento del velo\nderecho de retracto        sociedad de gananciales\ndiligencia previa          subrogación contractual\nestado de alarma           vía ejecutiva</div>'+
+      "<p>Sin normalizar, varios de esos 22 se habrían contado como «sin equivalente» por una mayúscula o un espacio. El informe habría dado una cobertura más baja de la real, y el cliente habría encargado una revisión más cara de lo necesario.</p>");
+    sello(5,try5===1);
+  }
+  $("#ck5").addEventListener("click",()=>{
+    if(closed5)return;
+    try5++;
+    const good=DPAIRS.filter(p=>exact(p.on,p.need)).length;
+    if(good===DPAIRS.length){close5(true);return;}
+    m5("check");
+    say($("#v5"),"w","Revisa las filas en rojo",
+      "<p>Tienes <b>"+good+" de 6</b> con el diagnóstico exacto. En verde, la combinación de interruptores es la mínima necesaria; en rojo, sobra o falta alguno. Ajusta y vuelve a comprobar — no hay límite de intentos.</p>");
+  });
+  m5(null);
+
+  /* ================= F6 ================= */
+  const F6=shuffle([
+    {h:"Sobrescribir la tabla terminos_internos",ok:false,
+     d:"Añadir las columnas del cruce a la tabla que ya existe.",
+     w:"<p>No. Esa tabla es <b>la fuente de partida</b>: si la sobrescribes, pierdes el punto de referencia y nadie podrá comprobar tu trabajo ni repetirlo. Cualquier resultado nuevo se guarda aparte; el original se queda intacto.</p><p>Elige otra opción.</p>"},
+    {h:"Crear una tabla nueva en la misma base de datos",ok:true,
+     d:"to_sql() escribe el informe como una tabla adicional junto a la original.",
+     w:"<p>Correcto. <code>to_sql()</code> crea una tabla nueva —aquí, <code>informe_cobertura</code>— <b>sin tocar la de partida</b>. Con eso se cierra el ciclo completo: los datos entraron desde una base de datos y desde una fuente externa, pasaron por Pandas para prepararse y combinarse, y vuelven a la base de datos como un resultado consultable.</p>"+
+       "<p>A partir de ese momento cualquier persona de la Red puede preguntar por SQL qué términos tienen equivalente, <b>sin repetir la descarga ni la normalización</b>. El trabajo que has hecho hoy queda capitalizado para todos.</p>"+
+       "<p>Un detalle que importa: el informe guarda los <b>400 registros</b> con su marca de cobertura, de los cuales 302 tienen equivalente (75,5 %). Sin embargo, la cifra que interesa al cliente es la de términos distintos: <b>22 de 30</b>.</p>"},
+    {h:"Guardar solo un CSV en tu carpeta",ok:false,
+     d:"Exportar el resultado como archivo y enviarlo por correo.",
+     w:"<p>Es mejor que nada, y de hecho el CSV se suele generar también. Pero un archivo en tu carpeta <b>no está disponible para el resto de la organización</b> ni para otras aplicaciones: hay que pedírtelo, y en cuanto los datos cambien, tu copia queda vieja.</p><p>Hay una opción que sí cierra el ciclo.</p>"}
+  ]);
+  let closed6=false,clean6=true;
+  function m6(){
+    const c=$("#f6");c.innerHTML="";
+    F6.forEach(f=>{
+      const b=el("button","fork");b.type="button";
+      b.innerHTML='<span class="fh">'+f.h+'</span><span class="fd">'+f.d+"</span>";
+      b.disabled=closed6;
+      b.addEventListener("click",()=>{
+        if(closed6)return;
+        if(!f.ok){clean6=false;b.classList.add("bad");b.disabled=true;
+          say($("#v6"),"n","Esa no cierra el ciclo","<p>"+f.w+"</p>");return;}
+        closed6=true;b.classList.add("good");
+        [...c.children].forEach(x=>x.disabled=true);
+        setFicha("out","tabla informe_cobertura");
+        say($("#v6"),"y","Ciclo cerrado",f.w);
+        sello(6,clean6);});
+      c.appendChild(b);});
+  }
+  m6();
+
+  /* ================= CIERRE ================= */
+  function cerrar(){
+    const limpias=st.limpio.size;
+    let verd,tit,txt;
+    if(limpias===6){verd="Expediente impecable";tit="Firmado sin una sola corrección";
+      txt="Has acertado las seis fases a la primera. Eso incluye lo más difícil del encargo: entender que el cruce no falla por el código, sino por las convenciones de escritura de cada fuente.";}
+    else if(limpias>=4){verd="Expediente cerrado";tit="Informe entregado";
+      txt="Has cerrado el caso corrigiendo por el camino, que es exactamente como se trabaja. Repasa las fases en las que tuviste que rectificar: suelen ser las que más enseñan.";}
+    else{verd="Expediente cerrado con reservas";tit="Informe entregado";
+      txt="Has llegado al final, pero conviene releer el recorrido. Toda la unidad gira en torno a una distinción: acceder al dato y poder integrarlo son dos problemas distintos, y el segundo cuesta mucho más que el primero.";}
+    $("#fv").textContent=verd;$("#fh").textContent=tit;
+    $("#fb").innerHTML=
+      '<div class="tally"><div><b>22</b><span>de 30 con equivalente</span></div>'+
+      '<div><b>8</b><span>sin equivalente</span></div>'+
+      '<div><b>'+limpias+'</b><span>de 6 fases a la primera</span></div></div>'+
+      "<p>"+txt+"</p>"+
+      "<p>Y esto es lo que el cliente se lleva: no una opinión sobre si sus traducciones son buenas —eso no lo responde ningún cruce de tablas—, sino un dato accionable. Sabe que <b>ocho términos concretos</b> no están recogidos en el glosario de referencia, y puede encargar la revisión solo de esos ocho en lugar de los treinta.</p>"+
+      '<p style="opacity:.6;font-size:.92rem">Vuelve a cargar la página para repetir el expediente: las opciones aparecerán en otro orden.</p>';
+  }
+})();
+</script>
+
 </body>
 </html>

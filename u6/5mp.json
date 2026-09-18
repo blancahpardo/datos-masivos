@@ -1,0 +1,46 @@
+{
+  "header": {
+    "kicker": "Datos Masivos · Unidad 6",
+    "title": "Reto relámpago",
+    "subtitle": "El caso de Bitácora de Datos"
+  },
+  "intro": "Bitácora de Datos necesita confirmar que la automatización y comunicación de resultados ha quedado clara antes del cierre de la asignatura. Cinco preguntas, mecánicas distintas. Tienes dos intentos por pregunta antes de ver la solución. Puedes repetirlo las veces que quieras: no cuenta para la nota.",
+  "questions": [
+    {
+      "id": 1, "type": "mc",
+      "prompt": "¿Cuál es la principal ventaja de convertir un proceso repetitivo en una función reutilizable, según se ha trabajado en esta unidad?",
+      "options": ["Hace que el código se ejecute más rápido en todos los casos.", "Permite aplicar exactamente la misma lógica a datos nuevos sin reescribir el código.", "Elimina la necesidad de revisar los resultados.", "Sustituye la necesidad de tener datos de entrada."],
+      "correct": 1,
+      "explain": "Una función reutilizable permite aplicar exactamente la misma lógica a datos nuevos sin reescribir el código — es la base de la automatización trabajada en esta unidad."
+    },
+    {
+      "id": 2, "type": "mc",
+      "prompt": "Verdadero o falso: «un informe en Excel con varias hojas, generado con pd.ExcelWriter, se puede consultar sin necesidad de escribir ni ejecutar código».",
+      "options": ["Verdadero", "Falso"],
+      "correct": 0,
+      "explain": "Ese es justamente el objetivo de comunicar resultados en Excel: cualquier persona puede abrir y consultar el informe sin tener que escribir ni ejecutar código."
+    },
+    {
+      "id": 3, "type": "match",
+      "prompt": "Relaciona cada término con su definición.",
+      "left": ["Automatización", "Función reutilizable", "Comunicación de datos"],
+      "right": ["Pensar primero en la audiencia antes de elegir cómo presentar un resultado.", "Convertir una tarea repetitiva en un proceso que se ejecuta sin intervención manual.", "Bloque de código con nombre que puede aplicarse a distintas entradas sin modificarse."],
+      "correctPairs": [1, 2, 0],
+      "explain": "Automatizar es convertir una tarea repetitiva en un proceso sin intervención manual; una función reutilizable es un bloque de código con nombre aplicable a distintas entradas; comunicar datos es pensar primero en la audiencia."
+    },
+    {
+      "id": 4, "type": "order",
+      "prompt": "Ordena el flujo más adecuado para generar el informe mensual del Observatorio de Neologismos.",
+      "items": ["Exportar el resultado a Excel", "Leer el archivo mensual de entrada", "Generar el gráfico resumen", "Calcular el resumen por categoría y el top de términos"],
+      "correctOrder": [1, 3, 0, 2],
+      "explain": "Primero se lee el archivo mensual, se calcula el resumen por categoría y el top de términos, se exporta el resultado a Excel y por último se genera el gráfico resumen."
+    },
+    {
+      "id": 5, "type": "mc",
+      "prompt": "Bitácora de Datos entrega la función generar_informe_mensual() al Observatorio de Neologismos. ¿Qué acción pertenece a esta unidad (U6)?",
+      "options": ["Aplicar la misma función, sin modificarla, a los archivos de distintos meses para generar cada informe.", "Analizar por qué un neologismo concreto se ha vuelto popular.", "Exigir el uso de Power BI para poder generar el informe.", "Reescribir el código desde cero cada mes con el nombre del nuevo archivo."],
+      "correct": 0,
+      "explain": "El objetivo de la unidad es reutilizar la función sin tocarla; reescribir el código cada mes es justo lo contrario de automatizar, y las otras dos opciones exceden el alcance de U6."
+    }
+  ]
+}

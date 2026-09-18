@@ -1,0 +1,244 @@
+{
+  "header": {
+    "kicker": "Datos Masivos · Unidad 5",
+    "title": "Almacenamiento y acceso a datos a gran escala",
+    "subtitle": "Modelo relacional e integración de fuentes"
+  },
+  "sections": [
+    {
+      "navTitle": "Contexto profesional",
+      "title": "Contexto profesional",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Imagina que acabas de incorporarte como analista junior de datos terminológicos a **Términos & Trama**, una consultora ficticia de terminología y traducción especializada. Tu cliente es la **Red Iberia de Traducción Jurídica**, una red ficticia de traductores jurídicos que, a lo largo de varios años de proyectos, ha ido acumulando en una base de datos interna los términos jurídicos que ha traducido, junto con su idioma, su proyecto de origen y la fecha en que se incorporaron."
+        },
+        {
+          "type": "p",
+          "text": "La Red quiere saber cuántos de esos términos ya cuentan con un equivalente oficial en un glosario multilingüe público de referencia, antes de encargar una revisión terminológica completa. Hasta ahora, esa comparación se hacía copiando y pegando términos a mano entre la base de datos y el glosario, un proceso lento y cada vez menos viable a medida que la base de datos ha crecido. Tu encargo es automatizar esa comparación."
+        }
+      ],
+      "subsections": []
+    },
+    {
+      "navTitle": "Qué vas a aprender",
+      "title": "Qué vas a aprender en esta unidad",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Al terminar esta unidad deberías ser capaz de:"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "explicar qué es una base de datos relacional y por qué se sigue usando para almacenar datos a gran escala;",
+            "consultar una base de datos con SQL desde Python y cargar el resultado en Pandas;",
+            "acceder a una fuente de datos externa a través de una URL;",
+            "cruzar datos procedentes de dos fuentes distintas en un único resultado;",
+            "exportar un resultado de vuelta a una base de datos."
+          ]
+        }
+      ],
+      "subsections": []
+    },
+    {
+      "navTitle": "Mapa conceptual",
+      "title": "Mapa conceptual de la unidad",
+      "blocks": [
+        {
+          "type": "ol",
+          "items": [
+            "Términos internos (base de datos SQL)",
+            "consulta SQL con Pandas",
+            "Glosario externo (fuente por URL/archivo)",
+            "lectura con Pandas",
+            "cruce de ambas fuentes",
+            "informe de cobertura terminológica",
+            "exportación (CSV y de vuelta a la base de datos)"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Como en las unidades anteriores, el punto de partida no es un análisis lingüístico de los términos: es acceder correctamente a los datos, sea cual sea el sitio donde vivan, antes de poder hacer nada más con ellos."
+        }
+      ],
+      "subsections": []
+    },
+    {
+      "navTitle": "Marco teórico",
+      "title": "1. Marco teórico",
+      "blocks": [],
+      "subsections": [
+        {
+          "title": "1.1. Por qué los datos masivos rara vez viven en un único archivo",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "En las Unidades 1, 2 y 4 trabajaste siempre con archivos: un JSON, un CSV, una carpeta de documentos. En la práctica profesional, buena parte de los datos de una organización no vive en archivos sueltos, sino en bases de datos que gestionan muchos usuarios y aplicaciones a la vez, y otra parte ni siquiera vive dentro de la organización: está en fuentes externas —portales públicos, glosarios institucionales, repositorios abiertos—. Trabajar con datos a gran escala exige saber acceder a ambos tipos de origen, no solo a archivos locales."
+            }
+          ]
+        },
+        {
+          "title": "1.2. El modelo relacional",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "La forma más extendida de organizar una base de datos es el modelo relacional, formulado por Codd (1970): los datos se organizan en tablas con filas y columnas, cada tabla tiene una clave que identifica de forma única cada fila, y las tablas pueden relacionarse entre sí a través de esas claves. La propuesta de Codd sigue siendo, más de cinco décadas después, la base de la inmensa mayoría de las bases de datos que se usan en el mundo profesional, desde pequeñas bases de datos locales hasta los sistemas sobre los que se apoyan empresas enteras."
+            },
+            {
+              "type": "p",
+              "text": "Una tabla de una base de datos relacional se parece mucho, en su forma final, a un `dataframe` de Pandas: filas y columnas con un significado claro. La diferencia está en dónde vive el dato y cómo se consulta: no se carga entero en memoria de golpe como un CSV, sino que se le hacen preguntas concretas mediante el lenguaje SQL (*Structured Query Language*), y solo el resultado de esa pregunta se trae a Python."
+            }
+          ]
+        },
+        {
+          "title": "1.3. Consultar una base de datos desde Python",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Para consultar una base de datos relacional desde Python hace falta una conexión: un objeto que sabe cómo hablar con esa base de datos concreta. Una vez abierta la conexión, Pandas ofrece una función, `read_sql_query()`, que ejecuta una consulta SQL y devuelve el resultado directamente como `dataframe`, sin que el analista tenga que procesar manualmente filas y columnas."
+            },
+            {
+              "type": "p",
+              "text": "En esta unidad se trabaja con una base de datos SQLite: un motor de base de datos relacional que guarda toda la base de datos en un único archivo, sin necesidad de instalar ni configurar un servidor aparte. El módulo `sqlite3`, que forma parte de la biblioteca estándar de Python, permite abrir esa conexión con una sola línea de código. En un entorno profesional real, la conexión suele apuntar a un servidor de base de datos remoto (por ejemplo, MySQL o SQL Server, con usuario y contraseña propios), pero la operación sobre Pandas — `read_sql_query()` — es exactamente la misma independientemente de qué motor de base de datos haya al otro lado de la conexión."
+            }
+          ]
+        },
+        {
+          "title": "1.4. Acceder a una fuente de datos externa",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "No todos los datos relevantes están en una base de datos propia. A veces la fuente es un archivo publicado en una dirección web: un glosario institucional, un catálogo abierto, una tabla de referencia. Pandas permite leer directamente desde una URL con la misma función que se usa para leer un archivo local, `read_csv()`, siempre que la dirección apunte a un archivo en un formato reconocible."
+            },
+            {
+              "type": "p",
+              "text": "En el cuaderno de esta unidad se trabaja con una copia local del glosario externo, para no depender de que una dirección de internet concreta siga disponible durante la sesión de clase. La sintaxis para leer directamente desde una URL real es idéntica; solo cambia la ruta que se le pasa a `read_csv()`."
+            }
+          ]
+        },
+        {
+          "title": "1.5. Integrar datos de fuentes distintas",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Disponer de dos fuentes de datos no es lo mismo que tener una respuesta. Dong y Srivastava (2015) señalan que la integración de datos a gran escala —combinar información procedente de fuentes distintas, con formatos y grados de fiabilidad distintos— es en sí misma una de las tareas más exigentes del trabajo con datos masivos, precisamente porque las fuentes rara vez usan las mismas convenciones: un mismo término puede estar escrito con mayúsculas distintas, con espacios de más o con variantes ortográficas en una fuente y en otra."
+            },
+            {
+              "type": "p",
+              "text": "Por eso, antes de cruzar dos tablas conviene normalizar el campo que se va a comparar (por ejemplo, pasar todo a minúsculas y eliminar espacios sobrantes), tal y como ya se hizo con otros campos de texto en la Unidad 2. Cruzar sin esa normalización previa puede hacer que términos que en la práctica son el mismo no se reconozcan como coincidentes."
+            },
+            {
+              "type": "image_modal",
+              "src": "img_cruce.svg",
+              "alt": "Figura 1. Cruce de la base de datos interna con el glosario externo (elaboración propia).",
+              "label": "Abre esta infografía para ver el cruce de fuentes",
+              "sub": "Base interna + glosario externo",
+              "caption": "Figura 1. Cruce de la base de datos interna con el glosario externo (elaboración propia)."
+            }
+          ]
+        },
+        {
+          "title": "1.6. Exportar de vuelta a una base de datos",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Del mismo modo que Pandas permite leer de una base de datos, permite escribir en ella con la función `to_sql()`, que crea o actualiza una tabla a partir de un `dataframe`. Esto cierra el ciclo: los datos pueden entrar desde una base de datos o desde una fuente externa, pasar por Pandas para prepararse y combinarse, y volver a guardarse en la base de datos como un resultado nuevo, listo para que otras personas o aplicaciones lo consulten."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "navTitle": "Aplicación práctica",
+      "title": "2. Aplicación práctica",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "## 2.1. Aplicación al caso de la Red Iberia de Traducción Jurídica"
+        },
+        {
+          "type": "p",
+          "text": "En el cuaderno de clase seguirás este recorrido:"
+        },
+        {
+          "type": "ol",
+          "items": [
+            "conectar con `terminos_internos.db` y consultar con SQL la tabla de términos internos;",
+            "cargar el glosario externo con Pandas;",
+            "normalizar el campo de término en ambas fuentes;",
+            "cruzar ambas tablas para saber qué términos internos tienen equivalente externo y cuáles no;",
+            "exportar el resultado como CSV y como una tabla nueva en la propia base de datos."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "El resultado no evaluará si las traducciones existentes son correctas. Se limita a informar de cobertura: qué proporción de los términos internos ya está recogida en el glosario externo de referencia."
+        },
+        {
+          "type": "p",
+          "text": "## 2.2. Bloque final opcional: un diccionario bilingüe real y grande"
+        },
+        {
+          "type": "p",
+          "text": "Al final del cuaderno de clase hay un bloque opcional, que no se evalúa, en el que se compara el glosario sintético de 22 términos con un diccionario bilingüe inglés-español real: el diccionario de MUSE (Meta AI Research), con 112.580 pares de palabras, de acceso libre para fines no comerciales. A diferencia del bloque equivalente de la Unidad 4, este archivo pesa solo unos 2 MB, así que se carga directamente en clase, sin necesidad de descargarlo con antelación."
+        },
+        {
+          "type": "p",
+          "text": "Como los términos internos son compuestos (por ejemplo, «recurso de apelación») y el diccionario real empareja palabras sueltas (por ejemplo, «the» → «el»), buscar el término completo tal cual no tiene sentido: por eso el bloque comprueba la cobertura palabra a palabra, no frase a frase. El resultado real es una cobertura léxica media del 90 % sobre los 30 términos jurídicos distintos de la base de datos, con 23 de esos 30 términos completamente cubiertos. Los términos con menor cobertura combinan una palabra jurídica muy específica con una palabra general («compraventa mercantil», «acción reivindicatoria», «prescripción extintiva», «subrogación contractual»), lo que ilustra justo el motivo de que exista un glosario terminológico dedicado: un diccionario general cubre bien el vocabulario común, pero no la terminología más especializada."
+        }
+      ],
+      "subsections": []
+    },
+    {
+      "navTitle": "Qué queda fuera",
+      "title": "3. Qué queda fuera de esta unidad, y por qué",
+      "blocks": [
+        {
+          "type": "errorlist",
+          "items": [
+            {
+              "term": "Por qué no se evalúa la calidad ni la corrección de ninguna traducción.",
+              "desc": "Esto pertenece a Programación orientada a PLN, asignatura que ya cursaste. Hay una unidad dedicada por completo a métricas de evaluación automática de traducción —BLEU, chrF, METEOR—, que comparan una traducción candidata con una o varias traducciones de referencia a partir de coincidencias de n-gramas o de caracteres. Si en el futuro contaras con una traducción candidata y una de referencia para alguno de los términos de esta unidad, con los conocimientos que ya tienes de esa asignatura podrías calcular ese tipo de métricas y obtener una puntuación de calidad, tal y como se narra en la unidad de métricas de evaluación de traducción automática de esa asignatura anterior. Aquí no lo hacemos porque el objetivo de esta unidad es aprender a acceder e integrar fuentes de datos, no a evaluar traducciones — y porque los términos que trabajas en esta unidad no son pares de traducciones candidata/referencia, sino entradas de un glosario y de una base de datos."
+            },
+            {
+              "term": "Por qué no se inventan términos, equivalencias o filas que no consten en la base de datos o en el glosario externo proporcionados.",
+              "desc": "Esta norma se aplica a toda la asignatura: cualquier término, equivalencia o fila que uses debe poder verificarse en `terminos_internos.db` o en el glosario externo tal y como se te entregan. Para un servicio de traducción jurídica real, una equivalencia terminológica inventada no es un error menor: puede propagarse a documentos legales reales."
+            },
+            {
+              "term": "Por qué no se modifica directamente el archivo `terminos_internos.db` original.",
+              "desc": "Es una cuestión de integridad de los datos, no de estilo: cualquier resultado nuevo que generes debe guardarse en una tabla adicional, nunca sobrescribiendo la tabla de partida. Así, si alguien necesita repetir tu trabajo o comprobarlo, la fuente original sigue intacta y disponible."
+            }
+          ]
+        }
+      ],
+      "subsections": []
+    }
+  ],
+  "references": [
+    {
+      "key": "ref0",
+      "text": "Codd, E. F. (1970). A relational model of data for large shared data banks. *Communications of the ACM, 13*(6), 377-387. https://doi.org/10.1145/362384.362685"
+    },
+    {
+      "key": "ref1",
+      "text": "Conneau, A., Lample, G., Ranzato, M., Denoyer, L. y Jégou, H. (2017). Word translation without parallel data. *arXiv*. https://doi.org/10.48550/arXiv.1710.04087"
+    },
+    {
+      "key": "ref2",
+      "text": "Dong, X. L. y Srivastava, D. (2015). *Big data integration*. Morgan & Claypool."
+    },
+    {
+      "key": "ref3",
+      "text": "Kandel, S., Paepcke, A., Hellerstein, J. M. y Heer, J. (2012). Enterprise data analysis and visualization: An interview study. *IEEE Transactions on Visualization and Computer Graphics, 18*(12), 2917-2926. https://doi.org/10.1109/TVCG.2012.219"
+    },
+    {
+      "key": "ref4",
+      "text": "McKinney, W. (2010). Data structures for statistical computing in Python. *Proceedings of the 9th Python in Science Conference*, 56-61. https://doi.org/10.25080/Majora-92bf1922-00a"
+    },
+    {
+      "key": "ref5",
+      "text": "The pandas development team. (2020). *pandas-dev/pandas: Pandas* [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.3509134"
+    }
+  ]
+}

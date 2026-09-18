@@ -1,0 +1,51 @@
+{
+  "header": {
+    "kicker": "Datos Masivos · Unidad 0",
+    "title": "Reto relámpago",
+    "subtitle": "Antes de empezar la Unidad 1"
+  },
+  "intro": "Comprueba que tienes claro cómo funciona la asignatura y tu entorno de trabajo. Cinco preguntas, cada una con una mecánica distinta. Tienes dos intentos por pregunta antes de ver la solución. Puedes repetirlo las veces que quieras: no cuenta para la nota.",
+  "questions": [
+    {
+      "id": 1, "type": "mc",
+      "prompt": "¿Cuál de las siguientes <strong>no</strong> forma parte de los materiales que tiene cada unidad de la asignatura (U1-U6)?",
+      "options": ["Manual teórico", "Cuaderno principal", "Examen individual por unidad", "Prácticas"],
+      "correct": 2,
+      "explain": "El examen teórico final es común a toda la asignatura, no una evaluación independiente por unidad. Los cuatro materiales reales de cada unidad son manual teórico, cuaderno principal, prácticas y Reto relámpago."
+    },
+    {
+      "id": 2, "type": "mc",
+      "prompt": "Verdadero o falso: «es necesario crear un entorno virtual .venv distinto para cada unidad de la asignatura».",
+      "options": ["Verdadero", "Falso"],
+      "correct": 1,
+      "explain": "El entorno .venv se crea una única vez, al principio del curso, y se reutiliza en todas las unidades que trabajen con Python; lo que cambia es qué librerías se instalan dentro de ese mismo entorno."
+    },
+    {
+      "id": 3, "type": "match",
+      "prompt": "Relaciona cada herramienta con su definición.",
+      "left": ["Python", "Jupyter Notebook", "Entorno virtual (.venv)"],
+      "right": ["Instalación de Python aislada del resto del ordenador, con sus propias librerías.", "Lenguaje de programación de propósito general, muy usado en ciencia de datos por sus librerías especializadas.", "Entorno de trabajo que combina, en un mismo documento, código ejecutable, resultados y explicaciones en texto."],
+      "correctPairs": [1, 2, 0],
+      "explain": "Python es el lenguaje; Jupyter Notebook es el entorno de trabajo que combina código y texto; el .venv es la instalación aislada donde vive todo lo anterior."
+    },
+    {
+      "id": 4, "type": "order",
+      "prompt": "Ordena estos pasos del primer contacto con tu entorno de trabajo.",
+      "items": ["Activar el entorno", "Crear el entorno virtual (una sola vez)", "Registrar el kernel de Jupyter (una sola vez)", "Instalar las librerías de la unidad con la que vayas a trabajar", "Abrir Jupyter y trabajar en el cuaderno"],
+      "correctOrder": [1, 0, 2, 3, 4],
+      "explain": "Primero se crea el entorno (una sola vez), luego se activa, se registra el kernel (una sola vez), se instalan las librerías de la unidad y por último se abre Jupyter para trabajar."
+    },
+    {
+      "id": 5, "type": "mc",
+      "prompt": "Ya terminaste U0 y vas a empezar a trabajar en la Unidad 1. ¿Qué es lo correcto?",
+      "options": [
+        "Activar tu entorno .venv ya existente e instalar las librerías de requirements_U1.txt.",
+        "Crear un entorno .venv nuevo específico para la Unidad 1.",
+        "Borrar el entorno .venv de U0 y crear uno nuevo llamado U1.",
+        "No hace falta activar nada: Jupyter detecta el entorno automáticamente."
+      ],
+      "correct": 0,
+      "explain": "El .venv es único para toda la asignatura: no se crea uno nuevo por unidad, no se borra el existente, y siempre hay que activarlo explícitamente antes de trabajar."
+    }
+  ]
+}

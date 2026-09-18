@@ -2,24 +2,964 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Próximamente</title>
-<style>
-  body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
-    background:#1E1812;color:#F1E7D6;font-family:Georgia,'Times New Roman',serif;text-align:center;padding:24px;}
-  .box{max-width:420px}
-  .stamp{display:inline-block;border:2px solid #D2652F;color:#D2652F;padding:6px 18px;
-    letter-spacing:3px;text-transform:uppercase;font-size:13px;font-weight:bold;margin-bottom:18px;
-    font-family:Arial,Helvetica,sans-serif;}
-  h1{font-size:26px;margin:0 0 10px}
-  p{font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#B5A88F}
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>La Rotativa · Boletín del Observatorio de Neologismos</title>
+<meta name="author" content="Dr.ª Blanca Hernández Pardo">
+<meta name="description" content="Recurso interactivo de la Unidad 6 de Datos Masivos: automatización y comunicación de resultados a gran escala.">
+<style>html,body{margin:0;padding:0} *,*::before,*::after{box-sizing:border-box}</style>
 </head>
 <body>
-  <div class="box">
-    <div class="stamp">Próximamente</div>
-    <h1>Este recurso ya existe</h1>
-    <p>Está preparado, pero todavía no se ha subido a la web.</p>
+<style>
+  :root{
+    --paper:#EFE9DA; --paper-2:#E4DCC7; --card:#F7F3E8;
+    --ink:#1C1815; --ink-2:#4A4238; --ink-3:#867C6A;
+    --press:#141210; --press-ink:#ECE6D6;
+    --red:#A62A1E; --red-soft:#F1D9D3;
+    --brass:#8E6C22; --brass-soft:#EEE1BE;
+    --green:#2F6B3D; --green-soft:#DCEBDD;
+    --rule:rgba(28,24,21,.22); --rule-2:rgba(28,24,21,.1); --shadow:rgba(28,24,21,.15);
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --serif:Georgia,"Iowan Old Style","Times New Roman",serif;
+    --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --r:2px;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --paper:#17140F; --paper-2:#1E1A14; --card:#1B1712;
+      --ink:#ECE6D6; --ink-2:#B8AF9C; --ink-3:#7E7563;
+      --press:#0B0906; --press-ink:#ECE6D6;
+      --red:#D9604E; --red-soft:#3A2019;
+      --brass:#C9A542; --brass-soft:#332818;
+      --green:#4E9760; --green-soft:#17291B;
+      --rule:rgba(236,230,214,.2); --rule-2:rgba(236,230,214,.09); --shadow:rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#17140F; --paper-2:#1E1A14; --card:#1B1712;
+    --ink:#ECE6D6; --ink-2:#B8AF9C; --ink-3:#7E7563;
+    --press:#0B0906; --press-ink:#ECE6D6;
+    --red:#D9604E; --red-soft:#3A2019;
+    --brass:#C9A542; --brass-soft:#332818;
+    --green:#4E9760; --green-soft:#17291B;
+    --rule:rgba(236,230,214,.2); --rule-2:rgba(236,230,214,.09); --shadow:rgba(0,0,0,.5);
+  }
+  :root[data-theme="light"]{
+    --paper:#EFE9DA; --paper-2:#E4DCC7; --card:#F7F3E8;
+    --ink:#1C1815; --ink-2:#4A4238; --ink-3:#867C6A;
+    --press:#141210; --press-ink:#ECE6D6;
+    --red:#A62A1E; --red-soft:#F1D9D3;
+    --brass:#8E6C22; --brass-soft:#EEE1BE;
+    --green:#2F6B3D; --green-soft:#DCEBDD;
+    --rule:rgba(28,24,21,.22); --rule-2:rgba(28,24,21,.1); --shadow:rgba(28,24,21,.15);
+  }
+  *{box-sizing:border-box}
+
+  .news{min-height:100vh;background:var(--paper);color:var(--ink);font-family:var(--sans);
+    font-size:clamp(.96rem,.93rem + .16vw,1.03rem);line-height:1.6;padding:0 clamp(.7rem,3vw,2rem) 4rem}
+
+  /* ===== MASTHEAD ===== */
+  .mast{background:var(--press);color:var(--press-ink);margin:0 calc(-1*clamp(.7rem,3vw,2rem)) 0;
+    padding:1.5rem clamp(.7rem,3vw,2rem) 1.4rem;border-bottom:3px double var(--brass)}
+  .mast-in{width:100%}
+  .mline{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.6rem;
+    font-family:var(--mono);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--brass);border-bottom:1px solid rgba(236,230,214,.2);padding-bottom:.6rem;margin-bottom:1rem}
+  .mline b{color:var(--press-ink)}
+  h1{font-family:var(--sans);font-weight:900;letter-spacing:-.03em;text-transform:uppercase;
+    font-size:clamp(2.3rem,8vw,4.6rem);line-height:.92;margin:0;text-wrap:balance}
+  .kicker{font-family:var(--mono);font-size:.7rem;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--brass);margin:0 0 .5rem}
+  .dek{font-family:var(--serif);font-style:italic;font-size:1.12rem;line-height:1.62;opacity:.88;
+    margin:.9rem 0 0;max-width:none}
+  .mast .tools{margin-top:1.1rem;display:flex;gap:.5rem;flex-wrap:wrap}
+  .lampb{font-family:var(--mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;
+    background:transparent;border:1px solid rgba(236,230,214,.35);color:var(--press-ink);
+    padding:.32rem .6rem;border-radius:var(--r);cursor:pointer}
+  .lampb:hover{border-color:var(--brass);color:var(--brass)}
+
+  /* ===== RELOJ DE ROTATIVA ===== */
+  .clock{display:flex;align-items:center;gap:.6rem}
+  .clock svg{width:52px;height:52px;flex:none}
+  .clock .cn{font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--brass)}
+  .clock .cn b{display:block;font-size:1.15rem;color:var(--press-ink);font-variant-numeric:tabular-nums}
+
+  .shell{max-width:1180px;margin:0 auto}
+  .grid{display:grid;gap:1.6rem;margin-top:1.8rem;grid-template-columns:1fr}
+  @media (min-width:960px){.grid{grid-template-columns:1fr 300px;align-items:start}}
+
+  /* ===== GALERADA (sidebar: prueba de imprenta) ===== */
+  .galley{background:var(--card);border:1px solid var(--rule);border-radius:var(--r);
+    box-shadow:0 1px 0 var(--shadow);order:-1;overflow:hidden}
+  @media (min-width:960px){.galley{position:sticky;top:1rem;order:0}}
+  .galley h3{font-family:var(--mono);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--press-ink);background:var(--press);margin:0;padding:.6rem .8rem;font-weight:700}
+  .gbody{padding:.9rem .9rem 1rem}
+  .gempty{font-family:var(--serif);font-style:italic;color:var(--ink-3);font-size:.88rem;line-height:1.5}
+  .gitem{border-bottom:1px dashed var(--rule-2);padding:.55rem 0;font-size:.83rem}
+  .gitem:last-child{border-bottom:0}
+  .gitem .gh{font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--green);font-weight:700;margin-bottom:.25rem}
+  .gitem .gt{color:var(--ink-2);line-height:1.5}
+  .gprog{padding:.7rem .8rem;border-top:1px solid var(--rule)}
+  .gprog .pl{font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ink-3);display:flex;justify-content:space-between;margin-bottom:.4rem}
+  .stamps{display:flex;gap:.3rem;flex-wrap:wrap}
+  .stamps i{flex:1;min-width:16px;height:6px;background:var(--paper-2);border:1px solid var(--rule-2);border-radius:1px}
+  .stamps i.on{background:var(--green);border-color:var(--green)}
+
+  /* ===== PLANCHAS ===== */
+  .plate{background:var(--card);border:1px solid var(--rule);border-radius:var(--r);
+    margin-bottom:1.1rem;box-shadow:0 1px 0 var(--shadow);overflow:hidden}
+  .ph{display:flex;align-items:center;gap:.7rem;padding:.65rem .85rem;background:var(--paper-2);
+    border-bottom:1px solid var(--rule);flex-wrap:wrap}
+  .ph .n{font-family:var(--mono);font-size:.64rem;font-weight:700;letter-spacing:.08em;
+    background:var(--press);color:var(--press-ink);padding:.24rem .44rem;border-radius:var(--r);flex:none}
+  .ph .t{font-family:var(--sans);font-weight:800;font-size:1.05rem;letter-spacing:-.01em}
+  .ph .sp{flex:1 1 auto}
+  .ph .src{font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+  .stamp{font-family:var(--mono);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;
+    font-weight:700;padding:.22rem .45rem;border-radius:var(--r);border:1px solid var(--rule);
+    color:var(--ink-3);white-space:nowrap;transform:rotate(-2deg)}
+  .stamp.ok{color:#fff;background:var(--green);border-color:var(--green)}
+  .body{padding:1rem .9rem 1.15rem}
+
+  .brief{font-family:var(--sans);font-size:.98rem;line-height:1.68;color:var(--ink-2);margin:0 0 .8rem}
+  .brief b{color:var(--ink)}
+  blockquote{font-family:var(--serif);font-style:italic;font-size:1.06rem;line-height:1.6;color:var(--ink);
+    border-left:3px solid var(--red);padding:.15rem 0 .15rem 1rem;margin:.9rem 0}
+  blockquote cite{display:block;font-family:var(--mono);font-style:normal;font-size:.66rem;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-top:.4rem}
+  .task{font-family:var(--mono);font-size:.7rem;line-height:1.7;color:var(--ink-2);
+    background:var(--brass-soft);border-left:3px solid var(--brass);padding:.6rem .7rem;margin:.85rem 0}
+  .task b{color:var(--ink)}
+
+  .code{font-family:var(--mono);font-size:.8rem;line-height:1.75;background:var(--paper-2);
+    border:1px solid var(--rule);border-left:3px solid var(--ink-3);border-radius:0 var(--r) var(--r) 0;
+    padding:.65rem .8rem;margin:.85rem 0;overflow-x:auto;white-space:pre}
+  .code .kw{color:var(--green);font-weight:700} .code .st{color:var(--red)}
+  .code .cm{color:var(--ink-3)} .code .ln{color:var(--ink-3);user-select:none}
+  .code .tok{cursor:pointer;border-radius:2px;padding:0 .1em}
+  .code .tok:hover{background:var(--brass-soft)}
+  .code .tok.hit{background:var(--green-soft);outline:1px solid var(--green)}
+  .code .tok.miss{background:var(--red-soft);outline:1px solid var(--red)}
+
+  .out{font-family:var(--mono);font-size:.76rem;line-height:1.6;background:var(--paper-2);
+    border:1px solid var(--rule);border-left:3px solid var(--green);padding:.6rem .7rem;
+    margin:.7rem 0 0;overflow-x:auto;white-space:pre;color:var(--ink-2)}
+  .outh{font-family:var(--mono);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--green);font-weight:700;margin:.85rem 0 -.25rem}
+
+  /* tabla proof */
+  .tw{overflow-x:auto;margin:.9rem 0;border:1px solid var(--rule);border-radius:var(--r)}
+  .twopanes{display:grid;gap:.9rem;grid-template-columns:1fr;align-items:start}
+  @media (min-width:820px){.twopanes{grid-template-columns:1fr 1fr}
+    .twopanes .tw{margin:.9rem 0 0}}
+  table.proof{border-collapse:collapse;width:100%;font-family:var(--mono);font-size:.78rem;min-width:420px}
+  table.proof th{background:var(--press);color:var(--press-ink);padding:.42rem .55rem;text-align:left;
+    font-weight:700;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase}
+  table.proof td{padding:.4rem .55rem;border-top:1px solid var(--rule-2);color:var(--ink-2);cursor:pointer;
+    transition:background .1s}
+  table.proof td:hover{background:var(--brass-soft)}
+  table.proof.ref-only td{cursor:default}
+  table.proof.ref-only td:hover{background:inherit}
+  table.proof td.hit{background:var(--green-soft);color:var(--green);font-weight:700}
+  table.proof td.miss{background:var(--red-soft);color:var(--red);font-weight:700}
+  table.proof tbody tr:nth-child(even) td{background:var(--paper)}
+  table.proof tbody tr:nth-child(even) td:hover{background:var(--brass-soft)}
+  table.proof caption{caption-side:top;text-align:left;font-family:var(--mono);font-size:.62rem;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);padding:.5rem .55rem 0;background:var(--paper)}
+
+  /* opciones */
+  .opts{display:grid;gap:.5rem;margin:.9rem 0 0}
+  .opt{display:flex;align-items:flex-start;gap:.6rem;text-align:left;width:100%;font:inherit;
+    color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:var(--r);
+    padding:.6rem .7rem;cursor:pointer;transition:border-color .14s,transform .14s}
+  .opt:hover:not(:disabled){border-color:var(--red);transform:translateX(2px)}
+  .opt:disabled{cursor:default}
+  .opt .tag{font-family:var(--mono);font-size:.64rem;font-weight:700;color:var(--ink-3);
+    border:1px solid var(--rule);border-radius:2px;padding:.05rem .3rem;flex:none;margin-top:.12rem}
+  .opt .txt{flex:1;line-height:1.5}
+  .opt.good{border-color:var(--green);background:var(--green-soft)}
+  .opt.good .tag{border-color:var(--green);color:var(--green)}
+  .opt.bad{border-color:var(--red);background:var(--red-soft)}
+  .opt.bad .tag{border-color:var(--red);color:var(--red)}
+
+  /* forks (decisión de dirección) */
+  .forks{display:grid;gap:.6rem;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));margin:.9rem 0}
+  .fork{text-align:left;font:inherit;background:var(--paper);border:1px solid var(--rule);
+    border-radius:var(--r);padding:.8rem;cursor:pointer;color:var(--ink)}
+  .fork:hover:not(:disabled){border-color:var(--red)}
+  .fork:disabled{cursor:default}
+  .fork .fh{font-family:var(--mono);font-size:.66rem;letter-spacing:.06em;font-weight:700;
+    margin-bottom:.35rem;display:block}
+  .fork .fd{font-size:.85rem;color:var(--ink-3);line-height:1.5;font-family:var(--sans)}
+  .fork.good{border-color:var(--green);background:var(--green-soft)} .fork.good .fh{color:var(--green)}
+  .fork.bad{border-color:var(--red);background:var(--red-soft)} .fork.bad .fh{color:var(--red)}
+
+  /* emparejar */
+  .match{display:grid;gap:.9rem;grid-template-columns:1fr 1fr;margin:.9rem 0}
+  @media (max-width:600px){.match{grid-template-columns:1fr}}
+  .mcol{display:flex;flex-direction:column;gap:.4rem}
+  .mitem{font-family:var(--mono);font-size:.78rem;text-align:left;background:var(--paper);
+    border:1px solid var(--rule);border-radius:var(--r);padding:.5rem .65rem;cursor:pointer;
+    color:var(--ink);line-height:1.5}
+  .mitem:hover:not(:disabled){border-color:var(--red)}
+  .mitem[aria-pressed="true"]{border-color:var(--brass);background:var(--brass-soft);font-weight:700}
+  .mitem.linked{border-color:var(--green);background:var(--green-soft)}
+  .mitem.wrong{border-color:var(--red);background:var(--red-soft)}
+  .mitem:disabled{cursor:default}
+
+  /* orden (numerador de tirada) */
+  .seq{display:flex;flex-direction:column;gap:.4rem;margin:.9rem 0}
+  .sq{display:flex;align-items:center;gap:.65rem;background:var(--paper);border:1px solid var(--rule);
+    border-radius:var(--r);padding:.5rem .6rem}
+  .sq .pos{font-family:var(--mono);font-weight:700;font-size:.72rem;color:var(--press-ink);
+    background:var(--ink-3);width:1.4rem;height:1.4rem;display:grid;place-items:center;
+    border-radius:2px;flex:none}
+  .sq .lbl{flex:1;font-size:.9rem;line-height:1.5}
+  .sq .mv{display:flex;gap:.25rem;flex:none}
+  .sq .mv button{font-family:var(--mono);font-size:.78rem;line-height:1;width:1.6rem;height:1.6rem;
+    background:var(--paper-2);color:var(--ink-2);border:1px solid var(--rule);border-radius:2px;cursor:pointer}
+  .sq .mv button:hover:not(:disabled){border-color:var(--red);color:var(--ink)}
+  .sq .mv button:disabled{opacity:.3;cursor:default}
+  .sq.good{border-color:var(--green);background:var(--green-soft)} .sq.good .pos{background:var(--green)}
+  .sq.bad{border-color:var(--red);background:var(--red-soft)} .sq.bad .pos{background:var(--red)}
+
+  /* el eje que miente: slider en vivo */
+  .axisrig{margin:.9rem 0}
+  .chartbox{background:var(--paper);border:1px solid var(--rule);border-radius:var(--r);padding:.8rem}
+  svg{display:block;max-width:100%;height:auto}
+  .axl{font-family:var(--mono);font-size:8.5px;fill:var(--ink-3);letter-spacing:.04em}
+  .axt{font-family:var(--mono);font-size:9.5px;fill:var(--ink-2);letter-spacing:.08em;text-transform:uppercase}
+  .sliderow{display:flex;align-items:center;gap:.7rem;margin-top:.8rem;flex-wrap:wrap}
+  .sliderow input[type=range]{flex:1 1 220px;accent-color:var(--red)}
+  .sliderow .sv{font-family:var(--mono);font-size:.78rem;color:var(--ink-2);white-space:nowrap;
+    font-variant-numeric:tabular-nums}
+  .distort{font-family:var(--mono);font-size:.76rem;color:var(--ink-2);margin-top:.6rem;
+    display:flex;gap:1.2rem;flex-wrap:wrap}
+  .distort b{color:var(--red);font-size:1rem}
+  .distort.ok b{color:var(--green)}
+
+  .vd{display:none;margin:.95rem 0 0;padding:.8rem .9rem;border-radius:var(--r);
+    font-family:var(--sans);line-height:1.62;background:var(--paper);border:1px solid var(--rule)}
+  .vd.on{display:block;animation:up .28s ease-out}
+  .vd h4{font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;
+    margin:0 0 .35rem;font-weight:700}
+  .vd p{margin:0 0 .55rem} .vd p:last-child{margin:0}
+  .vd.y{border-left:4px solid var(--green)} .vd.y h4{color:var(--green)}
+  .vd.n{border-left:4px solid var(--red)} .vd.n h4{color:var(--red)}
+  .vd.w{border-left:4px solid var(--brass)} .vd.w h4{color:var(--brass)}
+  @keyframes up{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){.vd.on{animation:none}}
+
+  .acts{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.95rem;align-items:center}
+  .btn{font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;
+    background:var(--press);color:var(--press-ink);border:1px solid var(--press);padding:.5rem .85rem;
+    border-radius:var(--r);cursor:pointer}
+  .btn:hover:not(:disabled){background:var(--red);border-color:var(--red);color:#fff}
+  .btn:disabled{opacity:.35;cursor:default}
+  .btn.gh{background:transparent;color:var(--ink-2);border-color:var(--rule)}
+  .btn.gh:hover:not(:disabled){background:transparent;border-color:var(--ink-3);color:var(--ink)}
+  .hint{font-family:var(--mono);font-size:.62rem;letter-spacing:.05em;color:var(--ink-3)}
+
+  .refs{margin:1rem 0 0;padding:.7rem .8rem;background:var(--paper);border:1px solid var(--rule);border-radius:var(--r)}
+  .refs h5{font-family:var(--mono);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ink-3);margin:0 0 .4rem;font-weight:700}
+  .refs p{font-family:var(--serif);font-size:.81rem;line-height:1.5;color:var(--ink-2);margin:0 0 .4rem;
+    padding-left:1.4rem;text-indent:-1.4rem}
+  .refs p:last-child{margin:0}
+  .refs i{font-style:italic}
+  .refs a{color:var(--green);text-decoration:none;word-break:break-all}
+  .refs a:hover{text-decoration:underline}
+
+  /* ===== TIRADA FINAL ===== */
+  .runoff{background:var(--press);color:var(--press-ink);border-radius:var(--r);padding:1.5rem 1.2rem;margin-top:1.6rem}
+  .runoff h2{font-family:var(--sans);font-weight:900;letter-spacing:-.01em;text-transform:uppercase;
+    font-size:clamp(1.4rem,4vw,2.1rem);margin:0 0 .3rem}
+  .runoff .ed{font-family:var(--mono);font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--brass);font-weight:700}
+  .runoff p{font-family:var(--sans);line-height:1.66;opacity:.87;max-width:none}
+  .runoff .lock2{font-style:italic;opacity:.5;font-family:var(--serif)}
+  .runoff .tally{display:flex;gap:1.4rem;flex-wrap:wrap;margin:1.1rem 0 .3rem}
+  .runoff .tally div{font-family:var(--mono)}
+  .runoff .tally b{display:block;font-size:2rem;color:var(--brass);font-variant-numeric:tabular-nums;line-height:1}
+  .runoff .tally span{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;opacity:.6}
+  .runoff .fref{margin-top:1.3rem;padding-top:.9rem;border-top:1px solid rgba(236,230,214,.16)}
+  .runoff .fref h5{font-family:var(--mono);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;
+    opacity:.55;margin:0 0 .4rem}
+  .runoff .fref p{font-size:.8rem;opacity:.6;padding-left:1.4rem;text-indent:-1.4rem;margin:0 0 .35rem}
+
+  .foot{margin-top:2.4rem;padding-top:1rem;border-top:1px solid var(--rule);
+    font-family:var(--mono);font-size:.62rem;letter-spacing:.05em;color:var(--ink-3);line-height:1.9}
+  .foot b{color:var(--ink-2)}
+  :focus-visible{outline:2px solid var(--red);outline-offset:2px}
+</style>
+
+<div class="news">
+  <div class="mast">
+    <div class="mast-in">
+      <div class="mline">
+        <span>Bitácora de Datos <b>· Consultora de análisis de datos lingüísticos</b></span>
+        <span>Cliente: <b>Observatorio de Neologismos</b></span>
+        <span>Datos Masivos · Unidad 6</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:1rem;flex-wrap:wrap">
+        <div>
+          <p class="kicker">Cierre de edición</p>
+          <h1>La Rotativa</h1>
+          <p class="dek">Cada mes, alguien del Observatorio abría una hoja de cálculo y construía a mano, copiando y pegando, el mismo informe de siempre. Funcionaba — hasta que empezaron a llegar más datos y el boletín empezó a publicarse tarde. Tu encargo: que la rotativa arranque sola en cuanto llegue el archivo del mes.</p>
+        </div>
+        <div class="clock" aria-hidden="true">
+          <svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="22" fill="none" stroke="rgba(236,230,214,.18)" stroke-width="4"/>
+            <circle id="clockRing" cx="26" cy="26" r="22" fill="none" stroke="var(--brass)" stroke-width="4"
+              stroke-linecap="round" stroke-dasharray="138.2" stroke-dashoffset="138.2"
+              transform="rotate(-90 26 26)" style="transition:stroke-dashoffset .5s cubic-bezier(.2,.7,.3,1)"/></svg>
+          <span class="cn">Planchas<b id="clockN">0/8</b></span>
+        </div>
+      </div>
+      <div class="tools"><button class="lampb" id="tgl" type="button">Cambiar luz</button></div>
+    </div>
   </div>
+
+  <div class="shell">
+    <div class="grid">
+      <main>
+
+        <!-- P01 -->
+        <section class="plate" id="p1">
+          <div class="ph"><span class="n">01</span><span class="t">Encuentra el desliz</span>
+            <span class="sp"></span><span class="src">Marco 1.1 · Kandel <i>et al.</i> (2012)</span><span class="stamp" id="s1">Pendiente</span></div>
+          <div class="body">
+            <p class="brief">Cada mes, alguien del Observatorio recibía el archivo de neologismos y tecleaba a mano, en una hoja de cálculo aparte, el top de términos para el boletín. Enero salió publicado con este ranking — el que de verdad vio el lector del boletín.</p>
+            <blockquote>Repetir manualmente cada vez el mismo proceso no solo consume tiempo: introduce el riesgo de que una persona distinta, o la misma persona en un mes distinto, lo haga de forma ligeramente diferente, sin darse cuenta.<cite>Kandel <i>et al.</i> (2012)</cite></blockquote>
+            <div class="task"><b>Tu tarea:</b> abajo tienes dos tablas. La de <b>referencia</b> es el archivo real (<code>neologismos_enero.csv</code>), con sus frecuencias correctas; la del <b>ranking publicado</b> es lo que salió en el boletín ese mes. Compáralas y pincha, en el ranking publicado, <b>el término que ocupa un puesto mejor del que le corresponde</b> por su frecuencia real.</div>
+            <div class="twopanes">
+              <div class="tw"><table class="proof ref-only" id="t1ref"></table></div>
+              <div class="tw"><table class="proof" id="t1"></table></div>
+            </div>
+            <div class="vd" id="v1"></div>
+            <div class="refs" id="ref1"></div>
+          </div>
+        </section>
+
+        <!-- P02 -->
+        <section class="plate" id="p2">
+          <div class="ph"><span class="n">02</span><span class="t">De la celda a la función</span>
+            <span class="sp"></span><span class="src">Marco 1.2</span><span class="stamp" id="s2">Pendiente</span></div>
+          <div class="body">
+            <p class="brief">Esta celda del cuaderno resuelve el informe de enero. Funciona — pero solo para enero. Para repetir el mismo trabajo en febrero sin copiar y pegar celdas, hay que convertirla en una función con un único parámetro. La pregunta no es trivial: la celda tiene <b>varios literales</b>, y solo uno de ellos debe convertirse en ese parámetro. Los demás tienen que quedarse fijos dentro de la función, tal cual están.</p>
+            <div class="task"><b>Tu tarea:</b> pincha, dentro del código, el <b>único</b> fragmento que cambia de un mes a otro y que por tanto debe convertirse en parámetro. El resto de literales también son pinchables — si eliges uno que no es, te explico por qué ese debe quedarse fijo.</div>
+            <div class="code" id="code2"></div>
+            <div id="out2"></div>
+            <div class="vd" id="v2"></div>
+          </div>
+        </section>
+
+        <!-- P03 -->
+        <section class="plate" id="p3">
+          <div class="ph"><span class="n">03</span><span class="t">De cuaderno a rotativa automática</span>
+            <span class="sp"></span><span class="src">Marco 1.3 · Wilson <i>et al.</i> (2017)</span><span class="stamp" id="s3">Pendiente</span></div>
+          <div class="body">
+            <p class="brief">La función ya funciona dentro del cuaderno interactivo. Pero un cuaderno hay que abrirlo y ejecutarlo a mano cada vez — y precisamente eso es lo que se quiere evitar. Wilson <i>et al.</i> (2017) recomiendan convertir en script cualquier tarea que vaya a repetirse, en vez de fiarse de que alguien se acuerde de hacerlo cada mes.</p>
+            <div class="task"><b>Tu tarea:</b> ordena estos cuatro pasos, de <b>1</b> (el primero que hay que dar) a <b>4</b> (el último), para que el boletín se publique solo cada mes.</div>
+            <div class="seq" id="s3steps"></div>
+            <div class="vd" id="v3"></div>
+            <div class="acts"><button class="btn" id="ck3" type="button">Comprobar proceso</button>
+              <button class="btn gh" id="rs3" type="button">Reiniciar</button>
+              <span class="hint" id="h3"></span></div>
+            <div class="refs" id="ref3"></div>
+          </div>
+        </section>
+
+        <!-- P04 -->
+        <section class="plate" id="p4">
+          <div class="ph"><span class="n">04</span><span class="t">Un informe, varias hojas</span>
+            <span class="sp"></span><span class="src">Marco 1.4</span><span class="stamp" id="s4">Pendiente</span></div>
+          <div class="body">
+            <p class="brief">El Observatorio necesita, como mínimo, dos vistas de los mismos datos: un resumen por categoría y un listado de los términos más frecuentes. <code>ExcelWriter</code> permite escribir varias tablas en el mismo archivo, cada una en su propia hoja.</p>
+            <div class="task"><b>Tu tarea:</b> empareja cada instrucción con la hoja que produce en el Excel. Pincha primero la instrucción y después la hoja. Ojo: una de las instrucciones no pertenece a este informe.</div>
+            <div class="match">
+              <div class="mcol" id="mA"></div>
+              <div class="mcol" id="mB"></div>
+            </div>
+            <div class="vd" id="v4"></div>
+            <div class="acts"><button class="btn gh" id="rs4" type="button">Reiniciar</button>
+              <span class="hint" id="h4"></span></div>
+          </div>
+        </section>
+
+        <!-- P05 -->
+        <section class="plate" id="p5">
+          <div class="ph"><span class="n">05</span><span class="t">La idea central</span>
+            <span class="sp"></span><span class="src">Marco 1.5 · Nussbaumer Knaflic (2015)</span><span class="stamp" id="s5">Pendiente</span></div>
+          <div class="body">
+            <p class="brief">Automatizar el cálculo es solo la mitad del encargo: el resultado tiene que poder entenderse. Antes de construir ningún gráfico, Nussbaumer Knaflic (2015) propone resumir el mensaje en una sola frase — lo que llama la <b>idea central</b> del informe. Esa frase es la que debe guiar qué tabla y qué gráfico se construyen después, no al revés.</p>
+            <div class="out" id="feb5"></div>
+            <div class="task"><b>Tu tarea:</b> de estas cuatro frases sobre febrero, solo una es una idea central en el sentido de Nussbaumer Knaflic. Elige cuál.</div>
+            <div class="opts" id="o5"></div>
+            <div class="vd" id="v5"></div>
+            <div class="refs" id="ref5"></div>
+          </div>
+        </section>
+
+        <!-- P06 -->
+        <section class="plate" id="p6">
+          <div class="ph"><span class="n">06</span><span class="t">El eje que miente</span>
+            <span class="sp"></span><span class="src">Marco 1.5 · Wilke (2019)</span><span class="stamp" id="s6">Pendiente</span></div>
+          <div class="body">
+            <p class="brief">Como la altura de cada barra es lo que el ojo interpreta como la cantidad que representa, recortar el eje para empezar en un valor distinto de cero exagera visualmente las diferencias, aunque los números de la tabla sean correctos. Es de las pocas reglas de diseño de gráficos que no admite excepciones con barras.</p>
+            <div class="task"><b>Tu tarea:</b> este es el top 5 real de febrero. Mueve el punto de arranque del eje y observa cómo cambia la impresión visual sin que cambie ni un solo dato. Déjalo en el único punto honesto antes de cerrar la plancha.</div>
+            <div class="axisrig">
+              <div class="chartbox"><svg id="axSvg" viewBox="0 0 470 220"></svg></div>
+              <div class="sliderow">
+                <label for="axSlider" class="hint">Arranque del eje</label>
+                <input type="range" id="axSlider" min="0" max="430" step="10" value="240">
+                <span class="sv" id="axVal"></span>
+              </div>
+              <p class="distort" id="axDistort"></p>
+            </div>
+            <div class="vd" id="v6"></div>
+            <div class="acts"><button class="btn" id="ck6" type="button">Cerrar la plancha</button>
+              <span class="hint" id="h6"></span></div>
+            <div class="refs" id="ref6"></div>
+          </div>
+        </section>
+
+        <!-- P07 -->
+        <section class="plate" id="p7">
+          <div class="ph"><span class="n">07</span><span class="t">El pie de foto</span>
+            <span class="sp"></span><span class="src">Marco 1.5 · Dougherty e Ilyankou (2021)</span><span class="stamp" id="s7">Pendiente</span></div>
+          <div class="body">
+            <p class="brief">Ni siquiera el gráfico más honesto habla solo: hay que acompañarlo de texto. Dougherty e Ilyankou (2021) proponen una estructura de tres pasos para el pie que va junto al gráfico.</p>
+            <div class="chartbox"><svg id="p7Svg" viewBox="0 0 470 200"></svg></div>
+            <div class="task"><b>Tu tarea:</b> esta es la foto que va a acompañar el boletín de febrero. Ordena estos tres fragmentos del pie de foto según la estructura de Dougherty e Ilyankou.</div>
+            <div class="seq" id="s7steps"></div>
+            <div class="vd" id="v7"></div>
+            <div class="acts"><button class="btn" id="ck7" type="button">Comprobar pie de foto</button>
+              <button class="btn gh" id="rs7" type="button">Reiniciar</button>
+              <span class="hint" id="h7"></span></div>
+            <div class="refs" id="ref7"></div>
+          </div>
+        </section>
+
+        <!-- P08 -->
+        <section class="plate" id="p8">
+          <div class="ph"><span class="n">08</span><span class="t">Memo del director</span>
+            <span class="sp"></span><span class="src">Marco 1.6</span><span class="stamp" id="s8">Pendiente</span></div>
+          <div class="body">
+            <p class="brief">El director del Observatorio ha visto un panel interactivo hecho con Power BI en otra empresa y pregunta si hace falta comprarlo para aplicar lo que has automatizado esta unidad.</p>
+            <div class="task"><b>Tu tarea:</b> redacta la respuesta eligiendo la opción correcta.</div>
+            <div class="forks" id="f8"></div>
+            <div class="vd" id="v8"></div>
+          </div>
+        </section>
+
+        <section class="runoff" id="fin">
+          <p class="ed" id="fv">Cierre pendiente</p>
+          <h2 id="fh">La rotativa sigue parada</h2>
+          <div id="fb"><p class="lock2">Cierra las ocho planchas para arrancar la tirada.</p></div>
+          <div class="fref">
+            <h5>Referencias</h5>
+            <p>Dougherty, J. y Ilyankou, I. (2021). <i>Hands-on data visualization: Interactive storytelling from spreadsheets to code</i>. O'Reilly Media.</p>
+            <p>Kandel, S., Paepcke, A., Hellerstein, J. M. y Heer, J. (2012). Enterprise data analysis and visualization: An interview study. <i>IEEE Transactions on Visualization and Computer Graphics, 18</i>(12), 2917-2926. https://doi.org/10.1109/TVCG.2012.219</p>
+            <p>Nussbaumer Knaflic, C. (2015). <i>Storytelling with data: A data visualization guide for business professionals</i>. Wiley.</p>
+            <p>Wilke, C. O. (2019). <i>Fundamentals of data visualization: A primer on making informative and compelling figures</i>. O'Reilly Media.</p>
+            <p>Wilson, G., Bryan, J., Cranston, K., Kitzes, J., Nederbragt, L. y Teal, T. K. (2017). Good enough practices in scientific computing. <i>PLOS Computational Biology, 13</i>(6), e1005510. https://doi.org/10.1371/journal.pcbi.1005510</p>
+          </div>
+        </section>
+
+        <footer class="foot">
+          <b>© Dr.ª Blanca Hernández Pardo</b> · Datos Masivos · Unidad 6: Automatización y comunicación de resultados a gran escala<br>
+          Recurso didáctico interactivo. Los datos proceden de los materiales de la unidad: 33 neologismos por mes, con su categoría y frecuencia real de enero y febrero.<br>
+          Queda prohibida la difusión, distribución o reproducción total o parcial de este material sin autorización expresa de la autora.
+        </footer>
+      </main>
+
+      <aside class="galley">
+        <h3>Prueba de imprenta</h3>
+        <div class="gbody" id="galleyBody"><p class="gempty">El boletín se irá componiendo aquí, plancha a plancha.</p></div>
+        <div class="gprog">
+          <div class="pl"><span>Planchas cerradas</span><span id="gcount">0 / 8</span></div>
+          <div class="stamps" id="gstamps"></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  const $=s=>document.querySelector(s);
+  const el=(t,c,h)=>{const n=document.createElement(t);if(c)n.className=c;if(h!=null)n.innerHTML=h;return n;};
+  const shuffle=a=>{const b=a.slice();for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));
+    [b[i],b[j]]=[b[j],b[i]];}return b;};
+  function prefersDark(){try{return !!(window.matchMedia&&window.matchMedia("(prefers-color-scheme:dark)").matches);}catch(e){return false;}}
+  $("#tgl").addEventListener("click",()=>{const r=document.documentElement;
+    const cur=r.getAttribute("data-theme")||(prefersDark()?"dark":"light");
+    r.setAttribute("data-theme",cur==="dark"?"light":"dark");});
+
+  const REF={
+    kandel:'Kandel, S., Paepcke, A., Hellerstein, J. M. y Heer, J. (2012). Enterprise data analysis and visualization: An interview study. <i>IEEE Transactions on Visualization and Computer Graphics, 18</i>(12), 2917-2926. <a href="https://doi.org/10.1109/TVCG.2012.219" target="_blank" rel="noopener">https://doi.org/10.1109/TVCG.2012.219</a>',
+    wilson:'Wilson, G., Bryan, J., Cranston, K., Kitzes, J., Nederbragt, L. y Teal, T. K. (2017). Good enough practices in scientific computing. <i>PLOS Computational Biology, 13</i>(6), e1005510. <a href="https://doi.org/10.1371/journal.pcbi.1005510" target="_blank" rel="noopener">https://doi.org/10.1371/journal.pcbi.1005510</a>',
+    nk:'Nussbaumer Knaflic, C. (2015). <i>Storytelling with data: A data visualization guide for business professionals</i>. Wiley.',
+    wilke:'Wilke, C. O. (2019). <i>Fundamentals of data visualization: A primer on making informative and compelling figures</i>. O\'Reilly Media.',
+    di:'Dougherty, J. y Ilyankou, I. (2021). <i>Hands-on data visualization: Interactive storytelling from spreadsheets to code</i>. O\'Reilly Media.'
+  };
+  function refs(host,keys){$(host).innerHTML="<h5>Referencias</h5>"+keys.map(k=>"<p>"+REF[k]+"</p>").join("");}
+  refs("#ref1",["kandel"]); refs("#ref3",["wilson"]); refs("#ref5",["nk"]); refs("#ref6",["wilke"]); refs("#ref7",["di"]);
+
+  /* ---------- reloj + galerada ---------- */
+  const CIRC=138.2;
+  const st={sellos:new Set(),limpio:new Set()};
+  const GALLEY=[null,null,null,null,null,null,null,null];
+  function paintGalley(){
+    const b=$("#galleyBody");
+    const items=GALLEY.filter(Boolean);
+    if(!items.length){b.innerHTML='<p class="gempty">El boletín se irá componiendo aquí, plancha a plancha.</p>';return;}
+    b.innerHTML=items.map(g=>'<div class="gitem"><div class="gh">'+g.h+'</div><div class="gt">'+g.t+"</div></div>").join("");
+  }
+  const gstamps=$("#gstamps");
+  for(let i=0;i<8;i++)gstamps.appendChild(el("i"));
+  function sello(n,clean,galleyHead,galleyText){
+    st.sellos.add(n);if(clean)st.limpio.add(n);
+    $("#s"+n).textContent="Cerrada";$("#s"+n).className="stamp ok";
+    gstamps.children[n-1].classList.add("on");
+    $("#gcount").textContent=st.sellos.size+" / 8";
+    $("#clockN").textContent=st.sellos.size+"/8";
+    $("#clockRing").style.strokeDashoffset=(CIRC*(1-st.sellos.size/8)).toFixed(1);
+    GALLEY[n-1]={h:galleyHead,t:galleyText};paintGalley();
+    if(st.sellos.size===8)cerrar();
+  }
+  function say(node,kind,head,html){node.className="vd on "+kind;node.innerHTML="<h4>"+head+"</h4>"+html;}
+  paintGalley();
+
+  /* ---------- datos reales ---------- */
+  const ENERO_TOP5=[["criptomoneda","tecnológico",482],["trending","anglicismo",408],
+    ["coach","anglicismo",341],["ciberseguridad","tecnológico",337],["influencia","otros",312]];
+  const FEB_TOP5=[["backup","anglicismo",692],["influencer","anglicismo",486],
+    ["teletrabajo","otros",476],["hashtag","redes sociales",469],["freelance","anglicismo",439]];
+  const FEB_CAT={anglicismo:2652,"tecnológico":2043,otros:1772,"redes sociales":1511};
+
+  /* ================= P01 · Encuentra el desliz (comparar rankings, no celdas) ================= */
+  {
+    // coach: 341 -> 314 en la hoja manual (transposición de dígitos). Al reordenar por esa
+    // frecuencia ya alterada, coach y ciberseguridad intercambian puesto: ciberseguridad
+    // (337 real, sin error) sube al 3.º puesto que no le corresponde.
+    const dirty=ENERO_TOP5.map(r=>r.slice());
+    const iCoach=dirty.findIndex(r=>r[0]==="coach");
+    dirty[iCoach][2]=314;
+    const published=dirty.slice().sort((a,b)=>b[2]-a[2]);
+    const real=ENERO_TOP5.slice().sort((a,b)=>b[2]-a[2]);
+    const misplaced="ciberseguridad"; // sube del puesto 4 (real) al 3 (publicado) por el error ajeno
+
+    const tref=$("#t1ref");
+    tref.innerHTML='<caption>Referencia — neologismos_enero.csv (real, sin errores)</caption>'+
+      "<thead><tr><th>Puesto</th><th>Término</th><th>Frecuencia real</th></tr></thead>";
+    const tbRef=el("tbody");
+    real.forEach((r,i)=>{const tr=el("tr");
+      [String(i+1),r[0],String(r[2])].forEach(v=>tr.appendChild(el("td",null,v)));
+      tr.querySelectorAll("td").forEach(td=>td.style.cursor="default");
+      tbRef.appendChild(tr);});
+    tref.appendChild(tbRef);
+
+    const t2=$("#t1");
+    t2.innerHTML='<caption>Ranking publicado en el boletín de enero (hoja manual)</caption>'+
+      "<thead><tr><th>Puesto</th><th>Término</th><th>Frecuencia anotada</th></tr></thead>";
+    const tb=el("tbody");
+    let solved1=false;
+    published.forEach((r,i)=>{
+      const tr=el("tr");
+      tr.appendChild(el("td",null,String(i+1)));
+      const tdTerm=el("td",null,r[0]);
+      tdTerm.addEventListener("click",()=>{
+        if(solved1)return;
+        if(r[0]===misplaced){
+          solved1=true;tdTerm.classList.add("hit");
+          tb.querySelectorAll("td").forEach(x=>x.style.cursor="default");
+          say($("#v1"),"y","Desliz encontrado",
+            "<p><b>Ciberseguridad</b> aparece en el puesto 3 del boletín publicado, pero con su frecuencia real (337) le corresponde el puesto 4. El motivo no está en ciberseguridad: está en que <b>coach</b> se anotó con <b>314</b> menciones en vez de <b>341</b> —una transposición de dígitos—, y ese único desliz bastó para que, al ordenar de mayor a menor, coach cayera al puesto 4 y ciberseguridad subiera al 3.º sin que nadie tocara su dato.</p>"+
+            "<p>Ninguno de los dos ficheros avisa del error: los dos <em>parecen</em> completos y bien ordenados. La única forma de detectarlo es comparar contra el archivo de origen — y hacerlo a mano, cada mes, es exactamente el trabajo que Kandel <i>et al.</i> (2012) señalan como el más caro y el más invisible.</p>");
+          sello(1,true,"Plancha 01 · El riesgo del copiado manual",
+            "un desliz al teclear «coach» (314 en vez de 341) cambió el puesto de ciberseguridad en el ranking publicado.");
+        }else{
+          tdTerm.classList.add("miss");
+          say($("#v1"),"n","Ese puesto es correcto",
+            "<p>«"+r[0]+"» está en el puesto que le corresponde según su frecuencia real. El desliz está en otra fila — y no es un número que puedas ver a simple vista aquí: es un puesto que no cuadra.</p>");
+          setTimeout(()=>tdTerm.classList.remove("miss"),900);
+        }
+      });
+      tr.appendChild(tdTerm);
+      tr.appendChild(el("td",null,String(r[2])));
+      tb.appendChild(tr);
+    });
+    t2.appendChild(tb);
+  }
+
+  /* ================= P02 · De la celda a la función (con señuelos reales) ================= */
+  {
+    const lines=[
+      'df = pd.read_csv(<span class="tok st" data-k="ruta">"neologismos_enero.csv"</span>)',
+      'resumen = df.groupby(<span class="tok st" data-k="categoria">"categoria"</span>)[<span class="tok st" data-k="frecuencia1">"frecuencia"</span>].sum()',
+      'top = df.sort_values(<span class="tok st" data-k="frecuencia2">"frecuencia"</span>, ascending=<span class="kw">False</span>).head(<span class="tok st" data-k="diez">10</span>)'
+    ];
+    const FEEDBACK={
+      categoria:"<p><code>\"categoria\"</code> es el nombre de una columna, no el nombre de un archivo. Esa columna existe igual en el CSV de enero, en el de febrero y en el de cualquier mes futuro: la estructura de la tabla no cambia, solo cambian los valores que contiene. No hay ningún motivo para convertirla en parámetro — hacerlo no rompería la función, pero tampoco serviría para nada, y añadiría un argumento que nadie necesitaría cambiar nunca.</p>",
+      frecuencia1:"<p>Igual que <code>\"categoria\"</code>, la columna <code>\"frecuencia\"</code> se llama así en todos los archivos mensuales del Observatorio. Es una constante de la estructura de datos, no algo que varíe de un mes a otro.</p>",
+      frecuencia2:"<p>Es la misma columna que en la línea anterior, usada aquí para ordenar. Vuelve a ser un nombre de columna fijo, no algo que cambie entre enero y febrero.</p>",
+      diez:"<p><code>10</code> es cuántos términos entran en el top del boletín. Es una decisión editorial —podría cambiarse si el Observatorio quisiera un top 5 en vez de un top 10—, pero no es algo que cambie <em>automáticamente</em> de un mes a otro: seguirá siendo 10 tanto en enero como en febrero, salvo que alguien decida cambiarlo a propósito. No es la pieza que este encargo pide convertir en parámetro.</p>"
+    };
+    const c=$("#code2");
+    c.innerHTML=lines.map((l,i)=>'<span class="ln">'+String(i+1).padStart(2)+"  </span>"+l).join("\n");
+    let solved2=false;
+    c.querySelectorAll(".tok").forEach(t=>{
+      t.addEventListener("click",()=>{
+        if(solved2)return;
+        const k=t.dataset.k;
+        if(k==="ruta"){
+          solved2=true;t.classList.add("hit");
+          c.querySelectorAll(".tok").forEach(x=>{if(x!==t)x.classList.add("miss");});
+          say($("#v2"),"y","Correcto",
+            "<p>Esa es la única pieza que cambia entre enero y febrero: el nombre del archivo. Las columnas (<code>categoria</code>, <code>frecuencia</code>) y el tamaño del top (<code>10</code>) son parte de la estructura del informe y se quedan fijos dentro de la función. Convertida en parámetro, queda así:</p>"+
+            '<div class="out">def generar_informe_mensual(ruta_archivo):\n    df = pd.read_csv(ruta_archivo)\n    resumen = df.groupby("categoria")["frecuencia"].sum()\n    top = df.sort_values("frecuencia", ascending=False).head(10)\n    return resumen, top</div>'+
+            "<p>La misma función, llamada dos veces sin tocar el código, da resultados reales distintos:</p>"+
+            '<div class="out">generar_informe_mensual("neologismos_enero.csv")   -> top 1: criptomoneda (482)\ngenerar_informe_mensual("neologismos_febrero.csv") -> top 1: backup (692)</div>'+
+            "<p>En enero domina un término tecnológico; en febrero, un anglicismo. El código no cambia — el archivo, sí.</p>");
+          $("#out2").innerHTML='<p class="outh">Función resultante</p>';
+          sello(2,true,"Plancha 02 · La función parametrizada",
+            "generar_informe_mensual(ruta_archivo) — mismo código, top real distinto cada mes.");
+        }else{
+          t.classList.add("miss");
+          say($("#v2"),"n","Esa pieza no es la correcta",FEEDBACK[k]);
+          setTimeout(()=>t.classList.remove("miss"),1200);
+        }
+      });
+    });
+  }
+
+  /* ================= P03 · Ordenar el proceso ================= */
+  {
+    const STEPS=[
+      "Terminar y probar la función en el cuaderno interactivo, celda a celda",
+      "Convertir el cuaderno en un script con jupyter nbconvert --to script",
+      "Comprobar que el archivo .py se ejecuta de principio a fin sin intervención manual",
+      "Programar su ejecución automática a intervalos regulares"
+    ];
+    const FB3="<p>El cuaderno interactivo es el sitio adecuado para <b>explorar y resolver</b> el problema, pero no para repetirlo cada mes: hay que abrirlo, ejecutar las celdas y esperar a que alguien lo haga. Convertirlo en script con <code>nbconvert</code> produce un archivo que se ejecuta de un tirón. Solo después de comprobar que corre sin intervención tiene sentido programarlo — programar algo que todavía falla solo automatiza el fallo.</p>";
+    let ord3=(()=>{let a;do{a=shuffle([0,1,2,3]);}while(a.every((v,i)=>v===i));return a;})();
+    let try3=0,closed3=false;
+    function m3(state){
+      const h=$("#s3steps");h.innerHTML="";
+      ord3.forEach((idx,pos)=>{
+        const row=el("div","sq");
+        if(state==="check")row.classList.add(idx===pos?"good":"bad");
+        else if(state==="sol")row.classList.add("good");
+        row.innerHTML='<span class="pos">'+(pos+1)+'</span><span class="lbl">'+STEPS[idx]+"</span>";
+        const mv=el("div","mv"),up=el("button",null,"↑"),dn=el("button",null,"↓");
+        up.type=dn.type="button";
+        up.disabled=closed3||pos===0;dn.disabled=closed3||pos===ord3.length-1;
+        up.addEventListener("click",()=>{[ord3[pos-1],ord3[pos]]=[ord3[pos],ord3[pos-1]];m3(null);});
+        dn.addEventListener("click",()=>{[ord3[pos+1],ord3[pos]]=[ord3[pos],ord3[pos+1]];m3(null);});
+        mv.append(up,dn);row.appendChild(mv);h.appendChild(row);
+      });
+      $("#h3").textContent=closed3?"Cerrado":"";
+    }
+    $("#ck3").addEventListener("click",()=>{
+      if(closed3)return;try3++;
+      const good=ord3.filter((v,i)=>v===i).length;
+      if(good===4){closed3=true;ord3=[0,1,2,3];m3("sol");
+        $("#ck3").disabled=true;$("#rs3").disabled=true;
+        say($("#v3"),"y","Proceso correcto",FB3);
+        sello(3,try3===1,"Plancha 03 · De cuaderno a rotativa",
+          "explorar → nbconvert → probar sin intervención → programar la ejecución.");
+        return;}
+      if(try3>=3){closed3=true;ord3=[0,1,2,3];m3("sol");
+        $("#ck3").disabled=true;$("#rs3").disabled=true;
+        say($("#v3"),"n","Solución","<p>Se han agotado los tres intentos. Arriba tienes el orden correcto.</p>"+FB3);
+        sello(3,false,"Plancha 03 · De cuaderno a rotativa",
+          "explorar → nbconvert → probar sin intervención → programar la ejecución.");
+        return;}
+      m3("check");
+      say($("#v3"),"w","Intento "+try3+" de 3",
+        "<p>Tienes <b>"+good+" de 4</b> en su sitio. Los pasos en verde están bien colocados; los de rojo, no.</p>");
+    });
+    $("#rs3").addEventListener("click",()=>{if(closed3)return;
+      let a;do{a=shuffle([0,1,2,3]);}while(a.every((v,i)=>v===i));ord3=a;
+      $("#v3").className="vd";m3(null);});
+    m3(null);
+  }
+
+  /* ================= P04 · Emparejar hojas ================= */
+  {
+    const LEFT=shuffle([
+      {id:"resumen",code:'resumen.to_excel(writer, sheet_name=<span class="st">"Resumen por categoría"</span>)'},
+      {id:"top",code:'top.to_excel(writer, sheet_name=<span class="st">"Top de términos"</span>)'},
+      {id:"decoy",code:'df.to_csv(<span class="st">"neologismos_enero_preparado.csv"</span>)'}
+    ]);
+    const RIGHT=shuffle([
+      {id:"resumen",name:"Hoja «Resumen por categoría»",d:"anglicismo · tecnológico · redes sociales · otros, con su total"},
+      {id:"top",name:"Hoja «Top de términos»",d:"los 10 neologismos más frecuentes del mes"},
+      {id:"none",name:"No pertenece a este Excel",d:"esta instrucción exporta a otro formato, no a una hoja"}
+    ]);
+    let selL=null,linked={},closed4=false;
+    function m4(){
+      const a=$("#mA");a.innerHTML="";
+      LEFT.forEach(l=>{
+        const b=el("button","mitem",l.code);b.type="button";
+        b.disabled=closed4||!!linked[l.id];
+        b.setAttribute("aria-pressed",selL===l.id?"true":"false");
+        if(linked[l.id])b.classList.add("linked");
+        b.addEventListener("click",()=>{selL=selL===l.id?null:l.id;m4();});
+        a.appendChild(b);});
+      const bb=$("#mB");bb.innerHTML="";
+      RIGHT.forEach(r=>{
+        const b=el("button","mitem",'<b>'+r.name+"</b><br><span style=\"font-family:var(--sans);font-size:.82rem;color:var(--ink-3)\">"+r.d+"</span>");
+        b.type="button";
+        const usedBy=Object.keys(linked).find(k=>linked[k]===r.id);
+        b.disabled=closed4||(!!usedBy&&r.id!=="none")||(r.id==="none"&&linked.decoy==="none");
+        b.addEventListener("click",()=>{
+          if(closed4||selL===null)return;
+          const correct=(selL==="resumen"&&r.id==="resumen")||(selL==="top"&&r.id==="top")||(selL==="decoy"&&r.id==="none");
+          if(correct){linked[selL]=r.id;selL=null;m4();
+            if(Object.keys(linked).length===3)done4();}
+          else{b.classList.add("wrong");
+            say($("#v4"),"n","No es esa pareja","<p>Vuelve a intentarlo con esa instrucción.</p>");
+            setTimeout(()=>{b.classList.remove("wrong");},650);}
+        });
+        bb.appendChild(b);});
+      $("#h4").textContent=closed4?"Cerrado":Object.keys(linked).length+" de 3 emparejadas";
+    }
+    function done4(){
+      closed4=true;m4();$("#rs4").disabled=true;
+      say($("#v4"),"y","Informe emparejado",
+        "<p>Las dos primeras instrucciones son las que construyen el Excel de dos hojas que pide el Observatorio. La tercera —<code>to_csv()</code>— es la exportación que ya usaste en la Unidad 2: exporta un archivo aparte, no una hoja dentro de este libro. Confundirlas es fácil porque las dos «guardan resultados», pero <code>ExcelWriter</code> es lo único que permite reunir varias tablas en un solo archivo con pestañas.</p>");
+      sello(4,true,"Plancha 04 · El informe de dos hojas",
+        "Resumen por categoría + Top de términos, en un único archivo Excel.");
+    }
+    $("#rs4").addEventListener("click",()=>{if(closed4)return;linked={};selL=null;$("#v4").className="vd";m4();});
+    m4();
+  }
+
+  /* ================= P05 · La idea central ================= */
+  {
+    const total=Object.values(FEB_CAT).reduce((a,b)=>a+b,0);
+    $("#feb5").textContent=
+      "Categorías de febrero (menciones totales): anglicismo "+FEB_CAT.anglicismo+
+      " · tecnológico "+FEB_CAT["tecnológico"]+" · otros "+FEB_CAT.otros+
+      " · redes sociales "+FEB_CAT["redes sociales"]+"  (total: "+total+")";
+    const OPTS=shuffle([
+      {t:"Los datos de neologismos de este mes, tal y como llegan cada mes desde las distintas fuentes que rastrea el Observatorio para elaborar su boletín periódico.",ok:false,
+       w:"Es justo el ejemplo que Nussbaumer Knaflic (2015) señala como lo que <em>no</em> es una idea central: por muy detallada que suene la descripción, sigue sin decir nada — describe el origen de los datos, no un mensaje."},
+      {t:"En febrero se registraron 7978 menciones de neologismos en total, repartidas entre las cuatro categorías que sigue habitualmente el Observatorio cada mes.",ok:false,
+       w:"Es una cifra real, y hasta suena completa por lo detallada que es, pero sigue siendo un dato suelto: no dice qué destaca ni por qué le importaría a quien lee el boletín."},
+      {t:"En febrero, los anglicismos siguieron liderando el boletín, con un 30 % más de menciones que la categoría tecnológica, la segunda más frecuente.",ok:true,
+       w:"Esta sí es una idea central: parte de un dato real (2652 frente a 2043, una diferencia del 30 %), afirma algo concreto y da pie a un gráfico y una tabla que la respalden."},
+      {t:"En febrero desapareció por completo el interés por los anglicismos, que ya no aparecen entre las categorías que sigue el Observatorio en su boletín mensual.",ok:false,
+       w:"Es rotunda, detallada y memorable, pero falsa: los anglicismos no solo no desaparecieron, siguieron siendo la categoría con más menciones. Una idea central tiene que ser cierta, no solo larga y contundente."}
+    ]);
+    const box=$("#o5");
+    OPTS.forEach((o,k)=>{
+      const b=el("button","opt");b.type="button";
+      b.innerHTML='<span class="tag">'+"ABCD"[k]+'</span><span class="txt">'+o.t+"</span>";
+      b.addEventListener("click",()=>{
+        [...box.children].forEach(c=>c.disabled=true);
+        b.classList.add(o.ok?"good":"bad");
+        if(!o.ok){const goodBtn=[...box.children][OPTS.findIndex(x=>x.ok)];goodBtn.classList.add("good");}
+        say($("#v5"),o.ok?"y":"n",o.ok?"Idea central correcta":"Esa no es la idea central","<p>"+o.w+"</p>");
+        sello(5,o.ok,"Plancha 05 · La idea central de febrero",
+          "«Los anglicismos lideraron con un 30 % más de menciones que la categoría tecnológica.»");
+      });
+      box.appendChild(b);
+    });
+  }
+
+  /* ================= P06 · El eje que miente ================= */
+  {
+    const NS="http://www.w3.org/2000/svg";
+    function mk(t,a){const n=document.createElementNS(NS,t);for(const k in a)n.setAttribute(k,a[k]);return n;}
+    function txt(x,y,s,c,an){const n=mk("text",{x,y,class:c||"axl"});if(an)n.setAttribute("text-anchor",an);
+      n.textContent=s;return n;}
+    const W=470,H=220,M={l:42,r:14,t:16,b:34},IW=W-M.l-M.r,IH=H-M.t-M.b;
+    const MAXV=Math.max(...FEB_TOP5.map(d=>d[2]));
+    let closed6=false;
+    function drawAxis(base){
+      const svg=$("#axSvg");svg.innerHTML="";
+      svg.appendChild(mk("path",{class:"axl",stroke:"var(--ink-3)","stroke-width":"1",fill:"none",
+        d:"M"+M.l+" "+M.t+"V"+(M.t+IH)+"H"+(M.l+IW)}));
+      const bw=IW/FEB_TOP5.length;
+      const span=Math.max(MAXV-base,1);
+      FEB_TOP5.forEach((d,i)=>{
+        const h=Math.max((d[2]-base)/span*IH,0);
+        const r=mk("rect",{x:(M.l+i*bw+bw*.12).toFixed(1),y:(M.t+IH-h).toFixed(1),
+          width:(bw*.76).toFixed(1),height:h.toFixed(1),
+          fill:i===0?"var(--red)":"var(--brass)","fill-opacity":i===0?".85":".55"});
+        svg.appendChild(r);
+        svg.appendChild(txt(M.l+i*bw+bw/2,M.t+IH+13,d[0],"axl","middle"));
+        svg.appendChild(txt(M.l+i*bw+bw/2,M.t+IH-h-4,d[2],"axl","middle"));
+      });
+      svg.appendChild(txt(M.l-6,M.t+IH+4,base,"axl","end"));
+      svg.appendChild(txt(M.l-6,M.t+6,MAXV,"axl","end"));
+      svg.appendChild(txt(W/2,M.t+2,"TOP 5 · FEBRERO (EJE DESDE "+base+")","axt","middle"));
+      const realRatio=FEB_TOP5[0][2]/FEB_TOP5[4][2];
+      const shownRatio=(FEB_TOP5[0][2]-base)/Math.max(FEB_TOP5[4][2]-base,.0001);
+      const dEl=$("#axDistort");
+      dEl.className="distort"+(base===0?" ok":"");
+      dEl.innerHTML="Diferencia real entre el 1.º y el 5.º: <b>"+realRatio.toFixed(2)+"×</b>"+
+        "  ·  diferencia que se <em>ve</em> en este gráfico: <b>"+
+        (base>=FEB_TOP5[4][2]?"∞":shownRatio.toFixed(2))+"×</b>";
+    }
+    const slider=$("#axSlider");
+    function update(){const v=+slider.value;$("#axVal").textContent="Eje desde "+v;drawAxis(v);}
+    slider.addEventListener("input",update);
+    update();
+    $("#ck6").addEventListener("click",()=>{
+      if(closed6)return;
+      const v=+slider.value;
+      if(v!==0){
+        say($("#v6"),"w","Todavía miente un poco",
+          "<p>Con el eje en <b>"+v+"</b>, la diferencia entre el término más mencionado y el quinto se ve mucho mayor de lo que es en realidad. Baja el eje hasta <b>0</b> y vuelve a comprobarlo.</p>");
+        return;
+      }
+      closed6=true;slider.disabled=true;$("#ck6").disabled=true;
+      say($("#v6"),"y","Gráfico honesto",
+        "<p>Con el eje en cero, la altura de cada barra representa fielmente la cantidad: <b>backup</b> (692) es real y visualmente 1,58 veces mayor que <b>freelance</b> (439), ni más ni menos. Es la única lectura del gráfico que no engaña a quien lo mira de un vistazo.</p>");
+      sello(6,true,"Plancha 06 · El eje en cero",
+        "backup (692) lidera el top 5 de febrero — con el eje honesto, ni una barra miente.");
+    });
+  }
+
+  /* ================= P07 · El pie de foto ================= */
+  {
+    // gráfico de categorías de febrero, ya con el eje honesto (empieza en cero) y anglicismo destacado
+    (function drawP7Photo(){
+      const NS7="http://www.w3.org/2000/svg";
+      const mk7=(t,a)=>{const n=document.createElementNS(NS7,t);for(const k in a)n.setAttribute(k,a[k]);return n;};
+      const txt7=(x,y,s,c,an)=>{const n=mk7("text",{x,y,class:c||"axl"});if(an)n.setAttribute("text-anchor",an);n.textContent=s;return n;};
+      const cats=[["anglicismo",FEB_CAT.anglicismo],["tecnológico",FEB_CAT["tecnológico"]],
+        ["otros",FEB_CAT.otros],["redes sociales",FEB_CAT["redes sociales"]]];
+      const W7=470,H7=200,M7={l:40,r:14,t:20,b:34},IW7=W7-M7.l-M7.r,IH7=H7-M7.t-M7.b;
+      const maxV=Math.max(...cats.map(c=>c[1]));
+      const svg=$("#p7Svg");
+      svg.appendChild(mk7("path",{class:"axl",stroke:"var(--ink-3)","stroke-width":"1",fill:"none",
+        d:"M"+M7.l+" "+M7.t+"V"+(M7.t+IH7)+"H"+(M7.l+IW7)}));
+      const bw=IW7/cats.length;
+      cats.forEach((c,i)=>{
+        const h=c[1]/maxV*IH7;
+        svg.appendChild(mk7("rect",{x:(M7.l+i*bw+bw*.15).toFixed(1),y:(M7.t+IH7-h).toFixed(1),
+          width:(bw*.7).toFixed(1),height:h.toFixed(1),
+          fill:i===0?"var(--red)":"var(--brass)","fill-opacity":i===0?".85":".5"}));
+        svg.appendChild(txt7(M7.l+i*bw+bw/2,M7.t+IH7+13,c[0],"axl","middle"));
+        svg.appendChild(txt7(M7.l+i*bw+bw/2,M7.t+IH7-h-4,c[1],"axl","middle"));
+      });
+      svg.appendChild(txt7(M7.l-6,M7.t+IH7+4,"0","axl","end"));
+      svg.appendChild(txt7(W7/2,M7.t+4,"CATEGORÍAS DE FEBRERO · MENCIONES TOTALES","axt","middle"));
+    })();
+
+    const PARTS=[
+      {k:"hallazgo",t:"En febrero, los anglicismos lideraron el boletín con un 30 % más de menciones que la categoría tecnológica."},
+      {k:"evidencia",t:"El gráfico de barras de categorías de febrero, con anglicismo destacado frente al resto."},
+      {k:"importancia",t:"Conviene revisar si el glosario terminológico del Observatorio recoge ya los anglicismos más recientes, porque siguen siendo la categoría dominante mes tras mes."}
+    ];
+    const ORDER=["hallazgo","evidencia","importancia"];
+    const FB7="<p>Enunciar primero el hallazgo <b>precondiciona</b> la lectura: quien lee ya sabe qué buscar antes de llegar al gráfico. La evidencia visual lo confirma. Y la importancia es la que convierte un dato en algo accionable — sin ese último paso, el boletín informa, pero no orienta ninguna decisión.</p>";
+    let ord7=(()=>{let a;do{a=shuffle([0,1,2]);}while(a.every((v,i)=>v===i));return a;})();
+    let try7=0,closed7=false;
+    function m7(state){
+      const h=$("#s7steps");h.innerHTML="";
+      ord7.forEach((idx,pos)=>{
+        const p=PARTS[idx];const row=el("div","sq");
+        if(state==="check")row.classList.add(ORDER.indexOf(p.k)===pos?"good":"bad");
+        else if(state==="sol")row.classList.add("good");
+        row.innerHTML='<span class="pos">'+(pos+1)+'</span><span class="lbl">'+p.t+"</span>";
+        const mv=el("div","mv"),up=el("button",null,"↑"),dn=el("button",null,"↓");
+        up.type=dn.type="button";
+        up.disabled=closed7||pos===0;dn.disabled=closed7||pos===ord7.length-1;
+        up.addEventListener("click",()=>{[ord7[pos-1],ord7[pos]]=[ord7[pos],ord7[pos-1]];m7(null);});
+        dn.addEventListener("click",()=>{[ord7[pos+1],ord7[pos]]=[ord7[pos],ord7[pos+1]];m7(null);});
+        mv.append(up,dn);row.appendChild(mv);h.appendChild(row);
+      });
+      $("#h7").textContent=closed7?"Cerrado":"";
+    }
+    $("#ck7").addEventListener("click",()=>{
+      if(closed7)return;try7++;
+      const good=ord7.filter((idx,pos)=>ORDER.indexOf(PARTS[idx].k)===pos).length;
+      if(good===3){closed7=true;ord7=[0,1,2];m7("sol");
+        $("#ck7").disabled=true;$("#rs7").disabled=true;
+        say($("#v7"),"y","Pie de foto correcto",FB7);
+        sello(7,try7===1,"Plancha 07 · El pie de foto",
+          "Hallazgo → evidencia → por qué importa, siguiendo a Dougherty e Ilyankou (2021).");
+        return;}
+      if(try7>=3){closed7=true;ord7=[0,1,2];m7("sol");
+        $("#ck7").disabled=true;$("#rs7").disabled=true;
+        say($("#v7"),"n","Solución","<p>Se han agotado los tres intentos.</p>"+FB7);
+        sello(7,false,"Plancha 07 · El pie de foto",
+          "Hallazgo → evidencia → por qué importa, siguiendo a Dougherty e Ilyankou (2021).");
+        return;}
+      m7("check");
+      say($("#v7"),"w","Intento "+try7+" de 3",
+        "<p>Tienes <b>"+good+" de 3</b> en su sitio.</p>");
+    });
+    $("#rs7").addEventListener("click",()=>{if(closed7)return;
+      let a;do{a=shuffle([0,1,2]);}while(a.every((v,i)=>v===i));ord7=a;
+      $("#v7").className="vd";m7(null);});
+    m7(null);
+  }
+
+  /* ================= P08 · Memo del director ================= */
+  {
+    const F8=shuffle([
+      {h:"Sí, sin Power BI no se puede aplicar nada de lo aprendido",ok:false,
+       d:"Habría que aplazar el proyecto hasta comprar la licencia.",
+       w:"<p>No. Esta unidad no exige Power BI ni ninguna herramienta equivalente: la disponibilidad de ese software depende del equipo de cada aula, y todo lo construido —la función, el Excel, el gráfico honesto— funciona igual sin él.</p><p>Elige otra opción.</p>"},
+      {h:"No: el informe en Python ya es el resultado; Power BI, si llega, se conectaría a él",ok:true,
+       d:"La lógica de fondo no cambia según la herramienta final de presentación.",
+       w:"<p>Correcto. Un informe bien automatizado y bien comunicado en Python es exactamente el tipo de resultado que después podría conectarse a Power BI o a cualquier panel interactivo, si el equipo llega a disponer de él. Automatizar el cálculo, estructurar el resultado y pensar en la audiencia no cambia según cuál sea la herramienta final de presentación.</p><p>Con esto se cierra la edición: la rotativa ya no depende de qué software haya en la sala de al lado.</p>"},
+      {h:"Solo hace falta para la parte de comunicación, no para automatizar",ok:false,
+       d:"Se seguiría escribiendo la función en Python, pero el gráfico se haría en Power BI.",
+       w:"<p>Es una distinción que no está en el manual y no hace falta: el gráfico de barras que ya construiste en Python —con el eje honesto y el color destacado— cumple perfectamente la función de comunicar. Power BI no añade nada imprescindible en ninguna de las dos partes.</p><p>Elige otra opción.</p>"}
+    ]);
+    let closed8=false,clean8=true;
+    function m8(){
+      const c=$("#f8");c.innerHTML="";
+      F8.forEach(f=>{
+        const b=el("button","fork");b.type="button";
+        b.innerHTML='<span class="fh">'+f.h+'</span><span class="fd">'+f.d+"</span>";
+        b.disabled=closed8;
+        b.addEventListener("click",()=>{
+          if(closed8)return;
+          if(!f.ok){clean8=false;b.classList.add("bad");b.disabled=true;
+            say($("#v8"),"n","Esa respuesta no encaja","<p>"+f.w+"</p>");return;}
+          closed8=true;b.classList.add("good");[...c.children].forEach(x=>x.disabled=true);
+          say($("#v8"),"y","Memo enviado",f.w);
+          sello(8,clean8,"Plancha 08 · El memo al director",
+            "Power BI es una capa de presentación; la lógica ya vive en el informe de Python.");
+        });
+        c.appendChild(b);});
+    }
+    m8();
+  }
+
+  /* ================= CIERRE ================= */
+  function cerrar(){
+    const limpias=st.limpio.size;
+    let ed,tit,txt2;
+    if(limpias===8){ed="Tirada perfecta";tit="LA ROTATIVA ARRANCA SOLA";
+      txt2="Ocho planchas cerradas a la primera. El boletín de este mes —y el de cualquier mes que llegue después— sale sin que nadie tenga que tocar una hoja de cálculo a mano.";}
+    else if(limpias>=5){ed="Edición cerrada";tit="EL BOLETÍN SALE A TIEMPO";
+      txt2="Has cerrado la edición corrigiendo por el camino, que es como se trabaja de verdad en una redacción real. Repasa las planchas en las que tuviste que rectificar.";}
+    else{ed="Edición cerrada con reservas";tit="EL BOLETÍN SALE, PERO REVÍSALO";
+      txt2="Has llegado al cierre, pero conviene releer el recorrido. La distancia entre automatizar un cálculo y comunicarlo con honestidad es más grande de lo que parece — y es justo lo que separa un informe correcto de un informe útil.";}
+    $("#fv").textContent=ed;$("#fh").textContent=tit;
+    $("#fb").innerHTML=
+      '<div class="tally"><div><b>7978</b><span>menciones en febrero</span></div>'+
+      '<div><b>30 %</b><span>más anglicismos que la 2.ª categoría</span></div>'+
+      '<div><b>'+limpias+'</b><span>de 8 planchas a la primera</span></div></div>'+
+      "<p>"+txt2+"</p>"+
+      "<p>Y esto es lo que se lleva el Observatorio: no una interpretación de por qué «backup» se ha vuelto tan frecuente —eso pertenece a otra pregunta, y no es la de esta unidad—, sino un boletín que se genera solo, con las mismas dos hojas y el mismo gráfico honesto, tanto si llega el archivo de marzo como si llega el de agosto.</p>"+
+      '<p style="opacity:.6;font-size:.92rem">Vuelve a cargar la página para repetir el cierre de edición: las opciones aparecerán en otro orden.</p>';
+  }
+})();
+</script>
+
 </body>
 </html>

@@ -1,8 +1,8 @@
 {
-  "video_historia": true,
-  "manual": true,
-  "video_teoria": true,
-  "principal": true,
-  "practica": true,
-  "mp5": true
+  "video_historia": false,
+  "manual_interactivo": false,
+  "video_teoria": false,
+  "principal": false,
+  "practica": false,
+  "mp5": false
 }

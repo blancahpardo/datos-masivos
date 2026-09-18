@@ -1,0 +1,534 @@
+{
+  "header": {
+    "kicker": "Datos Masivos · Unidad 3",
+    "title": "Exploración y visualización de datos masivos",
+    "subtitle": "Ver patrones antes de afirmar nada"
+  },
+  "sections": [
+    {
+      "navTitle": "Contexto profesional",
+      "title": "Contexto profesional",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "En la Unidad 2 preparaste una tabla revisable a partir de un archivo JSON de mensajes. Ese trabajo permitió conservar el archivo bruto, seleccionar variables útiles, crear indicadores descriptivos y exportar un CSV trazable. La Unidad 3 parte de ese producto preparado y aborda el paso siguiente del flujo profesional: explorar visualmente el *dataset* (conjunto de datos) antes de formular interpretaciones más ambiciosas."
+        },
+        {
+          "type": "p",
+          "text": "Mirador DataLab, una consultora ficticia especializada en datos lingüísticos aplicados, recibe una petición del Observatorio de Lectura Pública y Participación Digital. El cliente dispone de una colección tabulada de mensajes públicos ya preparada para una prueba metodológica. Antes de decidir si procede un análisis textual más complejo, necesita una lectura exploratoria visual que permita observar distribuciones, comparaciones y relaciones básicas entre variables."
+        },
+        {
+          "type": "p",
+          "text": "El producto esperado no es un informe definitivo sobre la opinión pública ni una clasificación temática de mensajes. Es un cuaderno con tablas y visualizaciones exploratorias que ayuden a detectar patrones, valores extremos, diferencias entre grupos y relaciones que merezcan revisión posterior. En términos profesionales, esta fase actúa como una zona de prudencia metodológica: permite conocer la forma del *dataset* antes de decidir qué preguntas se pueden plantear con rigor."
+        },
+        {
+          "type": "p",
+          "text": "La unidad debe trabajarse con el entorno virtual general del curso. Antes de abrir los cuadernos, el alumnado debe seguir `cuaderno_principal/python/U3_entorno_virtual_alumno.md`, activar `.venv`, instalar `03_unidades/U3_exploracion_visualizacion_datos_masivos/requirements_U3.txt` dentro de ese entorno y seleccionar en Jupyter el kernel `Python (.venv Datos Masivos)`. Esta exigencia evita que los resultados dependan de instalaciones globales, paquetes de usuario o configuraciones locales difíciles de reproducir."
+        }
+      ],
+      "subsections": []
+    },
+    {
+      "navTitle": "Qué vas a aprender",
+      "title": "Qué vas a aprender en esta unidad",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Al terminar esta unidad deberías ser capaz de:"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "explicar qué lugar ocupa la exploración visual dentro de un flujo de análisis de datos;",
+            "diferenciar una tabla de resumen, una visualización exploratoria y una interpretación concluyente;",
+            "seleccionar gráficos adecuados para distribuciones, comparaciones, relaciones y matrices de asociación;",
+            "construir histogramas, *boxplots*, *scatter plots* y *heatmaps* básicos con Pandas, Matplotlib y Seaborn;",
+            "interpretar patrones visibles sin confundirlos con causalidad, intención comunicativa o evidencia sociolingüística suficiente;",
+            "justificar por qué una visualización es pertinente para una pregunta exploratoria concreta;",
+            "documentar limitaciones, valores extremos y decisiones de lectura de forma reproducible."
+          ]
+        }
+      ],
+      "subsections": []
+    },
+    {
+      "navTitle": "Mapa conceptual",
+      "title": "Mapa conceptual de la unidad",
+      "blocks": [
+        {
+          "type": "ol",
+          "items": [
+            "Dataset preparado",
+            "comprobación del entorno virtual",
+            "carga reproducible del CSV",
+            "revisión de columnas y tipos",
+            "tablas exploratorias",
+            "distribuciones e histogramas",
+            "comparación entre grupos y boxplots",
+            "relaciones entre variables y scatter plots",
+            "matriz de correlación y heatmap",
+            "lectura prudente de patrones",
+            "preguntas para análisis posterior"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "La idea central es que visualizar no significa decorar los datos. Una visualización bien elegida permite inspeccionar estructura, variación, concentración, dispersión, anomalías y relaciones posibles. Sin embargo, no sustituye al análisis metodológico ni autoriza por sí sola conclusiones sobre significado textual, intención de los usuarios o comportamiento social."
+        }
+      ],
+      "subsections": []
+    },
+    {
+      "navTitle": "Marco teórico",
+      "title": "1. Marco teórico",
+      "blocks": [],
+      "subsections": [
+        {
+          "title": "1.1. La exploración visual como fase de análisis",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "La exploración de datos es una práctica central en la estadística aplicada y en la ciencia de datos. Tukey (1977) consolidó la idea de análisis exploratorio de datos como una forma de examinar, describir y comprender un conjunto de datos antes de cerrar hipótesis o modelos. Esta perspectiva es especialmente importante en contextos de datos masivos, porque el volumen de registros puede ocultar errores de preparación, concentraciones inesperadas, valores extremos o patrones que no se perciben revisando filas de forma manual."
+            },
+            {
+              "type": "p",
+              "text": "En un flujo profesional, la exploración visual se sitúa después de la preparación de datos y antes de una fase interpretativa o modelizadora. Kandel et al. (2012), en su estudio sobre prácticas de análisis y visualización en entornos profesionales, muestran que el trabajo de los analistas no consiste solo en aplicar técnicas, sino en avanzar de forma iterativa entre revisión de datos, generación de vistas, discusión de resultados y reformulación de preguntas. La Unidad 3 se sitúa precisamente en ese punto: los datos ya han sido preparados, pero todavía no se ha decidido qué análisis textual, documental o computacional sería metodológicamente adecuado."
+            },
+            {
+              "type": "p",
+              "text": "En el caso de Mirador DataLab, explorar visualmente el CSV permite responder preguntas iniciales como estas:"
+            },
+            {
+              "type": "ul",
+              "items": [
+                "¿qué variables numéricas están disponibles?;",
+                "¿cuál es la distribución de la longitud de los mensajes?;",
+                "¿hay diferencias descriptivas entre retuits y no retuits?;",
+                "¿aparecen valores extremos en menciones, hashtags o URL?;",
+                "¿alguna variable parece asociarse visualmente con otra?;",
+                "¿qué aspectos del *dataset* conviene revisar antes de pasar a análisis textual?"
+              ]
+            },
+            {
+              "type": "p",
+              "text": "Estas preguntas son exploratorias. No buscan demostrar causalidad ni explicar el comportamiento de usuarios. Buscan comprender la forma del *dataset*."
+            }
+          ]
+        },
+        {
+          "title": "1.2. De la tabla preparada a la vista exploratoria",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "La Unidad 2 se centró en preparar un *dataset*: cargar datos, seleccionar variables, limpiar campos, crear indicadores descriptivos y exportar una tabla. La Unidad 3 utiliza ese resultado para aprender a mirar los datos. Esta continuidad es importante: una visualización solo es interpretable si se conoce cómo se generaron las variables que aparecen en ella."
+            },
+            {
+              "type": "p",
+              "text": "Por ejemplo, si el CSV contiene `longitud_texto`, `num_hashtags`, `num_menciones`, `num_urls`, `fuente` y `es_retuit`, cada gráfico debe leerse sabiendo que esas columnas son indicadores derivados o metadatos básicos. Un histograma de `longitud_texto` no representa la complejidad lingüística de los mensajes; representa el reparto de una medida superficial de extensión. Un *boxplot* de `num_menciones` por `es_retuit` no explica por qué se mencionan usuarios; solo compara la distribución de un conteo entre dos grupos."
+            },
+            {
+              "type": "p",
+              "text": "Esta distinción entre variable disponible, procedimiento de cálculo y significado interpretativo es una de las claves de la unidad. Una visualización no habla sola: debe conectarse con el origen de la variable, la pregunta exploratoria y las limitaciones del *dataset*."
+            }
+          ]
+        },
+        {
+          "title": "1.3. Reproducibilidad: entorno virtual, rutas y cuaderno",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "En análisis de datos, la reproducibilidad no depende solo de escribir código que funciona una vez. También exige que otra persona pueda ejecutar el mismo flujo en un entorno controlado. En esta unidad, el entorno virtual `.venv` cumple esa función: concentra las dependencias necesarias del agente y evita que el cuaderno dependa de paquetes instalados globalmente en el ordenador de una persona concreta."
+            },
+            {
+              "type": "p",
+              "text": "El cuaderno debe comenzar verificando tres elementos:"
+            },
+            {
+              "type": "ol",
+              "items": [
+                "que se está usando el kernel del entorno virtual `.venv`;",
+                "que las librerías necesarias están disponibles;",
+                "que el CSV se carga mediante una ruta relativa clara."
+              ]
+            },
+            {
+              "type": "p",
+              "text": "El uso de Pandas se justifica porque ofrece estructuras tabulares adecuadas para análisis estadístico en Python; McKinney (2010) presentó Pandas como una biblioteca orientada a facilitar el trabajo con estructuras de datos comunes en estadística y análisis aplicado. Matplotlib y Seaborn se justifican porque permiten construir visualizaciones reproducibles dentro del ecosistema Python: Matplotlib proporciona una base general para gráficos 2D (Hunter, 2007) y Seaborn ofrece una interfaz estadística de alto nivel orientada a producir visualizaciones informativas con menos código repetitivo (Waskom, 2021)."
+            },
+            {
+              "type": "p",
+              "text": "En términos prácticos, esta unidad no pide instalar paquetes desde el propio notebook. El alumnado debe instalar dependencias con:"
+            },
+            {
+              "type": "ol",
+              "items": [
+                "python -m pip install -r 03_unidades/U3_exploracion_visualizacion_datos_masivos/requirements_U3.txt"
+              ]
+            },
+            {
+              "type": "p",
+              "text": "dentro de `.venv`, y después seleccionar el kernel correspondiente en Jupyter. De este modo, el cuaderno queda centrado en el análisis y no mezcla la lógica didáctica con instalaciones improvisadas."
+            }
+          ]
+        },
+        {
+          "title": "1.4. Tablas exploratorias: mirar antes de graficar",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Las tablas exploratorias son el primer nivel de lectura de un *dataset*. Antes de construir gráficos conviene revisar cuántas filas hay, qué columnas existen, qué tipos de datos tiene cada variable y qué valores aparecen con mayor frecuencia."
+            },
+            {
+              "type": "p",
+              "text": "En Pandas, esta revisión inicial puede hacerse con:"
+            },
+            {
+              "type": "ol",
+              "items": [
+                "df.head()",
+                "df.info()",
+                "df.describe()",
+                "df[\"fuente\"].value_counts()"
+              ]
+            },
+            {
+              "type": "p",
+              "text": "Estas operaciones no son un trámite. Sirven para decidir qué gráfico tiene sentido. Si una variable numérica apenas varía, un histograma aportará poco. Si una categoría tiene muy pocos casos, un *boxplot* puede ser engañoso. Si una columna parece numérica pero se ha cargado como texto, cualquier cálculo posterior puede fallar o producir resultados incorrectos."
+            },
+            {
+              "type": "p",
+              "text": "En datos lingüísticos y documentales, las tablas exploratorias ayudan además a evitar interpretaciones prematuras. Una tabla de frecuencias de `fuente` puede mostrar que muchos mensajes proceden de una aplicación concreta, pero eso no autoriza conclusiones sobre perfiles de usuario. Una media de `longitud_texto` por grupo puede sugerir diferencias descriptivas, pero no explica por sí sola estrategias comunicativas."
+            }
+          ]
+        },
+        {
+          "title": "1.5. Distribuciones e histogramas",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Una distribución describe cómo se reparten los valores de una variable. En exploración visual, el histograma es una de las formas más directas de observar una distribución numérica: divide el rango de la variable en intervalos y cuenta cuántos registros caen en cada uno."
+            },
+            {
+              "type": "p",
+              "text": "Para `longitud_texto`, un histograma permite observar si los mensajes se concentran en valores bajos, medios o cercanos a un límite. En el contexto de redes sociales, una concentración cerca de longitudes altas puede estar relacionada con restricciones de plataforma, hábitos de escritura o características de la muestra. Sin embargo, la lectura correcta debe ser descriptiva: el gráfico muestra el reparto de una variable, no la causa de ese reparto."
+            },
+            {
+              "type": "p",
+              "text": "Ejemplo de código:"
+            },
+            {
+              "type": "ol",
+              "items": [
+                "sns.histplot(data=df, x=\"longitud_texto\", bins=12)"
+              ]
+            },
+            {
+              "type": "image_modal",
+              "src": "img_histograma.svg",
+              "alt": "Figura 1. Histograma de longitud_texto, con datos sintéticos de ejemplo (elaboración propia).",
+              "label": "Abre esta infografía para ver el histograma",
+              "sub": "Ejemplo de distribución",
+              "caption": "Figura 1. Histograma de longitud_texto, con datos sintéticos de ejemplo (elaboración propia)."
+            },
+            {
+              "type": "p",
+              "text": "La decisión sobre el número de intervalos (`bins`) afecta a la lectura. Con pocos intervalos se simplifica demasiado la distribución; con demasiados, el gráfico puede fragmentarse y parecer más irregular de lo que realmente es. Por eso, el histograma debe ir acompañado de una explicación: qué variable se representa, qué patrón general se observa y qué límites interpretativos tiene esa observación."
+            },
+            {
+              "type": "p",
+              "text": "Desde la tradición del análisis exploratorio de datos, las distribuciones no se miran solo para resumir: se miran para detectar forma, dispersión y valores inesperados (Tukey, 1977). En esta unidad, esa mirada se aplica a variables descriptivas de una colección textual preparada."
+            }
+          ]
+        },
+        {
+          "title": "1.6. *Boxplots*: comparación y valores extremos",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "El *boxplot* (diagrama de caja) resume una distribución mediante mediana, cuartiles y posibles valores extremos. Es especialmente útil cuando se quiere comparar una variable numérica entre grupos. En esta unidad puede usarse, por ejemplo, para comparar `longitud_texto` o `num_menciones` según `es_retuit`."
+            },
+            {
+              "type": "p",
+              "text": "Ejemplo:"
+            },
+            {
+              "type": "ol",
+              "items": [
+                "sns.boxplot(data=df, x=\"es_retuit\", y=\"longitud_texto\")"
+              ]
+            },
+            {
+              "type": "image_modal",
+              "src": "img_boxplot.svg",
+              "alt": "Figura 2. Boxplot de longitud_texto según es_retuit, con datos sintéticos de ejemplo (elaboración propia).",
+              "label": "Abre esta infografía para ver el boxplot",
+              "sub": "Ejemplo de comparación",
+              "caption": "Figura 2. Boxplot de longitud_texto según es_retuit, con datos sintéticos de ejemplo (elaboración propia)."
+            },
+            {
+              "type": "p",
+              "text": "La lectura de un *boxplot* debe atender a varios elementos:"
+            },
+            {
+              "type": "ul",
+              "items": [
+                "la posición de la mediana;",
+                "la amplitud de la caja, que representa la zona central de la distribución;",
+                "la longitud de los bigotes;",
+                "la presencia de puntos extremos;",
+                "la comparación entre grupos."
+              ]
+            },
+            {
+              "type": "p",
+              "text": "Un valor extremo no debe eliminarse automáticamente. Primero debe revisarse si procede de un error de carga, una decisión de limpieza, una característica legítima del *dataset* o una restricción del propio contexto de producción de los datos. Esta prudencia conecta con la lógica del análisis exploratorio: los valores llamativos no son residuos que se borran sin pensar; son señales que deben examinarse."
+            },
+            {
+              "type": "p",
+              "text": "En un encargo profesional, la pregunta no sería «¿cómo elimino este punto?», sino «¿qué representa este punto y qué decisión metodológica debo documentar?»."
+            }
+          ]
+        },
+        {
+          "title": "1.7. *Scatter plots*: relaciones visibles entre variables",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Un *scatter plot* (diagrama de dispersión) representa cada registro como un punto en un plano definido por dos variables numéricas. En esta unidad puede servir para observar relaciones entre `num_hashtags` y `longitud_texto`, entre `num_menciones` y `longitud_texto`, o entre `num_urls` y otra variable descriptiva."
+            },
+            {
+              "type": "p",
+              "text": "Ejemplo:"
+            },
+            {
+              "type": "ol",
+              "items": [
+                "sns.scatterplot(data=df, x=\"num_hashtags\", y=\"longitud_texto\", hue=\"es_retuit\")"
+              ]
+            },
+            {
+              "type": "image_modal",
+              "src": "img_scatter.svg",
+              "alt": "Figura 3. Scatter plot de num_hashtags frente a longitud_texto, con datos sintéticos de ejemplo (elaboración propia).",
+              "label": "Abre esta infografía para ver el scatter plot",
+              "sub": "Ejemplo de relación entre variables",
+              "caption": "Figura 3. Scatter plot de num_hashtags frente a longitud_texto, con datos sintéticos de ejemplo (elaboración propia)."
+            },
+            {
+              "type": "p",
+              "text": "El *scatter plot* permite detectar agrupamientos, ausencia de relación visible, tendencias generales o puntos aislados. Cleveland y McGill (1984) estudiaron la percepción gráfica y mostraron que no todas las codificaciones visuales permiten estimar cantidades con la misma precisión. Concretamente, ordenaron las principales codificaciones visuales según la precisión con la que el ojo humano puede decodificarlas: la posición sobre una escala común es la más precisa, seguida de la longitud, después el ángulo, y por último el área o el volumen, que son las que peor se estiman a simple vista. Un *scatter plot* codifica cada punto mediante posición en dos ejes —la opción más precisa de esa jerarquía—, lo que explica por qué suele preferirse frente a otras formas de representar una relación entre dos variables numéricas. Esta idea es fundamental para elegir gráficos: un *scatter plot* puede ser adecuado para observar relaciones entre dos variables continuas o discretas numéricas, pero no sustituye a un análisis estadístico formal."
+            },
+            {
+              "type": "p",
+              "text": "En datos documentales, una nube de puntos puede sugerir que ciertos mensajes con más hashtags son más largos, o que la mayoría de registros se concentran en valores bajos de menciones. La formulación prudente sería: «el gráfico sugiere una relación que conviene revisar». La formulación incorrecta sería: «los hashtags causan mayor longitud» o «los usuarios escriben más porque quieren difundir más el mensaje»."
+            }
+          ]
+        },
+        {
+          "title": "1.8. *Heatmaps* y matrices de correlación",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Un *heatmap* (mapa de calor) representa valores de una matriz mediante color. En exploración de datos se usa con frecuencia para visualizar una matriz de correlaciones entre variables numéricas."
+            },
+            {
+              "type": "p",
+              "text": "Ejemplo:"
+            },
+            {
+              "type": "ol",
+              "items": [
+                "variables = [\"longitud_texto\", \"num_hashtags\", \"num_menciones\", \"num_urls\"]",
+                "correlaciones = df[variables].corr()",
+                "sns.heatmap(correlaciones, annot=True, cmap=\"Blues\", vmin=-1, vmax=1)"
+              ]
+            },
+            {
+              "type": "image_modal",
+              "src": "img_heatmap.svg",
+              "alt": "Figura 4. Heatmap de correlaciones entre variables descriptivas, con datos sintéticos de ejemplo (elaboración propia).",
+              "label": "Abre esta infografía para ver el heatmap",
+              "sub": "Ejemplo de correlaciones",
+              "caption": "Figura 4. Heatmap de correlaciones entre variables descriptivas, con datos sintéticos de ejemplo (elaboración propia)."
+            },
+            {
+              "type": "p",
+              "text": "La correlación resume asociación lineal entre variables. Un valor alto o bajo puede orientar preguntas posteriores, pero no demuestra causalidad. Además, en *datasets* documentales algunas variables pueden estar condicionadas por convenciones de plataforma, decisiones de preparación o límites técnicos. Por ejemplo, `longitud_texto` y `num_urls` podrían asociarse por la forma de redactar mensajes, por restricciones de caracteres o por características de la muestra, pero el *heatmap* no permite distinguir entre esas posibilidades."
+            },
+            {
+              "type": "p",
+              "text": "Sin embargo, el *heatmap* no codifica los valores mediante posición, sino mediante color: una codificación que, según la literatura sobre percepción gráfica, resulta menos precisa para leer una cantidad exacta (Healy, 2019). Por eso el *heatmap* no sustituye una lectura numérica cuidadosa de la tabla de correlaciones cuando el valor exacto importa; su ventaja está en permitir detectar de un vistazo qué pares de variables destacan por encima o por debajo del resto, dentro de una matriz que sería difícil de escanear solo con números."
+            },
+            {
+              "type": "p",
+              "text": "La utilidad del *heatmap* está en ofrecer una vista panorámica de relaciones potenciales. Esta idea conecta con la visualización exploratoria: primero se busca una visión general, después se filtra o se revisan detalles. Shneiderman (1996) formuló este principio como una secuencia de trabajo: primero una vista general, luego filtrado o zoom, y después detalles bajo demanda. Aunque en esta unidad no construimos una interfaz interactiva, el principio sí se aplica al cuaderno: se parte de una revisión global y se avanza hacia preguntas más específicas."
+            }
+          ]
+        },
+        {
+          "title": "1.9. Vistas exploratorias y elección del gráfico",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Elegir un gráfico es una decisión metodológica. La pregunta exploratoria debe determinar la visualización, no al revés. Keim (2002) subraya la importancia de la visualización para explorar grandes volúmenes de datos y apoyar procesos de búsqueda de patrones. En esta unidad, esa búsqueda se traduce en seleccionar vistas sencillas, justificadas y legibles."
+            },
+            {
+              "type": "p",
+              "text": "| Pregunta exploratoria | Vista adecuada | Variable o estructura necesaria | Precaución | | --- | --- | --- | --- | | ¿Cómo se distribuye una variable numérica? | Histograma | Una variable numérica | No explicar causas sin análisis adicional. | | ¿Hay diferencias entre grupos? | *Boxplot* o tabla agrupada | Variable numérica y variable categórica | Revisar tamaño y equilibrio de los grupos. | | ¿Dos variables parecen relacionarse? | *Scatter plot* | Dos variables numéricas | No confundir relación visual con causalidad. | | ¿Qué categorías son más frecuentes? | Tabla de frecuencias o gráfico de barras | Variable categórica | No interpretar frecuencia como importancia social. | | ¿Qué variables numéricas se asocian entre sí? | *Heatmap* de correlación | Varias variables numéricas | Recordar que la correlación mide asociación lineal. |"
+            },
+            {
+              "type": "p",
+              "text": "Tabla 1. Elección de la vista exploratoria según la pregunta de partida (elaboración propia)."
+            },
+            {
+              "type": "p",
+              "text": "Esta lógica de elegir el gráfico según la pregunta, no al revés, coincide con propuestas más amplias de organización del abanico de gráficos disponibles. Wilke (2019), por ejemplo, agrupa los tipos de gráfico según el tipo de relación que se quiere mostrar —cantidades, distribuciones, proporciones, relaciones entre dos variables, datos geográficos o incertidumbre—, en vez de organizarlos por herramienta o por aspecto visual; la tabla anterior sigue esa misma lógica a una escala más pequeña, adaptada a las preguntas de esta unidad."
+            },
+            {
+              "type": "p",
+              "text": "Una visualización adecuada debe tener título, ejes legibles, unidades o nombres de variables comprensibles y una interpretación proporcional a lo que muestra. Healy (2019) distingue tres formas en las que un gráfico puede fallar, y que conviene tener presentes al revisar el propio trabajo: puede fallar por motivos estéticos (mal etiquetado, colores confusos), por motivos de contenido (representa datos incorrectos o mal calculados) o por motivos perceptivos (usa una codificación visual que el ojo humano no puede leer con precisión, como las del apartado anterior). Las tres son independientes entre sí: un gráfico puede estar cuidado estéticamente y aun así fallar por motivos perceptivos, o representar datos correctos con una estética descuidada. Además, en materiales docentes el gráfico debe ser explicable: el alumnado debe poder decir por qué lo ha elegido y qué pregunta ayuda a explorar."
+            }
+          ]
+        },
+        {
+          "title": "1.10. Interpretación prudente de patrones",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "La interpretación visual debe distinguir tres niveles:"
+            },
+            {
+              "type": "ol",
+              "items": [
+                "**Descripción visual.** Lo que el gráfico muestra: concentración, dispersión, valores extremos, diferencias aparentes o asociación visual.",
+                "**Hipótesis exploratoria.** Una pregunta razonable derivada de esa observación.",
+                "**Conclusión.** Una afirmación que requeriría análisis adicional, validación y contexto."
+              ]
+            },
+            {
+              "type": "p",
+              "text": "En esta unidad trabajamos sobre todo los dos primeros niveles. Una respuesta adecuada puede decir: «la longitud de los mensajes parece concentrarse en un rango concreto» o «los retuits muestran mayor dispersión en el número de menciones». Una respuesta no adecuada sería: «esto demuestra que los usuarios retuitean con una intención determinada» o «la plataforma causa este comportamiento»."
+            },
+            {
+              "type": "p",
+              "text": "En análisis lingüístico y documental, esta prudencia es aún más importante porque las variables superficiales no agotan el significado textual. La longitud de un mensaje, el número de hashtags o la presencia de URL son indicadores útiles, pero no equivalen a tema, intención, tono, calidad argumentativa ni postura ideológica. Esos niveles requerirían técnicas y validaciones que pertenecen a otras fases de la asignatura."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "navTitle": "Aplicación práctica",
+      "title": "2. Aplicación práctica",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "En el cuaderno de clase usarás `U3_tweets_preparados.csv`, una copia local del **dataset** preparado en la Unidad 2. El flujo de trabajo será:"
+        },
+        {
+          "type": "ol",
+          "items": [
+            "activar el entorno virtual `.venv` y seleccionar su kernel en Jupyter;",
+            "comprobar que Pandas, Matplotlib y Seaborn están disponibles;",
+            "cargar el CSV con una ruta relativa;",
+            "revisar columnas, tipos y primeras filas;",
+            "crear tablas de resumen;",
+            "visualizar distribuciones con histogramas;",
+            "comparar grupos con *boxplots*;",
+            "observar relaciones entre variables con *scatter plots*;",
+            "construir un *heatmap* de correlación;",
+            "redactar una lectura prudente de patrones."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "El resultado esperado será un cuaderno que permita al cliente comprender mejor el *dataset*. La entrega no debe resolver preguntas de sentimiento, clasificación temática o comportamiento social. Debe ayudar a decidir qué preguntas tendría sentido formular en una fase posterior."
+        },
+        {
+          "type": "p",
+          "text": "Una lectura final adecuada podría incluir afirmaciones como:"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "«La variable `longitud_texto` se concentra en determinados rangos, lo que conviene revisar antes de seleccionar muestras textuales».",
+            "«El *boxplot* muestra diferencias descriptivas entre grupos, pero no permite explicar por qué ocurren».",
+            "«El *heatmap* sugiere asociaciones entre variables numéricas, aunque esas asociaciones no deben interpretarse como causalidad».",
+            "«Los valores extremos requieren revisión documental antes de descartarse»."
+          ]
+        }
+      ],
+      "subsections": []
+    },
+    {
+      "navTitle": "Qué queda fuera",
+      "title": "3. Qué queda fuera de esta unidad, y por qué",
+      "blocks": [
+        {
+          "type": "errorlist",
+          "items": [
+            {
+              "term": "Por qué no se hace análisis de sentimiento ni se clasifica el contenido de los mensajes.",
+              "desc": "Ambas tareas pertenecen a Programación orientada a PLN, asignatura que ya cursaste. La unidad sobre clasificación temática de textos enseña a representar un texto como un vector de palabras (o de TF-IDF) y a compararlo, mediante similitud del coseno, con un vector prototipo de cada categoría, asignando la etiqueta con mayor puntuación; sus prácticas aplican además esa misma lógica, con un clasificador entrenado sobre ejemplos etiquetados, a un caso de valorar mensajes como positivos o negativos. A partir de las tablas y gráficos que construyas en esta unidad, si lo desearas, con los conocimientos que ya tienes de esa asignatura podrías construir vectores de palabras a partir de la columna `texto`, definir vectores prototipo por categoría (o entrenar un clasificador con ejemplos etiquetados) y calcular la similitud de cada mensaje con esos vectores para asignarle una categoría o una polaridad, tal y como se narra en la unidad sobre clasificación temática de textos de esa asignatura anterior. Aquí no lo hacemos porque el objetivo de esta unidad es aprender a explorar visualmente un *dataset* ya preparado, no a interpretar lingüísticamente su contenido."
+            },
+            {
+              "term": "Por qué no se extraen conclusiones sobre usuarios, instituciones u opinión pública.",
+              "desc": "Esto conecta directamente con los tres niveles de interpretación explicados en el apartado sobre interpretación prudente de patrones: en la fase exploratoria solo se trabaja la descripción visual y, como mucho, la hipótesis exploratoria, nunca la conclusión. Incluso la unidad de Programación orientada a PLN que más se acerca a este terreno —la que trabaja con corpus reales de redes sociales para detectar sesgo y lenguaje valorativo— enseña de forma directa a no dar ese salto: su objetivo es producir indicios para que una persona los interprete después, no cerrar un veredicto sobre opinión pública o intención."
+            },
+            {
+              "term": "Por qué no se confunden correlaciones con causalidad, ni se eliminan valores extremos solo porque aparezcan en un gráfico.",
+              "desc": "No son reglas de estilo de esta asignatura: son dos errores metodológicos reales y bien documentados en el análisis de datos profesional, ya explicados con más detalle en los apartados sobre *boxplots* y sobre *heatmaps* de este mismo manual. Aprenderlos aquí, con datos de práctica, te prepara para no cometerlos cuando trabajes con datos reales, donde las consecuencias de una lectura apresurada sí importan."
+            },
+            {
+              "term": "Por qué se piden rutas relativas.",
+              "desc": "Razón puramente técnica: una ruta absoluta de tu ordenador no funciona en el de otra persona, y esta asignatura evalúa cuadernos que deben poder ejecutarse fuera de tu propio equipo."
+            }
+          ]
+        }
+      ],
+      "subsections": []
+    }
+  ],
+  "references": [
+    {
+      "key": "ref0",
+      "text": "Cleveland, W. S., & McGill, R. (1984). Graphical perception: Theory, experimentation, and application to the development of graphical methods. *Journal of the American Statistical Association, 79*(387), 531-554. https://doi.org/10.1080/01621459.1984.10478080"
+    },
+    {
+      "key": "ref1",
+      "text": "Healy, K. (2019). *Data visualization: A practical introduction*. Princeton University Press."
+    },
+    {
+      "key": "ref2",
+      "text": "Hunter, J. D. (2007). Matplotlib: A 2D graphics environment. *Computing in Science & Engineering, 9*(3), 90-95. https://doi.org/10.1109/MCSE.2007.55"
+    },
+    {
+      "key": "ref3",
+      "text": "Kandel, S., Paepcke, A., Hellerstein, J. M., & Heer, J. (2012). Enterprise data analysis and visualization: An interview study. *IEEE Transactions on Visualization and Computer Graphics, 18*(12), 2917-2926. https://doi.org/10.1109/TVCG.2012.219"
+    },
+    {
+      "key": "ref4",
+      "text": "Keim, D. A. (2002). Information visualization and visual data mining. *IEEE Transactions on Visualization and Computer Graphics, 8*(1), 1-8. https://doi.org/10.1109/2945.981847"
+    },
+    {
+      "key": "ref5",
+      "text": "McKinney, W. (2010). Data structures for statistical computing in Python. *Proceedings of the 9th Python in Science Conference*, 56-61. https://doi.org/10.25080/Majora-92bf1922-00a"
+    },
+    {
+      "key": "ref6",
+      "text": "Shneiderman, B. (1996). The eyes have it: A task by data type taxonomy for information visualizations. *Proceedings 1996 IEEE Symposium on Visual Languages*, 336-343. https://doi.org/10.1109/VL.1996.545307"
+    },
+    {
+      "key": "ref7",
+      "text": "Tukey, J. W. (1977). *Exploratory data analysis*. Addison-Wesley."
+    },
+    {
+      "key": "ref8",
+      "text": "Waskom, M. L. (2021). Seaborn: Statistical data visualization. *Journal of Open Source Software, 6*(60), Article 3021. https://doi.org/10.21105/joss.03021"
+    },
+    {
+      "key": "ref9",
+      "text": "Wilke, C. O. (2019). *Fundamentals of data visualization: A primer on making informative and compelling figures*. O'Reilly Media."
+    }
+  ]
+}

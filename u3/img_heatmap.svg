@@ -1,0 +1,38 @@
+<svg viewBox="0 0 700 440" xmlns="http://www.w3.org/2000/svg" font-family="Georgia, 'Times New Roman', serif">
+  <rect width="700" height="440" fill="#F1E7D6"/>
+  <rect x="16" y="16" width="668" height="408" fill="none" stroke="#B5A88F" stroke-width="1.5" stroke-dasharray="4 5"/>
+  <text x="350" y="50" text-anchor="middle" font-size="12" letter-spacing="2.5" fill="#A23B2E" font-family="Arial, Helvetica, sans-serif" font-weight="bold">EJEMPLO ILUSTRATIVO</text>
+  <text x="350" y="78" text-anchor="middle" font-size="20" fill="#1E1812" font-weight="bold">Heatmap de correlaciones</text>
+  <!-- 4x4 grid -->
+  <g font-family="Arial, Helvetica, sans-serif" font-size="11" fill="#1E1812">
+    <!-- row/col labels -->
+    <text x="175" y="140" text-anchor="middle">long.</text>
+    <text x="275" y="140" text-anchor="middle">hashtags</text>
+    <text x="375" y="140" text-anchor="middle">menciones</text>
+    <text x="475" y="140" text-anchor="middle">URLs</text>
+    <text x="140" y="180" text-anchor="end">long.</text>
+    <text x="140" y="230" text-anchor="end">hashtags</text>
+    <text x="140" y="280" text-anchor="end">menciones</text>
+    <text x="140" y="330" text-anchor="end">URLs</text>
+  </g>
+  <g stroke="#F1E7D6" stroke-width="2">
+    <rect x="150" y="155" width="100" height="50" fill="#A23B2E"/>
+    <rect x="250" y="155" width="100" height="50" fill="#D2652F" fill-opacity="0.75"/>
+    <rect x="350" y="155" width="100" height="50" fill="#D9CBB0"/>
+    <rect x="450" y="155" width="100" height="50" fill="#B5A88F"/>
+    <rect x="150" y="205" width="100" height="50" fill="#D2652F" fill-opacity="0.75"/>
+    <rect x="250" y="205" width="100" height="50" fill="#A23B2E"/>
+    <rect x="350" y="205" width="100" height="50" fill="#4F7A57" fill-opacity="0.55"/>
+    <rect x="450" y="205" width="100" height="50" fill="#D9CBB0"/>
+    <rect x="150" y="255" width="100" height="50" fill="#D9CBB0"/>
+    <rect x="250" y="255" width="100" height="50" fill="#4F7A57" fill-opacity="0.55"/>
+    <rect x="350" y="255" width="100" height="50" fill="#A23B2E"/>
+    <rect x="450" y="255" width="100" height="50" fill="#4F7A57" fill-opacity="0.3"/>
+    <rect x="150" y="305" width="100" height="50" fill="#B5A88F"/>
+    <rect x="250" y="305" width="100" height="50" fill="#D9CBB0"/>
+    <rect x="350" y="305" width="100" height="50" fill="#4F7A57" fill-opacity="0.3"/>
+    <rect x="450" y="305" width="100" height="50" fill="#A23B2E"/>
+  </g>
+  <text x="350" y="385" text-anchor="middle" font-size="11" fill="#3A322A" font-family="Arial, Helvetica, sans-serif">rojo = correlación fuerte (misma variable) · verde = correlación débil o nula</text>
+  <text x="350" y="410" text-anchor="middle" font-size="10.5" fill="#7A6F5C" font-style="italic" font-family="Arial, Helvetica, sans-serif">© Dra. Blanca Hernández Pardo · Datos Masivos · Unidad 3 — datos sintéticos de ejemplo, elaboración propia</text>
+</svg>

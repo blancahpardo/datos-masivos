@@ -1,0 +1,53 @@
+{
+  "header": {
+    "kicker": "Datos Masivos · Unidad 3",
+    "title": "Reto relámpago",
+    "subtitle": "El caso de Mirador DataLab"
+  },
+  "intro": "Mirador DataLab necesita confirmar que la exploración visual ha quedado clara antes de pasar a la Unidad 4. Seis preguntas, mecánicas distintas. Tienes dos intentos por pregunta antes de ver la solución. Puedes repetirlo las veces que quieras: no cuenta para la nota.",
+  "questions": [
+    {
+      "id": 1, "type": "mc",
+      "prompt": "¿Cuál es el objetivo principal de una visualización exploratoria en U3?",
+      "options": ["Sustituir la limpieza de datos.", "Detectar patrones y formular preguntas prudentes sobre el dataset.", "Clasificar automáticamente los mensajes por tema.", "Demostrar causalidad entre variables."],
+      "correct": 1,
+      "explain": "La exploración visual sirve para detectar patrones y formular preguntas prudentes, no para clasificar contenido ni para demostrar relaciones causales."
+    },
+    {
+      "id": 2, "type": "mc",
+      "prompt": "Verdadero o falso: «un valor extremo visible en un boxplot debe eliminarse automáticamente antes de continuar».",
+      "options": ["Verdadero", "Falso"],
+      "correct": 1,
+      "explain": "Un valor extremo no se elimina solo porque aparezca en un gráfico: primero hay que revisar su origen antes de decidir qué hacer con él."
+    },
+    {
+      "id": 3, "type": "match",
+      "prompt": "Relaciona cada gráfico con su uso más adecuado.",
+      "left": ["Histograma", "Boxplot", "Heatmap"],
+      "right": ["Observar asociación entre variables numéricas mediante color.", "Ver la distribución de una variable numérica.", "Comparar distribución y posibles extremos entre grupos."],
+      "correctPairs": [1, 2, 0],
+      "explain": "El histograma muestra la distribución de una variable; el boxplot compara grupos y extremos; el heatmap muestra asociación entre variables mediante color."
+    },
+    {
+      "id": 4, "type": "order",
+      "prompt": "Ordena el flujo más adecuado de una exploración visual.",
+      "items": ["Redactar una lectura prudente", "Cargar el CSV", "Crear tablas de resumen", "Revisar columnas y tipos", "Construir gráficos adecuados"],
+      "correctOrder": [1, 3, 2, 4, 0],
+      "explain": "Se carga el CSV, se revisan columnas y tipos, se crean tablas de resumen, se construyen los gráficos y, por último, se redacta una lectura prudente apoyada en lo anterior."
+    },
+    {
+      "id": 5, "type": "mc",
+      "prompt": "El cliente observa que dos variables parecen moverse juntas en un scatter plot. ¿Cuál es la formulación más prudente?",
+      "options": ["Una variable causa necesariamente la otra.", "El gráfico sugiere una relación que conviene revisar con más análisis.", "Los usuarios tienen la misma intención comunicativa.", "El dataset ya no necesita revisión."],
+      "correct": 1,
+      "explain": "Un scatter plot muestra relación visual, no causalidad. Lo prudente es formularlo como algo que conviene seguir revisando, no como una conclusión cerrada."
+    },
+    {
+      "id": 6, "type": "mc",
+      "prompt": "¿Qué error metodológico contiene esta frase?: «Como el heatmap muestra un color intenso, ya podemos explicar el comportamiento de los usuarios».",
+      "options": ["Confunde una asociación visual con una conclusión interpretativa.", "Usa una tabla en lugar de un gráfico.", "Calcula demasiadas variables derivadas.", "Repite el histograma dos veces."],
+      "correct": 0,
+      "explain": "Un color intenso en un heatmap indica asociación estadística entre variables, no una explicación del comportamiento de las personas que hay detrás de los datos."
+    }
+  ]
+}

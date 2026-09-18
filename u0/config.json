@@ -1,6 +1,6 @@
 {
-  "manual": true,
-  "principal": true,
-  "practica": true,
-  "mp5": true
+  "manual_interactivo": false,
+  "principal": false,
+  "practica": false,
+  "mp5": false
 }

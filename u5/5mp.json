@@ -1,0 +1,46 @@
+{
+  "header": {
+    "kicker": "Datos Masivos · Unidad 5",
+    "title": "Reto relámpago",
+    "subtitle": "El caso de Términos y Trama"
+  },
+  "intro": "Términos y Trama necesita confirmar que el acceso e integración de datos ha quedado claro antes de pasar a la Unidad 6. Cinco preguntas, mecánicas distintas. Tienes dos intentos por pregunta antes de ver la solución. Puedes repetirlo las veces que quieras: no cuenta para la nota.",
+  "questions": [
+    {
+      "id": 1, "type": "mc",
+      "prompt": "¿Qué propuso Codd (1970) como base del modelo relacional?",
+      "options": ["Guardar los datos como archivos de texto sueltos en carpetas.", "Organizar los datos en tablas con filas, columnas y una clave que identifica cada fila de forma única.", "Sustituir las bases de datos por hojas de cálculo.", "Almacenar los datos exclusivamente en la nube."],
+      "correct": 1,
+      "explain": "El modelo relacional de Codd organiza los datos en tablas con filas, columnas y una clave que identifica cada fila de forma única."
+    },
+    {
+      "id": 2, "type": "mc",
+      "prompt": "Verdadero o falso: «read_sql_query() de Pandas ejecuta una consulta SQL sobre una base de datos y devuelve el resultado directamente como dataframe».",
+      "options": ["Verdadero", "Falso"],
+      "correct": 0,
+      "explain": "Esa es exactamente su función: ejecuta la consulta SQL indicada y devuelve el resultado ya convertido en un dataframe de Pandas."
+    },
+    {
+      "id": 3, "type": "match",
+      "prompt": "Relaciona cada término con su definición.",
+      "left": ["Modelo relacional", "SQL", "Integración de datos"],
+      "right": ["Lenguaje para consultar bases de datos organizadas en tablas.", "Combinar datos procedentes de fuentes distintas en un único resultado.", "Organización de datos en tablas con filas, columnas y claves."],
+      "correctPairs": [2, 0, 1],
+      "explain": "El modelo relacional organiza los datos en tablas; SQL es el lenguaje para consultarlas; la integración combina datos de fuentes distintas en un único resultado."
+    },
+    {
+      "id": 4, "type": "order",
+      "prompt": "Ordena el flujo más adecuado para el encargo de esta unidad.",
+      "items": ["Normalizar y cruzar ambas fuentes", "Consultar la base de datos interna con SQL", "Exportar el resultado", "Cargar la fuente externa", "Calcular el informe de cobertura"],
+      "correctOrder": [1, 3, 0, 4, 2],
+      "explain": "Primero se consulta la base de datos interna, se carga la fuente externa, se normalizan y cruzan ambas fuentes, se calcula el informe de cobertura y por último se exporta el resultado."
+    },
+    {
+      "id": 5, "type": "mc",
+      "prompt": "Al cruzar los términos internos con el glosario externo, ¿qué acción pertenece a esta unidad (U5)?",
+      "options": ["Cruzar ambas fuentes con how=\"left\", conservando todos los términos internos tengan o no equivalente, sin evaluar la corrección de ninguna traducción.", "Cruzar con how=\"inner\" y descartar los términos internos sin equivalente.", "Evaluar si las traducciones existentes son correctas.", "Sobrescribir la tabla original terminos_internos con el resultado del cruce."],
+      "correct": 0,
+      "explain": "Un cruce left conserva todos los términos internos, tengan o no equivalente externo, sin juzgar la calidad de ninguna traducción ni sobrescribir la tabla original."
+    }
+  ]
+}
